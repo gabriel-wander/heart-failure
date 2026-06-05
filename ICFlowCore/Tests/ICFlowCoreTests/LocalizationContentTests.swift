@@ -22,6 +22,7 @@ final class LocalizationContentTests: XCTestCase {
         XCTAssertEqual(pt.ruleSet.hfrefRules.count, en.ruleSet.hfrefRules.count)
         XCTAssertEqual(pt.ruleSet.acuteCongestionRules.count, en.ruleSet.acuteCongestionRules.count)
         XCTAssertEqual(pt.ruleSet.hfrefClassOrder, en.ruleSet.hfrefClassOrder)
+        XCTAssertEqual(Set(pt.dischargeChecklist.map(\.id)), Set(en.dischargeChecklist.map(\.id)))
     }
 
     func testEnglishEngineOutputIsTranslated() throws {

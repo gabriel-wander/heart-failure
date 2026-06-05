@@ -5,6 +5,7 @@ import ICFlowCore
 struct ScenarioSelectionView: View {
     @EnvironmentObject private var app: AppModel
     let onSelect: (Scenario) -> Void
+    var onOpenChecklist: () -> Void = {}
 
     var body: some View {
         ScrollView {
@@ -21,6 +22,30 @@ struct ScenarioSelectionView: View {
                     }
                     .buttonStyle(.plain)
                 }
+
+                Button(action: onOpenChecklist) {
+                    HStack(spacing: 14) {
+                        Image(systemName: "checklist")
+                            .font(.system(size: 26))
+                            .foregroundStyle(.teal)
+                            .frame(width: 44)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(app.t(.checklistNavTitle))
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                            Text(app.t(.checklistSubtitle))
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.leading)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                }
+                .buttonStyle(.plain)
 
                 DisclaimerBanner()
             }

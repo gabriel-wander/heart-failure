@@ -14,6 +14,8 @@ public final class ContentRepository: Sendable {
     public let references: [Reference]
     public let ruleSet: ClinicalRuleSet
     public let messages: EngineMessages
+    /// Post-decompensation discharge checklist items.
+    public let dischargeChecklist: [ChecklistItem]
 
     // Fast lookup tables.
     private let alertsById: [String: SafetyAlert]
@@ -25,7 +27,8 @@ public final class ContentRepository: Sendable {
         safetyAlerts: [SafetyAlert],
         references: [Reference],
         ruleSet: ClinicalRuleSet,
-        messages: EngineMessages
+        messages: EngineMessages,
+        dischargeChecklist: [ChecklistItem] = []
     ) {
         self.language = language
         self.medications = medications
@@ -33,6 +36,7 @@ public final class ContentRepository: Sendable {
         self.references = references
         self.ruleSet = ruleSet
         self.messages = messages
+        self.dischargeChecklist = dischargeChecklist
         self.alertsById = Dictionary(safetyAlerts.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         self.referencesById = Dictionary(references.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
     }
@@ -93,13 +97,15 @@ public final class ContentRepository: Sendable {
         let references = try decode("references_\(suffix)", bundle: bundle, as: [Reference].self, decoder: decoder)
         let ruleSet = try decode("clinical_rules_\(suffix)", bundle: bundle, as: ClinicalRuleSet.self, decoder: decoder)
         let messages = try decode("engine_messages_\(suffix)", bundle: bundle, as: EngineMessages.self, decoder: decoder)
+        let checklist = try decode("discharge_checklist_\(suffix)", bundle: bundle, as: [ChecklistItem].self, decoder: decoder)
         return ContentRepository(
             language: language,
             medications: medications,
             safetyAlerts: alerts,
             references: references,
             ruleSet: ruleSet,
-            messages: messages
+            messages: messages,
+            dischargeChecklist: checklist
         )
     }
 

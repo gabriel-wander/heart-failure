@@ -50,4 +50,9 @@ final class ContentRepositoryTests: XCTestCase {
         XCTAssertNotNil(repo.ruleSet.contentVersion, "Conteúdo clínico deve declarar versão")
         XCTAssertNotNil(repo.ruleSet.lastReviewed, "Conteúdo clínico deve declarar data de revisão")
     }
+
+    func testDischargeChecklistLoads() {
+        XCTAssertFalse(TestSupport.repository.dischargeChecklist.isEmpty,
+                       "Deveria carregar o checklist de alta do JSON")
+    }
 }

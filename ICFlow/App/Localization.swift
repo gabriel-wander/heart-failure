@@ -73,6 +73,11 @@ enum UIString: String {
     case h2fpefTitle
     case h2fpefPointsLabel
     case h2fpefIncompleteHint
+
+    // v0.2 — discharge checklist
+    case checklistNavTitle
+    case checklistSubtitle
+    case checklistFootnote
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -343,7 +348,10 @@ enum Localizer {
         .missingDataTitle: "Dados ausentes que limitam a recomendação",
         .h2fpefTitle: "Escore H2FPEF",
         .h2fpefPointsLabel: "pontos",
-        .h2fpefIncompleteHint: "Escore incompleto: informe idade, PSAP estimada (> 35 mmHg) e E/e' (> 9) para estimar a probabilidade."
+        .h2fpefIncompleteHint: "Escore incompleto: informe idade, PSAP estimada (> 35 mmHg) e E/e' (> 9) para estimar a probabilidade.",
+        .checklistNavTitle: "Checklist de alta",
+        .checklistSubtitle: "Verificação de prontidão para alta pós-descompensação.",
+        .checklistFootnote: "Lista educacional de apoio; não substitui o julgamento clínico. Nada é armazenado."
     ]
 
     private static let enTable: [UIString: String] = [
@@ -442,6 +450,9 @@ enum Localizer {
         .missingDataTitle: "Missing data limiting the recommendation",
         .h2fpefTitle: "H2FPEF score",
         .h2fpefPointsLabel: "points",
-        .h2fpefIncompleteHint: "Incomplete score: provide age, estimated PASP (> 35 mmHg) and E/e' (> 9) to estimate the probability."
+        .h2fpefIncompleteHint: "Incomplete score: provide age, estimated PASP (> 35 mmHg) and E/e' (> 9) to estimate the probability.",
+        .checklistNavTitle: "Discharge checklist",
+        .checklistSubtitle: "Readiness check for post-decompensation discharge.",
+        .checklistFootnote: "Educational support list; it does not replace clinical judgment. Nothing is stored."
     ]
 }
