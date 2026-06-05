@@ -15,6 +15,7 @@ struct HFrEFEvaluator {
         var usedAlertIds: Set<String> = []
         var usedReferenceIds: Set<String> = []
         var generalNotes: [String] = []
+        var classStatuses: [String: RecommendationStatus] = [:]
 
         if let lvef = input.lvef, lvef > 40 {
             generalNotes.append(
@@ -63,6 +64,7 @@ struct HFrEFEvaluator {
                 status = .insufficientData
                 justifications = [messages.hfrefInsufficientClass]
             }
+            classStatuses[classId] = status
 
             // Alerts: those triggered by active rules + the class's standing alerts.
             let triggeredAlertIds = activeRules.flatMap { $0.safetyAlertIds }
@@ -132,6 +134,47 @@ struct HFrEFEvaluator {
                 )
             )
         }
+
+        // GDMT optimization synthesis + cross-class interaction alerts.
+        let order = ruleSet.hfrefClassOrder
+        let optimizable = order.filter { classStatuses[$0] == .consider }
+        let blocked = order.filter {
+            let s = classStatuses[$0]
+            return s == .caution || s == .contraindicated || s == .insufficientData
+        }
+        var gdmtJust: [String] = []
+        if !optimizable.isEmpty {
+            gdmtJust.append(EngineMessages.fill(messages.gdmtOptimize,
+                ["classes": optimizable.map { repository.classLabel($0) }.joined(separator: ", ")]))
+        }
+        if !blocked.isEmpty {
+            gdmtJust.append(EngineMessages.fill(messages.gdmtBlocked,
+                ["classes": blocked.map { repository.classLabel($0) }.joined(separator: ", ")]))
+        }
+        var gdmtAlerts: [SafetyAlert] = []
+        if let rasS = classStatuses["renin_angiotensin"], let mraS = classStatuses["mra"],
+           rasS != .contraindicated, mraS != .contraindicated {
+            gdmtJust.append(messages.gdmtDualRASMRANote)
+            gdmtAlerts = orderedUniqueAlerts(repository.alerts(withIds: ["ras_hyperkalemia", "mra_hyperkalemia"]))
+            gdmtAlerts.forEach { usedAlertIds.insert($0.id) }
+        }
+        if gdmtJust.isEmpty { gdmtJust = [messages.gdmtIntro] }
+        let gdmtRefs = orderedUniqueReferences(repository.references(withIds: ["greene2023", "patolia2023"]))
+        gdmtRefs.forEach { usedReferenceIds.insert($0.id) }
+        recommendations.append(
+            Recommendation(
+                id: "gdmt_optimization",
+                title: messages.gdmtTitle,
+                classId: nil,
+                displayDrug: nil,
+                status: .consider,
+                group: .general,
+                justifications: gdmtJust,
+                safetyAlerts: gdmtAlerts,
+                references: gdmtRefs,
+                notes: []
+            )
+        )
 
         if input.hypoperfusion {
             generalNotes.append(messages.hfrefHypoperfusionNote)
