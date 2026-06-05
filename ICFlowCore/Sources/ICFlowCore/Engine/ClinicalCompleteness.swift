@@ -23,6 +23,10 @@ public enum ClinicalCompleteness {
             if input.egfr == nil && input.creatinine == nil { missing.append(.egfr) }
             if input.potassium == nil { missing.append(.potassium) }
             return missing
+
+        case .hfpefHFmrEF:
+            // Ejection fraction is the minimum needed to classify HFpEF/HFmrEF.
+            return input.lvef == nil ? [.lvef] : []
         }
     }
 
