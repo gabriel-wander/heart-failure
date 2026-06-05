@@ -42,4 +42,10 @@ final class ContentRepositoryTests: XCTestCase {
             XCTAssertNotNil(loop.furosemideEquivalentFactor)
         }
     }
+
+    func testClinicalContentIsVersioned() {
+        let repo = TestSupport.repository
+        XCTAssertNotNil(repo.ruleSet.contentVersion, "Conteúdo clínico deve declarar versão")
+        XCTAssertNotNil(repo.ruleSet.lastReviewed, "Conteúdo clínico deve declarar data de revisão")
+    }
 }

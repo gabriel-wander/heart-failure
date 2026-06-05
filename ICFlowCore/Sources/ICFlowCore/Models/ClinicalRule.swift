@@ -9,10 +9,18 @@ public enum ConditionField: String, Codable, Sendable {
     case egfr
     case potassium
     case creatinine
+    case sodium
     case rhythm
     case congestion
     case hypoperfusion
     case priorDiureticUse
+    // v0.2 — comorbidities / history
+    case atrialFibrillation
+    case historyOfAngioedema
+    case diabetes
+    case ckd
+    case age
+    case bnp
 }
 
 /// Comparison operator supported by the rule engine.
@@ -95,6 +103,21 @@ public struct ClinicalRule: Codable, Identifiable, Equatable, Sendable {
     public let safetyAlertIds: [String]
     public let referenceIds: [String]
 
+    // MARK: v0.2 — optional metadata (additive; absent in v0.1 JSON)
+
+    /// Título legível da regra.
+    public let title: String?
+    /// Texto de recomendação associado (não imperativo).
+    public let recommendation: String?
+    /// Racional clínico estendido.
+    public let rationale: String?
+    /// Severidade associada (para ordenação/realce).
+    public let severity: AlertSeverity?
+    /// Campos necessários para a regra ter validade.
+    public let requiredInputs: [ClinicalField]?
+    /// Comportamento quando faltam dados (ex.: "insufficientData", "skip").
+    public let missingDataBehavior: String?
+
     public init(
         id: String,
         classId: String? = nil,
@@ -104,7 +127,13 @@ public struct ClinicalRule: Codable, Identifiable, Equatable, Sendable {
         status: EligibilityStatus? = nil,
         justification: String,
         safetyAlertIds: [String] = [],
-        referenceIds: [String] = []
+        referenceIds: [String] = [],
+        title: String? = nil,
+        recommendation: String? = nil,
+        rationale: String? = nil,
+        severity: AlertSeverity? = nil,
+        requiredInputs: [ClinicalField]? = nil,
+        missingDataBehavior: String? = nil
     ) {
         self.id = id
         self.classId = classId
@@ -115,6 +144,12 @@ public struct ClinicalRule: Codable, Identifiable, Equatable, Sendable {
         self.justification = justification
         self.safetyAlertIds = safetyAlertIds
         self.referenceIds = referenceIds
+        self.title = title
+        self.recommendation = recommendation
+        self.rationale = rationale
+        self.severity = severity
+        self.requiredInputs = requiredInputs
+        self.missingDataBehavior = missingDataBehavior
     }
 }
 
@@ -159,17 +194,28 @@ public struct ClinicalRuleSet: Codable, Equatable, Sendable {
     /// Rótulos legíveis das classes.
     public let classLabels: [String: String]
 
+    // MARK: v0.2 — content versioning (optional; absent in v0.1 JSON)
+
+    /// Versão do conteúdo clínico (para rastreabilidade).
+    public let contentVersion: String?
+    /// Data da última revisão do conteúdo.
+    public let lastReviewed: String?
+
     public init(
         hfrefRules: [ClinicalRule],
         acuteCongestionRules: [ClinicalRule],
         acuteCongestionConfig: AcuteCongestionConfig,
         hfrefClassOrder: [String],
-        classLabels: [String: String]
+        classLabels: [String: String],
+        contentVersion: String? = nil,
+        lastReviewed: String? = nil
     ) {
         self.hfrefRules = hfrefRules
         self.acuteCongestionRules = acuteCongestionRules
         self.acuteCongestionConfig = acuteCongestionConfig
         self.hfrefClassOrder = hfrefClassOrder
         self.classLabels = classLabels
+        self.contentVersion = contentVersion
+        self.lastReviewed = lastReviewed
     }
 }
