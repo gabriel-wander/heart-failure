@@ -118,5 +118,13 @@
     "message": "Diuréticos de alça podem causar hipocalemia, hipomagnesemia e hiponatremia. Monitorar sódio, potássio e magnésio durante a diurese.",
     "relatedClassIds": ["loop_diuretic"],
     "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "hfpef_mimics",
+    "title": "Excluir mimetizadores de ICFEp",
+    "severity": "warning",
+    "message": "O diagnóstico de ICFEp exige a exclusão de mimetizadores (ex.: amiloidose cardíaca, cardiomiopatias infiltrativas, valvopatias, pericardiopatias e hipertensão pulmonar) e confirmação clínica/por exames.",
+    "relatedClassIds": [],
+    "referenceIds": ["greene2023"]
   }
 ]

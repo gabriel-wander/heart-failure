@@ -131,6 +131,8 @@ public struct AssessmentResult: Equatable, Sendable {
     public let congestionProfile: CongestionProfile?
     /// Plano de diurético IV (apenas fluxo agudo, quando indicado).
     public let diureticPlan: DiureticPlan?
+    /// Resultado do escore H2FPEF (apenas fluxo ICFEp/ICFEm).
+    public let h2fpef: H2FPEFResult?
     /// Dados essenciais ausentes que limitam a avaliação global.
     public let missingEssentialData: [ClinicalField]
     /// Notas gerais (ex.: dados ausentes, escopo, avaliação especializada).
@@ -143,6 +145,7 @@ public struct AssessmentResult: Equatable, Sendable {
         references: [Reference],
         congestionProfile: CongestionProfile? = nil,
         diureticPlan: DiureticPlan? = nil,
+        h2fpef: H2FPEFResult? = nil,
         missingEssentialData: [ClinicalField] = [],
         generalNotes: [String] = []
     ) {
@@ -152,6 +155,7 @@ public struct AssessmentResult: Equatable, Sendable {
         self.references = references
         self.congestionProfile = congestionProfile
         self.diureticPlan = diureticPlan
+        self.h2fpef = h2fpef
         self.missingEssentialData = missingEssentialData
         self.generalNotes = generalNotes
     }

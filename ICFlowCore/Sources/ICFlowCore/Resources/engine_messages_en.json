@@ -47,5 +47,18 @@
   ],
   "acuteEquivalenceNote": "Approximate loop-diuretic equivalences: furosemide 40 mg PO ≈ furosemide 20 mg IV ≈ torsemide 20 mg PO ≈ bumetanide 1 mg (PO/IV). Oral furosemide bioavailability ~50% (torsemide/bumetanide ~80–100%).",
 
-  "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function."
+  "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function.",
+
+  "hfpefClassificationTitle": "Ejection-fraction classification",
+  "hfpefClassPreserved": "LVEF ≥ 50% with compatible signs/symptoms: assess HFpEF (preserved ejection fraction). Requires exclusion of mimics and clinical confirmation.",
+  "hfpefClassMidrange": "LVEF 41–49%: HFmrEF (mildly reduced ejection fraction).",
+  "hfpefClassReduced": "LVEF ≤ 40%: an HFrEF pattern — consider the chronic HFrEF flow (four pillars).",
+  "hfpefSGLT2Title": "SGLT2 inhibitor",
+  "hfpefSGLT2Justification": "Consider an SGLT2 inhibitor (dapagliflozin or empagliflozin) if eligible — demonstrated benefit in HFpEF/HFmrEF.",
+  "hfpefCongestionNote": "If congestion is present, consider a diuretic for volume control at the lowest effective dose.",
+  "hfpefComorbiditiesTitle": "Comorbidity management",
+  "hfpefComorbiditiesJustification": "Optimize management of the comorbidities that most affect HFpEF: hypertension, atrial fibrillation, obesity, diabetes, chronic kidney disease, coronary disease and sleep apnea.",
+  "hfpefReferralTitle": "Specialist evaluation",
+  "hfpefReferralJustification": "Consider specialist evaluation: suspected amyloidosis/infiltrative cardiomyopathy, significant valvular disease, significant pulmonary hypertension, relevant pulmonary disease or an uncertain diagnosis.",
+  "hfpefGeneralNote": "Educational HFpEF/HFmrEF module: prioritize a correct diagnosis (exclusion of mimics), treatment of congestion and of comorbidities."
 }

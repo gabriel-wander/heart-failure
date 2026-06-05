@@ -86,6 +86,8 @@ final class AppModel: ObservableObject {
     var isContentValidated: Bool { ClinicalContent.isClinicalContentValidated }
     func name(_ p: CongestionProfile) -> String { Localizer.profileName(p, language) }
     func summary(_ p: CongestionProfile) -> String { Localizer.profileSummary(p, language) }
+    func name(_ c: H2FPEFResult.Category) -> String { Localizer.h2fpefCategoryName(c, language) }
+    func groupName(_ g: RecommendationGroup) -> String { Localizer.groupName(g, language) }
     func name(_ s: DiureticPlan.Strategy) -> String { Localizer.strategyName(s, language) }
 
     /// Loop-diuretic agents available for the acute-flow picker.

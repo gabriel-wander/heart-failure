@@ -68,6 +68,30 @@ extension Scenario {
         switch self {
         case .chronicHFrEF: return "heart.text.square.fill"
         case .acuteCongestion: return "drop.fill"
+        case .hfpefHFmrEF: return "heart.circle.fill"
+        }
+    }
+}
+
+extension RecommendationGroup {
+    var systemImage: String {
+        switch self {
+        case .prognosis: return "shield.lefthalf.filled"
+        case .symptomCongestion: return "drop.fill"
+        case .additional: return "plus.circle"
+        case .referral: return "cross.case.fill"
+        case .general: return "list.bullet.clipboard"
+        }
+    }
+}
+
+extension H2FPEFResult.Category {
+    var color: Color {
+        switch self {
+        case .low: return .green
+        case .intermediate: return .orange
+        case .high: return .red
+        case .incomplete: return .gray
         }
     }
 }

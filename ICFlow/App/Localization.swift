@@ -68,6 +68,11 @@ enum UIString: String {
     // v0.2 — content validation & missing data
     case contentValidationBanner
     case missingDataTitle
+
+    // v0.2 — H2FPEF (HFpEF/HFmrEF module)
+    case h2fpefTitle
+    case h2fpefPointsLabel
+    case h2fpefIncompleteHint
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -84,6 +89,8 @@ enum Localizer {
         case (.chronicHFrEF, .en): return "Chronic HFrEF"
         case (.acuteCongestion, .pt): return "IC aguda congesta"
         case (.acuteCongestion, .en): return "Acute congestive HF"
+        case (.hfpefHFmrEF, .pt): return "ICFEp / ICFEm"
+        case (.hfpefHFmrEF, .en): return "HFpEF / HFmrEF"
         }
     }
 
@@ -93,6 +100,36 @@ enum Localizer {
         case (.chronicHFrEF, .en): return "Chronic heart failure with reduced ejection fraction (LVEF ≤ 40%)."
         case (.acuteCongestion, .pt): return "IC aguda/descompensada com congestão, sem choque cardiogênico."
         case (.acuteCongestion, .en): return "Acute/decompensated HF with congestion, without cardiogenic shock."
+        case (.hfpefHFmrEF, .pt): return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
+        case (.hfpefHFmrEF, .en): return "Preserved or mildly reduced ejection fraction, focusing on diagnosis, comorbidities and congestion."
+        }
+    }
+
+    static func h2fpefCategoryName(_ c: H2FPEFResult.Category, _ l: AppLanguage) -> String {
+        switch (c, l) {
+        case (.low, .pt): return "Baixa probabilidade"
+        case (.low, .en): return "Low probability"
+        case (.intermediate, .pt): return "Probabilidade intermediária"
+        case (.intermediate, .en): return "Intermediate probability"
+        case (.high, .pt): return "Alta probabilidade"
+        case (.high, .en): return "High probability"
+        case (.incomplete, .pt): return "Escore incompleto"
+        case (.incomplete, .en): return "Incomplete score"
+        }
+    }
+
+    static func groupName(_ g: RecommendationGroup, _ l: AppLanguage) -> String {
+        switch (g, l) {
+        case (.prognosis, .pt): return "Terapias modificadoras de prognóstico"
+        case (.prognosis, .en): return "Prognosis-modifying therapies"
+        case (.symptomCongestion, .pt): return "Controle de sintomas/congestão"
+        case (.symptomCongestion, .en): return "Symptom/congestion control"
+        case (.additional, .pt): return "Terapias adicionais conforme perfil"
+        case (.additional, .en): return "Additional therapies by profile"
+        case (.referral, .pt): return "Encaminhamento/avaliação"
+        case (.referral, .en): return "Referral/evaluation"
+        case (.general, .pt): return "Avaliação"
+        case (.general, .en): return "Assessment"
         }
     }
 
@@ -303,7 +340,10 @@ enum Localizer {
         .refsAll: "Referências",
         .refsOthers: "Outras referências",
         .contentValidationBanner: "Conteúdo clínico em validação — uso educacional, sujeito a revisão médica.",
-        .missingDataTitle: "Dados ausentes que limitam a recomendação"
+        .missingDataTitle: "Dados ausentes que limitam a recomendação",
+        .h2fpefTitle: "Escore H2FPEF",
+        .h2fpefPointsLabel: "pontos",
+        .h2fpefIncompleteHint: "Escore incompleto: informe idade, PSAP estimada (> 35 mmHg) e E/e' (> 9) para estimar a probabilidade."
     ]
 
     private static let enTable: [UIString: String] = [
@@ -399,6 +439,9 @@ enum Localizer {
         .refsAll: "References",
         .refsOthers: "Other references",
         .contentValidationBanner: "Clinical content under validation — educational use, pending medical review.",
-        .missingDataTitle: "Missing data limiting the recommendation"
+        .missingDataTitle: "Missing data limiting the recommendation",
+        .h2fpefTitle: "H2FPEF score",
+        .h2fpefPointsLabel: "points",
+        .h2fpefIncompleteHint: "Incomplete score: provide age, estimated PASP (> 35 mmHg) and E/e' (> 9) to estimate the probability."
     ]
 }

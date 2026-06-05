@@ -47,5 +47,18 @@
   ],
   "acuteEquivalenceNote": "Equivalências aproximadas de diurético de alça: furosemida 40 mg VO ≈ furosemida 20 mg IV ≈ torsemida 20 mg VO ≈ bumetanida 1 mg (VO/IV). Biodisponibilidade oral da furosemida ~50% (torsemida/bumetanida ~80–100%).",
 
-  "acuteGeneralNote": "Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal."
+  "acuteGeneralNote": "Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal.",
+
+  "hfpefClassificationTitle": "Classificação por fração de ejeção",
+  "hfpefClassPreserved": "FEVE ≥ 50% com sinais/sintomas compatíveis: avaliar ICFEp (fração de ejeção preservada). Exige exclusão de mimetizadores e confirmação clínica.",
+  "hfpefClassMidrange": "FEVE 41–49%: ICFEm / IC de fração de ejeção levemente reduzida (HFmrEF).",
+  "hfpefClassReduced": "FEVE ≤ 40%: padrão de ICFEr — considerar o fluxo de ICFEr crônica (quatro pilares).",
+  "hfpefSGLT2Title": "Inibidor de SGLT2",
+  "hfpefSGLT2Justification": "Considerar iSGLT2 (dapagliflozina ou empagliflozina) se elegível — benefício demonstrado em ICFEp/ICFEm.",
+  "hfpefCongestionNote": "Havendo congestão, considerar diurético para controle volêmico, na menor dose eficaz.",
+  "hfpefComorbiditiesTitle": "Manejo de comorbidades",
+  "hfpefComorbiditiesJustification": "Otimizar o manejo das comorbidades que mais impactam a ICFEp: hipertensão, fibrilação atrial, obesidade, diabetes, doença renal crônica, doença coronariana e apneia do sono.",
+  "hfpefReferralTitle": "Avaliação especializada",
+  "hfpefReferralJustification": "Considerar avaliação especializada: suspeita de amiloidose/cardiomiopatia infiltrativa, valvopatia importante, hipertensão pulmonar importante, doença pulmonar relevante ou diagnóstico incerto.",
+  "hfpefGeneralNote": "Módulo educacional de ICFEp/ICFEm: priorizar diagnóstico correto (exclusão de mimetizadores), tratamento da congestão e das comorbidades."
 }

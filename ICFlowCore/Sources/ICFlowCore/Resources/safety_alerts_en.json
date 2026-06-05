@@ -118,5 +118,13 @@
     "message": "Loop diuretics can cause hypokalemia, hypomagnesemia and hyponatremia. Monitor sodium, potassium and magnesium during diuresis.",
     "relatedClassIds": ["loop_diuretic"],
     "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "hfpef_mimics",
+    "title": "Exclude HFpEF mimics",
+    "severity": "warning",
+    "message": "The diagnosis of HFpEF requires exclusion of mimics (e.g., cardiac amyloidosis, infiltrative cardiomyopathies, valvular disease, pericardial disease and pulmonary hypertension) and clinical/diagnostic confirmation.",
+    "relatedClassIds": [],
+    "referenceIds": ["greene2023"]
   }
 ]

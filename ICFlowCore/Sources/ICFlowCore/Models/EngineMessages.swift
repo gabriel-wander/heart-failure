@@ -55,6 +55,20 @@ public struct EngineMessages: Codable, Equatable, Sendable {
 
     public let acuteGeneralNote: String
 
+    // HFpEF / HFmrEF
+    public let hfpefClassificationTitle: String
+    public let hfpefClassPreserved: String
+    public let hfpefClassMidrange: String
+    public let hfpefClassReduced: String
+    public let hfpefSGLT2Title: String
+    public let hfpefSGLT2Justification: String
+    public let hfpefCongestionNote: String
+    public let hfpefComorbiditiesTitle: String
+    public let hfpefComorbiditiesJustification: String
+    public let hfpefReferralTitle: String
+    public let hfpefReferralJustification: String
+    public let hfpefGeneralNote: String
+
     /// Replaces `{key}` tokens in `template` with the provided values.
     public static func fill(_ template: String, _ values: [String: String]) -> String {
         var result = template

@@ -16,6 +16,10 @@ struct RecommendationsView: View {
                     profileBanner(profile)
                 }
 
+                if let score = result.h2fpef {
+                    h2fpefCard(score)
+                }
+
                 if let plan = result.diureticPlan {
                     diureticPlanCard(plan)
                 }
@@ -48,6 +52,30 @@ struct RecommendationsView: View {
             Text(app.summary(profile))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+        }
+    }
+
+    private func h2fpefCard(_ score: H2FPEFResult) -> some View {
+        CardView {
+            CardSectionHeader(title: app.t(.h2fpefTitle), systemImage: "function")
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("\(score.points)")
+                    .font(.title.bold())
+                    .foregroundStyle(score.category.color)
+                Text(app.t(.h2fpefPointsLabel))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(app.name(score.category))
+                    .font(.subheadline.bold())
+                    .foregroundStyle(score.category.color)
+            }
+            if !score.isComplete {
+                Text(app.t(.h2fpefIncompleteHint))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 

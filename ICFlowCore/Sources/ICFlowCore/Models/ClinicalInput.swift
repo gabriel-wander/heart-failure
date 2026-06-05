@@ -39,6 +39,19 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
 
     // HFpEF / diagnostic context (optional).
     public var bnp: Double?            // BNP/NT-proBNP (valor informado)
+    public var symptomsSignsHF: Bool   // Sintomas/sinais compatíveis com IC
+    public var obesity: Bool           // Obesidade (proxy de IMC > 30 no H2FPEF)
+    public var hypertension: Bool      // Hipertensão arterial
+    public var antihypertensives2plus: Bool  // Uso de ≥ 2 anti-hipertensivos
+    public var coronaryDisease: Bool   // Doença arterial coronariana
+    public var sleepApnea: Bool        // Apneia do sono
+    public var suspectedInfiltrative: Bool   // Suspeita de amiloidose/infiltrativa
+    public var valvularDisease: Bool   // Doença valvar relevante
+    public var pulmonaryDisease: Bool  // Doença pulmonar relevante
+    public var anemia: Bool            // Anemia
+    public var nonCardiacEdema: Bool   // Edema possivelmente não cardíaco
+    public var paspOver35: Bool?       // PSAP estimada > 35 mmHg (eco) — nil = não avaliado
+    public var eOverEprimeOver9: Bool? // E/e' > 9 (eco) — nil = não avaliado
 
     // Optional details for the IV diuretic estimate (acute flow).
     public var currentLoopAgentId: String?       // ex.: "furosemide"
@@ -68,6 +81,19 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
         pregnancyOrBreastfeeding: Bool = false,
         historyOfAngioedema: Bool = false,
         bnp: Double? = nil,
+        symptomsSignsHF: Bool = false,
+        obesity: Bool = false,
+        hypertension: Bool = false,
+        antihypertensives2plus: Bool = false,
+        coronaryDisease: Bool = false,
+        sleepApnea: Bool = false,
+        suspectedInfiltrative: Bool = false,
+        valvularDisease: Bool = false,
+        pulmonaryDisease: Bool = false,
+        anemia: Bool = false,
+        nonCardiacEdema: Bool = false,
+        paspOver35: Bool? = nil,
+        eOverEprimeOver9: Bool? = nil,
         currentLoopAgentId: String? = nil,
         currentLoopOralDailyDoseMg: Double? = nil
     ) {
@@ -94,6 +120,19 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
         self.pregnancyOrBreastfeeding = pregnancyOrBreastfeeding
         self.historyOfAngioedema = historyOfAngioedema
         self.bnp = bnp
+        self.symptomsSignsHF = symptomsSignsHF
+        self.obesity = obesity
+        self.hypertension = hypertension
+        self.antihypertensives2plus = antihypertensives2plus
+        self.coronaryDisease = coronaryDisease
+        self.sleepApnea = sleepApnea
+        self.suspectedInfiltrative = suspectedInfiltrative
+        self.valvularDisease = valvularDisease
+        self.pulmonaryDisease = pulmonaryDisease
+        self.anemia = anemia
+        self.nonCardiacEdema = nonCardiacEdema
+        self.paspOver35 = paspOver35
+        self.eOverEprimeOver9 = eOverEprimeOver9
         self.currentLoopAgentId = currentLoopAgentId
         self.currentLoopOralDailyDoseMg = currentLoopOralDailyDoseMg
     }
