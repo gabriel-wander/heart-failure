@@ -64,6 +64,10 @@ enum UIString: String {
 
     // References
     case refsThisCase, refsAll, refsOthers
+
+    // v0.2 — content validation & missing data
+    case contentValidationBanner
+    case missingDataTitle
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -113,6 +117,43 @@ enum Localizer {
         case (.caution, .en): return "Caution"
         case (.contraindicated, .pt): return "Contraindicado"
         case (.contraindicated, .en): return "Contraindicated"
+        }
+    }
+
+    static func recStatusName(_ s: RecommendationStatus, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.recommended, .pt): return "Recomendado"
+        case (.recommended, .en): return "Recommended"
+        case (.consider, .pt): return "Considerar"
+        case (.consider, .en): return "Consider"
+        case (.caution, .pt): return "Cautela"
+        case (.caution, .en): return "Caution"
+        case (.contraindicated, .pt): return "Contraindicado"
+        case (.contraindicated, .en): return "Contraindicated"
+        case (.insufficientData, .pt): return "Dados insuficientes"
+        case (.insufficientData, .en): return "Insufficient data"
+        case (.urgentReferral, .pt): return "Avaliação urgente"
+        case (.urgentReferral, .en): return "Urgent referral"
+        }
+    }
+
+    /// Localized label for a clinical input field (used in the missing-data list).
+    static func fieldName(_ f: ClinicalField, _ l: AppLanguage) -> String {
+        switch f {
+        case .lvef: return string(.fieldLVEF, l)
+        case .nyha: return string(.fieldNYHA, l)
+        case .systolicBP: return string(.fieldSBP, l)
+        case .heartRate: return string(.fieldHR, l)
+        case .rhythm: return string(.fieldRhythm, l)
+        case .egfr: return string(.fieldEGFR, l)
+        case .creatinine: return string(.fieldCreatinine, l)
+        case .potassium: return string(.fieldPotassium, l)
+        case .sodium: return l == .pt ? "Sódio" : "Sodium"
+        case .congestion: return string(.toggleCongestion, l)
+        case .hypoperfusion: return string(.toggleHypoperfusion, l)
+        case .priorDiureticUse: return string(.togglePriorDiuretic, l)
+        case .homeDiureticAgent: return string(.fieldLoopAgent, l)
+        case .homeDiureticDose: return string(.fieldOralDose, l)
         }
     }
 
@@ -173,7 +214,7 @@ enum Localizer {
         .appSubtitle: "Apoio à decisão em insuficiência cardíaca",
         .disclaimerWarningTitle: "Aviso importante",
         .disclaimerBullet1: "Ferramenta educacional destinada a médicos. Não substitui o julgamento clínico individual.",
-        .disclaimerBullet2: "As recomendações e doses são exemplos (mock) e devem ser confirmadas com diretrizes atuais, bulas e o contexto do paciente.",
+        .disclaimerBullet2: "Conteúdo clínico em validação. As recomendações devem ser interpretadas por médico habilitado, à luz do contexto clínico, diretrizes vigentes, protocolos institucionais e bulas oficiais.",
         .disclaimerBullet3: "Não armazena dados identificáveis de pacientes. Insira apenas parâmetros clínicos de forma anônima.",
         .disclaimerBullet4: "Funciona totalmente offline. Não há login, banco de dados remoto nem integração externa.",
         .disclaimerBullet5: "Escopo do MVP: ICFEr crônica e IC aguda congesta sem choque cardiogênico.",
@@ -181,7 +222,7 @@ enum Localizer {
         .disclaimerFootnote: "Ao continuar, você reconhece a natureza educacional desta ferramenta.",
         .scenarioSelectTitle: "Selecione o cenário clínico",
         .navScenario: "Cenário",
-        .disclaimerBanner: "Ferramenta educacional. As doses são exemplos e não substituem o julgamento clínico nem as bulas/diretrizes vigentes.",
+        .disclaimerBanner: "Ferramenta educacional, com conteúdo clínico em validação. Não substitui o julgamento clínico nem as bulas/diretrizes vigentes.",
         .emptyResultTitle: "Sem avaliação",
         .emptyResultDesc: "Volte e gere uma avaliação a partir dos dados clínicos.",
         .alertsNoneTitle: "Sem alertas",
@@ -260,14 +301,16 @@ enum Localizer {
         .txtDisclaimer: "Ferramenta educacional — não substitui o julgamento clínico.",
         .refsThisCase: "Referências deste caso",
         .refsAll: "Referências",
-        .refsOthers: "Outras referências"
+        .refsOthers: "Outras referências",
+        .contentValidationBanner: "Conteúdo clínico em validação — uso educacional, sujeito a revisão médica.",
+        .missingDataTitle: "Dados ausentes que limitam a recomendação"
     ]
 
     private static let enTable: [UIString: String] = [
         .appSubtitle: "Heart failure decision support",
         .disclaimerWarningTitle: "Important notice",
         .disclaimerBullet1: "Educational tool intended for physicians. It does not replace individual clinical judgment.",
-        .disclaimerBullet2: "Recommendations and doses are examples (mock) and must be confirmed against current guidelines, labels and the patient's context.",
+        .disclaimerBullet2: "Clinical content under validation. Recommendations must be interpreted by a qualified physician, in light of the clinical context, current guidelines, institutional protocols and official drug labels.",
         .disclaimerBullet3: "Stores no identifiable patient data. Enter only anonymous clinical parameters.",
         .disclaimerBullet4: "Works fully offline. No login, remote database or external integration.",
         .disclaimerBullet5: "MVP scope: chronic HFrEF and acute congestive HF without cardiogenic shock.",
@@ -275,7 +318,7 @@ enum Localizer {
         .disclaimerFootnote: "By continuing, you acknowledge the educational nature of this tool.",
         .scenarioSelectTitle: "Select the clinical scenario",
         .navScenario: "Scenario",
-        .disclaimerBanner: "Educational tool. Doses are examples and do not replace clinical judgment or current labels/guidelines.",
+        .disclaimerBanner: "Educational tool, with clinical content under validation. It does not replace clinical judgment or current labels/guidelines.",
         .emptyResultTitle: "No assessment",
         .emptyResultDesc: "Go back and generate an assessment from the clinical data.",
         .alertsNoneTitle: "No alerts",
@@ -354,6 +397,8 @@ enum Localizer {
         .txtDisclaimer: "Educational tool — does not replace clinical judgment.",
         .refsThisCase: "References for this case",
         .refsAll: "References",
-        .refsOthers: "Other references"
+        .refsOthers: "Other references",
+        .contentValidationBanner: "Clinical content under validation — educational use, pending medical review.",
+        .missingDataTitle: "Missing data limiting the recommendation"
     ]
 }

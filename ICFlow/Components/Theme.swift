@@ -21,6 +21,30 @@ extension EligibilityStatus {
     }
 }
 
+extension RecommendationStatus {
+    var color: Color {
+        switch self {
+        case .recommended: return .green
+        case .consider: return .green
+        case .caution: return .orange
+        case .contraindicated: return .red
+        case .insufficientData: return .gray
+        case .urgentReferral: return .red
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .recommended: return "checkmark.seal.fill"
+        case .consider: return "checkmark.circle.fill"
+        case .caution: return "exclamationmark.triangle.fill"
+        case .contraindicated: return "xmark.octagon.fill"
+        case .insufficientData: return "questionmark.circle.fill"
+        case .urgentReferral: return "cross.case.fill"
+        }
+    }
+}
+
 extension AlertSeverity {
     var color: Color {
         switch self {

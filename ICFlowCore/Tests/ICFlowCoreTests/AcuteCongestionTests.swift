@@ -73,4 +73,31 @@ final class AcuteCongestionTests: XCTestCase {
         XCTAssertTrue(monitoring.contains("Magnésio"))
         XCTAssertTrue(monitoring.contains("Sódio"))
     }
+
+    // MARK: - v0.2 status & data-completeness gating
+
+    func testWarmAndWetStatusIsConsider() {
+        let result = engine.evaluate(input())
+        XCTAssertEqual(result.recommendation(id: "iv_diuretic")?.status, .consider)
+    }
+
+    func testHypoperfusionStatusIsUrgentReferral() {
+        let result = engine.evaluate(input(hypoperfusion: true))
+        XCTAssertEqual(result.recommendation(id: "specialist_eval")?.status, .urgentReferral)
+    }
+
+    func testPriorDiureticWithoutDoseDoesNotComputeDose() {
+        // Prior use marked, but neither agent nor dose informed → no estimate.
+        let result = engine.evaluate(input(priorDiuretic: true, agentId: nil, oralDose: nil))
+        XCTAssertNil(result.diureticPlan, "Não deve calcular dose sem fármaco/dose domiciliar")
+        let rec = result.recommendation(id: "iv_diuretic")
+        XCTAssertEqual(rec?.status, .insufficientData)
+        XCTAssertTrue(rec?.missingData.contains(.homeDiureticDose) ?? false)
+    }
+
+    func testMissingEssentialDataIsReported() {
+        let result = engine.evaluate(input(sbp: nil, potassium: nil))
+        XCTAssertTrue(result.missingEssentialData.contains(.systolicBP))
+        XCTAssertTrue(result.missingEssentialData.contains(.potassium))
+    }
 }

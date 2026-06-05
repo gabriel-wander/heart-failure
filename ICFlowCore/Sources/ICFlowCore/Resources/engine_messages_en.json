@@ -4,6 +4,8 @@
   "hfrefLvefNote": "Reported LVEF ({lvef}%) is above 40%. This module's criteria assume HFrEF (LVEF ≤ 40%).",
   "hfrefDecompensationNote": "Signs of decompensation present: prioritize clinical compensation before starting/up-titrating a beta-blocker; the other pillars can usually be started/continued as tolerated.",
   "hfrefMissingDataNote": "Fields left blank are not evaluated by the rules; fill in all data for a more complete assessment.",
+  "hfrefInsufficientClass": "Eligibility for this class cannot be determined safely without the essential data (see \"Missing data\"). Requires clinical judgment once the data is complete.",
+  "hfrefHypoperfusionNote": "Signs of hypoperfusion recorded: the chronic HFrEF flow may not be appropriate. Consider assessment in an acute/instability flow.",
 
   "diureticPriorUser": "On prior {agent} {oralDose} mg/day PO (≈ {furoEquiv} mg/day furosemide equivalent). Estimated initial IV dose ≈ 2.5× the daily oral dose = {total} mg/day IV furosemide, split into {doses} doses (~{perDose} mg per dose). Give at least twice daily and reassess response in 2–6 h.",
   "diureticHighDoseSuffix": "Caution: high dose (> {threshold} mg/day furosemide equivalent) with limited safety data.",
@@ -32,6 +34,10 @@
   "acuteNoDiureticJustification": "No signs of congestion recorded.",
   "acuteNoDiureticNoteDefault": "An IV loop diuretic is not indicated in the absence of congestion. Reassess the diagnosis and volume status; optimize background therapy (GDMT) as indicated.",
   "acuteNoDiureticNoteHypoperfusion": "Hypoperfusion without congestion suggests hypovolemia/low output — specialist evaluation and reassessment of volume status.",
+
+  "acuteDiureticNeedsInfoTitle": "Diuretic estimate unavailable",
+  "acuteDiureticNeedsInfoJustification": "Prior diuretic use was marked, but the agent and/or home dose were not provided — the IV dose cannot be estimated safely. Enter the diuretic and the daily dose to generate the estimate.",
+  "acuteInsufficientDataNote": "Recommendation limited by missing data (see \"Missing data\"). Complete the data before deciding management.",
 
   "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function."
 }
