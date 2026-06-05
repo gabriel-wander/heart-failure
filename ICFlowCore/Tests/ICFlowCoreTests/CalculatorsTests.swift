@@ -54,4 +54,11 @@ final class CalculatorsTests: XCTestCase {
         // Normoglycemia → unchanged
         XCTAssertEqual(Calculators.correctedSodium(measuredNa: 140, glucoseMgDl: 100), 140, accuracy: 0.001)
     }
+
+    func testNatriuresisResponse() {
+        XCTAssertEqual(Calculators.natriuresisResponse(urineSodiumMmolL: 90, urineOutputMlPerH: nil), .adequate)
+        XCTAssertEqual(Calculators.natriuresisResponse(urineSodiumMmolL: 40, urineOutputMlPerH: 80), .inadequate)
+        XCTAssertEqual(Calculators.natriuresisResponse(urineSodiumMmolL: nil, urineOutputMlPerH: 200), .adequate)
+        XCTAssertEqual(Calculators.natriuresisResponse(urineSodiumMmolL: nil, urineOutputMlPerH: nil), .incomplete)
+    }
 }

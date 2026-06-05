@@ -43,6 +43,19 @@
 - **Novo cenário: Choque / IC refratária** — triagem educacional de instabilidade/baixo
   débito (encaminhamento a ambiente monitorizado), fora do fluxo de congestão simples.
 
+## Mais ferramentas (v0.4)
+
+- **Histórico local anônimo** — casos salvos **apenas no aparelho** (criptografados em
+  repouso), sem nuvem/login e **sem identificadores** (apenas dados clínicos +
+  rótulo livre não identificável). Salvar/abrir/“apagar tudo”.
+- **Natriurese guiada** — calculadora de resposta diurética (sódio urinário spot /
+  débito urinário → adequada / inadequada / incompleta).
+- **Overlays no fluxo ICFEr** — orientações de **IC + FA** (ritmo = FA) e **IC + DRC**
+  (TFGe < 60), a partir de dados já coletados.
+- **Referências com busca** offline + metadados (ano · tipo · nível de evidência) e
+  **acessibilidade** (Dynamic Type via fontes semânticas; ícones decorativos ocultos do
+  VoiceOver).
+
 **Idiomas:** português (padrão) e inglês, com **seletor de idioma dentro do app**
 (menu do globo 🌐). A troca é ao vivo: recarrega o conteúdo clínico e reavalia o caso.
 

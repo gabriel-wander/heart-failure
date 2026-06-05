@@ -28,12 +28,17 @@ struct CalculatorsView: View {
     @State private var measuredNa = ""
     @State private var glucose = ""
 
+    // Natriuresis
+    @State private var urineNa = ""
+    @State private var urineOutput = ""
+
     var body: some View {
         Form {
             cha2Section
             egfrSection
             ironSection
             sodiumSection
+            natriuresisSection
         }
         .navigationTitle(app.t(.calcNavTitle))
         .navigationBarTitleDisplayMode(.inline)
@@ -83,6 +88,14 @@ struct CalculatorsView: View {
         }
     }
 
+    private var natriuresisSection: some View {
+        Section(app.t(.calcNatriuresisTitle)) {
+            numberField(app.t(.calcUrineNa), app.t(.unitMmolL), $urineNa)
+            numberField(app.t(.calcUrineOutput), app.t(.unitMlH), $urineOutput)
+            resultRow(app.t(.calcResponseLabel), natriuresisText)
+        }
+    }
+
     // MARK: - Computed results
 
     private var cha2Score: Int {
@@ -110,6 +123,13 @@ struct CalculatorsView: View {
         guard let na = num(measuredNa), let glu = num(glucose) else { return "—" }
         let corrected = Calculators.correctedSodium(measuredNa: na, glucoseMgDl: glu)
         return "\(app.format((corrected * 10).rounded() / 10)) \(app.t(.unitMmolL))"
+    }
+
+    private var natriuresisText: String {
+        let response = Calculators.natriuresisResponse(
+            urineSodiumMmolL: num(urineNa), urineOutputMlPerH: num(urineOutput)
+        )
+        return app.name(response)
     }
 
     // MARK: - Helpers

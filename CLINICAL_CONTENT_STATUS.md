@@ -19,6 +19,10 @@
 | ICFEp / ICFEm | Implementado (educacional) | Classificação por FEVE, escore H2FPEF, iSGLT2, congestão, comorbidades, encaminhamento. |
 | Checklist de alta | Implementado | 10 itens de prontidão pós-descompensação. |
 | Completude de dados / gating | Implementado | Bloqueia recomendação específica sem dados essenciais. |
+| Cenário Choque / IC refratária | Implementado (educacional) | Triagem por red flags; encaminhamento, sem dose. |
+| Otimização GDMT + interação SRAA/ARM | Implementado | Síntese de pilares + alerta de hipercalemia. |
+| Overlays IC + FA / IC + DRC | Implementado (educacional) | Acionados por ritmo = FA e TFGe < 60. |
+| Calculadoras (CHA₂DS₂-VASc, CKD-EPI, Ganzoni, Na corrigido, natriurese) | Implementado | Fórmulas com testes; **limiares/uso pendentes de revisão**. |
 
 ## 2. Conteúdo validado vs. não validado
 

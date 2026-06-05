@@ -30,12 +30,18 @@ struct RootView: View {
                     path.append(.clinicalInput)
                 },
                 onOpenChecklist: { path.append(.dischargeChecklist) },
-                onOpenCalculators: { path.append(.calculators) }
+                onOpenCalculators: { path.append(.calculators) },
+                onOpenHistory: { path.append(.history) }
             )
         case .dischargeChecklist:
             DischargeChecklistView()
         case .calculators:
             CalculatorsView()
+        case .history:
+            HistoryView(onOpen: { saved in
+                app.load(saved)
+                path.append(.results)
+            })
         case .clinicalInput:
             ClinicalInputView {
                 app.generate()

@@ -181,6 +181,7 @@ private struct NumericRow: View {
                 Circle()
                     .fill(Color.orange)
                     .frame(width: 6, height: 6)
+                    .accessibilityHidden(true)
             }
             Text(title)
             Spacer()

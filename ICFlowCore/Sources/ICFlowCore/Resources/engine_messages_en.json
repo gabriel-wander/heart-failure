@@ -78,5 +78,20 @@
     "A diuretic alone may be insufficient or harmful in hypoperfusion."
   ],
   "shockStableNote": "No obvious shock criteria with the current data — maintain vigilance and continuously reassess BP, perfusion, urine output and lactate.",
-  "shockGeneralNote": "Educational triage flow for instability/low output. It does not replace the institution's shock/refractory protocols."
+  "shockGeneralNote": "Educational triage flow for instability/low output. It does not replace the institution's shock/refractory protocols.",
+
+  "afTitle": "HF + atrial fibrillation",
+  "afJustification": "Optimize rate/rhythm control per symptoms and EF; assess anticoagulation (see CHA₂DS₂-VASc). Avoid ivabradine; use AV-nodal agents that lower output with caution.",
+  "afNotes": [
+    "In HFrEF, the beta-blocker is preferred for rate control.",
+    "Avoid most antiarrhythmics in HFrEF (amiodarone is the safest option).",
+    "Consider a rhythm-control/ablation strategy in selected cases."
+  ],
+  "ckdTitle": "HF + chronic kidney disease",
+  "ckdJustification": "GDMT remains indicated in CKD; monitor potassium and renal function more closely and adjust per eGFR. An initial eGFR dip with ARNI/MRA/SGLT2i can be expected.",
+  "ckdNotes": [
+    "Avoid NSAIDs and nephrotoxic agents.",
+    "SGLT2i retains cardiorenal benefit across a wide eGFR range.",
+    "Watch for diuretic resistance and hyperkalemia (especially with RAS + MRA)."
+  ]
 }

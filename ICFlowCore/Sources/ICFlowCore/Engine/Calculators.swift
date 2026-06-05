@@ -76,4 +76,25 @@ public enum Calculators {
     public static func correctedSodium(measuredNa: Double, glucoseMgDl: Double) -> Double {
         measuredNa + 1.6 * ((glucoseMgDl - 100.0) / 100.0)
     }
+
+    // MARK: - Natriuresis-guided diuretic response
+
+    public enum DiureticResponse: String, Sendable {
+        case adequate
+        case inadequate
+        case incomplete
+    }
+
+    /// Educational interpretation of the early diuretic response: a spot urine
+    /// sodium ≥ ~70 mmol/L (≈1–2 h post-dose) or urine output ≥ ~150 mL/h
+    /// suggests an adequate response; otherwise consider escalation (Mullens/ESC).
+    public static func natriuresisResponse(
+        urineSodiumMmolL: Double?,
+        urineOutputMlPerH: Double?
+    ) -> DiureticResponse {
+        if urineSodiumMmolL == nil && urineOutputMlPerH == nil { return .incomplete }
+        let naAdequate = urineSodiumMmolL.map { $0 >= 70 } ?? false
+        let outputAdequate = urineOutputMlPerH.map { $0 >= 150 } ?? false
+        return (naAdequate || outputAdequate) ? .adequate : .inadequate
+    }
 }

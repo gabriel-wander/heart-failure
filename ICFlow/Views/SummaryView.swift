@@ -8,9 +8,13 @@ struct SummaryView: View {
     let result: AssessmentResult
     let draft: InputDraft
 
+    @EnvironmentObject private var history: CaseHistoryStore
     @State private var copied = false
     @State private var shareURL: URL?
     @State private var showShare = false
+    @State private var showSaveDialog = false
+    @State private var saveLabel = ""
+    @State private var saved = false
 
     var body: some View {
         ScrollView {
@@ -104,6 +108,16 @@ struct SummaryView: View {
                 }
                 .buttonStyle(.borderedProminent)
 
+                Button {
+                    saveLabel = ""
+                    showSaveDialog = true
+                } label: {
+                    Label(saved ? app.t(.historySaved) : app.t(.historySaveButton),
+                          systemImage: saved ? "checkmark" : "tray.and.arrow.down")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+
                 DisclaimerBanner()
             }
             .padding()
@@ -113,6 +127,17 @@ struct SummaryView: View {
             if let url = shareURL {
                 ActivityView(items: [url])
             }
+        }
+        .alert(app.t(.historySaveButton), isPresented: $showSaveDialog) {
+            TextField(app.t(.historyLabelPlaceholder), text: $saveLabel)
+            Button(app.t(.historySaveButton)) {
+                history.add(label: saveLabel, scenario: app.scenario,
+                            input: draft.toPatientInput(scenario: app.scenario))
+                saved = true
+            }
+            Button(app.t(.cancel), role: .cancel) {}
+        } message: {
+            Text(app.t(.historySaveMessage))
         }
     }
 

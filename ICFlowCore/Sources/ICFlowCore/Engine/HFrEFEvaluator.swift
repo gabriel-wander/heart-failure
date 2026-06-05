@@ -176,6 +176,28 @@ struct HFrEFEvaluator {
             )
         )
 
+        // Comorbidity overlays (modifiers within the chronic flow).
+        if input.rhythm == .afib {
+            let refs = orderedUniqueReferences(repository.references(withIds: ["patolia2023", "greene2023"]))
+            refs.forEach { usedReferenceIds.insert($0.id) }
+            recommendations.append(
+                Recommendation(
+                    id: "hf_af", title: messages.afTitle, status: .consider, group: .additional,
+                    justifications: [messages.afJustification], references: refs, notes: messages.afNotes
+                )
+            )
+        }
+        if let egfr = input.egfr, egfr < 60 {
+            let refs = orderedUniqueReferences(repository.references(withIds: ["patolia2023", "greene2023"]))
+            refs.forEach { usedReferenceIds.insert($0.id) }
+            recommendations.append(
+                Recommendation(
+                    id: "hf_ckd", title: messages.ckdTitle, status: .consider, group: .additional,
+                    justifications: [messages.ckdJustification], references: refs, notes: messages.ckdNotes
+                )
+            )
+        }
+
         if input.hypoperfusion {
             generalNotes.append(messages.hfrefHypoperfusionNote)
         }
