@@ -3,12 +3,13 @@ import ICFlowCore
 
 /// Tela 2 — Escolha do cenário clínico.
 struct ScenarioSelectionView: View {
+    @EnvironmentObject private var app: AppModel
     let onSelect: (Scenario) -> Void
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Text("Selecione o cenário clínico")
+                Text(app.t(.scenarioSelectTitle))
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -25,8 +26,13 @@ struct ScenarioSelectionView: View {
             }
             .padding()
         }
-        .navigationTitle("Cenário")
+        .navigationTitle(app.t(.navScenario))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LanguageMenu()
+            }
+        }
     }
 
     private func scenarioCard(_ scenario: Scenario) -> some View {
@@ -37,10 +43,10 @@ struct ScenarioSelectionView: View {
                     .foregroundStyle(.red)
                     .frame(width: 44)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(scenario.displayName)
+                    Text(app.name(scenario))
                         .font(.title3.bold())
                         .foregroundStyle(.primary)
-                    Text(scenario.detail)
+                    Text(app.detail(scenario))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.leading)
@@ -56,5 +62,6 @@ struct ScenarioSelectionView: View {
 #Preview {
     NavigationStack {
         ScenarioSelectionView(onSelect: { _ in })
+            .environmentObject(AppModel())
     }
 }

@@ -8,6 +8,9 @@
 > **totalmente offline**. Sem login, banco remoto, assinatura, notificações ou
 > integração externa.
 
+**Idiomas:** português (padrão) e inglês, com **seletor de idioma dentro do app**
+(menu do globo 🌐). A troca é ao vivo: recarrega o conteúdo clínico e reavalia o caso.
+
 ---
 
 ## Escopo do MVP
@@ -61,11 +64,12 @@ heart-failure/
     │   │                       #   Recommendation, PatientInput, enums
     │   ├── Content/            # ContentRepository (carrega os JSON)
     │   ├── Engine/             # DecisionEngine + avaliadores + cálculo de diurético
-    │   └── Resources/          # *** CONTEÚDO CLÍNICO EM JSON ***
-    │       ├── medications.json
-    │       ├── clinical_rules.json
-    │       ├── safety_alerts.json
-    │       └── references.json
+    │   └── Resources/          # *** CONTEÚDO CLÍNICO EM JSON (por idioma) ***
+    │       ├── medications_pt.json      / medications_en.json
+    │       ├── clinical_rules_pt.json   / clinical_rules_en.json
+    │       ├── safety_alerts_pt.json    / safety_alerts_en.json
+    │       ├── references_pt.json       / references_en.json
+    │       └── engine_messages_pt.json  / engine_messages_en.json
     └── Tests/ICFlowCoreTests/  # Testes unitários das regras clínicas críticas
 ```
 
@@ -105,6 +109,8 @@ avaliados (nunca geram contraindicação falsa).
 
 Todo o conteúdo clínico está em `ICFlowCore/Sources/ICFlowCore/Resources/`.
 Em geral, **não é preciso alterar código Swift** — basta editar os JSON.
+Cada tipo de arquivo existe **por idioma** (sufixo `_pt`/`_en`); edite a versão do
+idioma desejado (ou ambas). Os nomes abaixo referem-se a cada par de arquivos.
 
 ### 1. Medicamentos e doses — `medications.json`
 Cada item:
@@ -155,6 +161,34 @@ referências cruzadas).
 
 ---
 
+## Idiomas (i18n: português e inglês)
+
+A localização é separada em duas camadas:
+
+1. **Conteúdo clínico (pacote `ICFlowCore`)** — cada arquivo JSON tem uma versão por
+   idioma com sufixo `_pt` / `_en` (medicamentos, regras, alertas, referências e os
+   *templates* de mensagens do motor em `engine_messages_<lang>.json`). O
+   `ContentRepository.load(language:)` escolhe os arquivos do idioma. A **estrutura**
+   (ids, limiares das regras, fatores) é idêntica entre idiomas; só o **texto** muda.
+
+2. **Interface (app `ICFlow`)** — as strings de tela e os rótulos de enums ficam em
+   `ICFlow/App/Localization.swift` (tabelas `pt`/`en` + helpers de rótulo). O `AppModel`
+   resolve as strings conforme o idioma atual.
+
+O idioma escolhido é persistido em `UserDefaults`; na primeira execução o app tenta
+seguir o idioma do sistema (português se o sistema estiver em PT, senão inglês).
+
+### Como adicionar um novo idioma
+1. Adicione o caso em `AppLanguage` (núcleo) com `nativeName`/`shortTag`/`resourceSuffix`.
+2. Crie os 5 JSON com o novo sufixo em `ICFlowCore/.../Resources/` (copie os `_en` e
+   traduza). Mantenha **ids, limiares e contagem de regras** idênticos aos demais.
+3. Acrescente as colunas do idioma em `Localizer` (tabela de strings + helpers de enums)
+   em `ICFlow/App/Localization.swift`.
+4. Rode os testes — `LocalizationContentTests` valida que os conjuntos de ids batem
+   entre idiomas e que a saída do motor é traduzida.
+
+---
+
 ## Como abrir, compilar e testar
 
 **Requisitos:** macOS com Xcode 16+ (deployment target iOS 16).
@@ -190,6 +224,8 @@ Selecione o esquema **ICFlow** e um simulador → ⌘R para executar.
 - `DiureticCalculatorTests` — regra 2,5× (furosemida/bumetanida/torsemida),
   dose padrão se virgem de diurético, sinalização de dose elevada.
 - `ContentRepositoryTests` — carregamento dos JSON e integridade das referências cruzadas.
+- `LocalizationContentTests` — carga do conteúdo em inglês, paridade estrutural PT/EN,
+  saída do motor traduzida e formatação numérica por idioma (2,5 vs 2.5).
 
 ---
 

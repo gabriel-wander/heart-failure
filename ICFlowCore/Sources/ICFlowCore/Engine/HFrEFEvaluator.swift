@@ -1,9 +1,13 @@
 import Foundation
 
 /// Evaluates the four foundational HFrEF drug classes against the patient input
-/// and produces one recommendation per class.
+/// and produces one recommendation per class. All composed text comes from the
+/// repository's localized `EngineMessages`.
 struct HFrEFEvaluator {
     let repository: ContentRepository
+
+    private var messages: EngineMessages { repository.messages }
+    private var language: AppLanguage { repository.language }
 
     func evaluate(_ input: PatientInput) -> AssessmentResult {
         let ruleSet = repository.ruleSet
@@ -13,7 +17,9 @@ struct HFrEFEvaluator {
         var generalNotes: [String] = []
 
         if let lvef = input.lvef, lvef > 40 {
-            generalNotes.append("FEVE informada (\(lvef.cleanString)%) acima de 40%. Os critérios deste módulo assumem ICFEr (FEVE ≤ 40%).")
+            generalNotes.append(
+                EngineMessages.fill(messages.hfrefLvefNote, ["lvef": language.format(lvef)])
+            )
         }
 
         for classId in ruleSet.hfrefClassOrder {
@@ -45,7 +51,7 @@ struct HFrEFEvaluator {
             // Justifications.
             var justifications = activeRules.map { $0.justification }
             if justifications.isEmpty {
-                justifications = ["Sem contraindicações ou cautelas identificadas com os dados fornecidos."]
+                justifications = [messages.hfrefEligibleDefault]
             }
 
             // Alerts: those triggered by active rules + the class's standing alerts.
@@ -80,9 +86,9 @@ struct HFrEFEvaluator {
         }
 
         if input.congestion || input.hypoperfusion {
-            generalNotes.append("Sinais de descompensação presentes: priorizar compensação clínica antes de iniciar/uptitular betabloqueador; demais pilares geralmente podem ser iniciados/mantidos conforme tolerância.")
+            generalNotes.append(messages.hfrefDecompensationNote)
         }
-        generalNotes.append("Campos não preenchidos não são avaliados pelas regras; preencha todos os dados para uma avaliação mais completa.")
+        generalNotes.append(messages.hfrefMissingDataNote)
 
         let aggregatedAlerts = orderedUniqueAlerts(repository.alerts(withIds: Array(usedAlertIds)))
             .sorted { $0.severity.sortRank < $1.severity.sortRank }
@@ -110,7 +116,7 @@ struct HFrEFEvaluator {
             .filter { $0.id != primary.id }
         guard !alternatives.isEmpty else { return [] }
         let names = alternatives.map { "\($0.genericName) (\($0.subclass)): \($0.startingDose) → \($0.targetDose)" }
-        return ["Alternativas da classe: " + names.joined(separator: "; ") + "."]
+        return [messages.hfrefAlternativesPrefix + names.joined(separator: "; ") + "."]
     }
 
     private func orderedUniqueAlerts(_ alerts: [SafetyAlert]) -> [SafetyAlert] {

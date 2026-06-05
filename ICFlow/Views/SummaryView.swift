@@ -4,6 +4,7 @@ import ICFlowCore
 
 /// Tela 6 — Resumo final consolidado do caso (anônimo).
 struct SummaryView: View {
+    @EnvironmentObject private var app: AppModel
     let result: AssessmentResult
     let draft: InputDraft
 
@@ -13,20 +14,20 @@ struct SummaryView: View {
         ScrollView {
             VStack(spacing: 16) {
                 CardView {
-                    CardSectionHeader(title: "Cenário", systemImage: result.scenario.systemImage)
-                    Text(result.scenario.displayName).font(.title3.bold())
+                    CardSectionHeader(title: app.t(.sumScenario), systemImage: result.scenario.systemImage)
+                    Text(app.name(result.scenario)).font(.title3.bold())
                     if let profile = result.congestionProfile {
-                        Text(profile.displayName)
+                        Text(app.name(profile))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                 }
 
                 CardView {
-                    CardSectionHeader(title: "Dados inseridos", systemImage: "list.clipboard")
+                    CardSectionHeader(title: app.t(.sumInputData), systemImage: "list.clipboard")
                     let entries = inputEntries
                     if entries.isEmpty {
-                        Text("Nenhum dado numérico informado.")
+                        Text(app.t(.sumNoNumericData))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     } else {
@@ -44,7 +45,7 @@ struct SummaryView: View {
                 }
 
                 CardView {
-                    CardSectionHeader(title: "Síntese das recomendações", systemImage: "checklist")
+                    CardSectionHeader(title: app.t(.sumRecsTitle), systemImage: "checklist")
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(result.recommendations) { rec in
                             HStack(alignment: .top) {
@@ -59,22 +60,22 @@ struct SummaryView: View {
 
                 if let plan = result.diureticPlan {
                     CardView {
-                        CardSectionHeader(title: "Diurético IV (estimativa)", systemImage: "drop.fill")
-                        Text("\(plan.perDoseMg.cleanString) mg IV \(plan.dosesPerDay)×/dia (≈ \(plan.totalDailyIVFurosemideMg.cleanString) mg/dia de furosemida).")
+                        CardSectionHeader(title: app.t(.sumDiureticTitle), systemImage: "drop.fill")
+                        Text(diureticLine(plan))
                             .font(.subheadline)
                     }
                 }
 
                 CardView {
                     HStack {
-                        CardSectionHeader(title: "Alertas", systemImage: "exclamationmark.triangle")
+                        CardSectionHeader(title: app.t(.sumAlertsTitle), systemImage: "exclamationmark.triangle")
                         Spacer()
                         Text("\(result.safetyAlerts.count)")
                             .font(.headline)
                             .foregroundStyle(result.safetyAlerts.contains { $0.severity == .critical } ? .red : .orange)
                     }
                     if let critical = result.safetyAlerts.first(where: { $0.severity == .critical }) {
-                        Text("Crítico: \(critical.title)")
+                        Text(app.t(.sumCriticalPrefix) + critical.title)
                             .font(.subheadline)
                             .foregroundStyle(.red)
                     }
@@ -84,7 +85,7 @@ struct SummaryView: View {
                     UIPasteboard.general.string = plainTextSummary
                     copied = true
                 } label: {
-                    Label(copied ? "Resumo copiado" : "Copiar resumo (texto)", systemImage: copied ? "checkmark" : "doc.on.doc")
+                    Label(copied ? app.t(.copiedButton) : app.t(.copyButton), systemImage: copied ? "checkmark" : "doc.on.doc")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -93,7 +94,7 @@ struct SummaryView: View {
             }
             .padding()
         }
-        .navigationTitle("Resumo")
+        .navigationTitle(app.t(.tabSummary))
     }
 
     /// Numeric/clinical fields actually filled in, for the recap card.
@@ -104,40 +105,50 @@ struct SummaryView: View {
             guard !trimmed.isEmpty else { return }
             entries.append((label, unit.isEmpty ? trimmed : "\(trimmed) \(unit)"))
         }
-        add("FEVE", draft.lvef, unit: "%")
-        if let nyha = draft.nyha { entries.append(("NYHA", nyha.rawValue)) }
-        add("PA sistólica", draft.systolicBP, unit: "mmHg")
-        add("FC", draft.heartRate, unit: "bpm")
-        entries.append(("Ritmo", draft.rhythm.displayName))
-        add("TFGe", draft.egfr, unit: "mL/min/1,73m²")
-        add("Potássio", draft.potassium, unit: "mmol/L")
-        add("Creatinina", draft.creatinine, unit: "mg/dL")
-        entries.append(("Congestão", draft.congestion ? "Sim" : "Não"))
-        entries.append(("Hipoperfusão", draft.hypoperfusion ? "Sim" : "Não"))
-        entries.append(("Uso prévio de diurético", draft.priorDiureticUse ? "Sim" : "Não"))
+        add(app.t(.fieldLVEF), draft.lvef, unit: app.t(.unitPercent))
+        if let nyha = draft.nyha { entries.append((app.t(.fieldNYHA), nyha.rawValue)) }
+        add(app.t(.fieldSBP), draft.systolicBP, unit: app.t(.unitMmHg))
+        add(app.t(.fieldHR), draft.heartRate, unit: app.t(.unitBpm))
+        entries.append((app.t(.fieldRhythm), app.name(draft.rhythm)))
+        add(app.t(.fieldEGFR), draft.egfr, unit: app.t(.unitEgfr))
+        add(app.t(.fieldPotassium), draft.potassium, unit: app.t(.unitMmolL))
+        add(app.t(.fieldCreatinine), draft.creatinine, unit: app.t(.unitMgdl))
+        entries.append((app.t(.sumCongestion), draft.congestion ? app.t(.yes) : app.t(.no)))
+        entries.append((app.t(.sumHypoperfusion), draft.hypoperfusion ? app.t(.yes) : app.t(.no)))
+        entries.append((app.t(.sumPriorDiuretic), draft.priorDiureticUse ? app.t(.yes) : app.t(.no)))
         return entries
     }
 
+    private func diureticLine(_ plan: DiureticPlan) -> String {
+        let per = app.format(plan.perDoseMg)
+        let total = app.format(plan.totalDailyIVFurosemideMg)
+        let freq = "\(plan.dosesPerDay)\(app.t(.perDaySuffix))"
+        switch app.language {
+        case .pt: return "\(per) mg IV \(freq) (≈ \(total) mg/dia de furosemida)."
+        case .en: return "\(per) mg IV \(freq) (≈ \(total) mg/day furosemide)."
+        }
+    }
+
     private var plainTextSummary: String {
-        var lines = ["IC Flow — resumo (educacional, dados anônimos)"]
-        lines.append("Cenário: \(result.scenario.displayName)")
+        var lines = [app.t(.txtHeader)]
+        lines.append("\(app.t(.sumScenario)): \(app.name(result.scenario))")
         if let profile = result.congestionProfile {
-            lines.append("Perfil: \(profile.displayName)")
+            lines.append("\(app.t(.sumProfile)): \(app.name(profile))")
         }
         lines.append("")
-        lines.append("Dados: " + inputEntries.map { "\($0.0)=\($0.1)" }.joined(separator: "; "))
+        lines.append(app.t(.txtData) + ": " + inputEntries.map { "\($0.0)=\($0.1)" }.joined(separator: "; "))
         lines.append("")
-        lines.append("Recomendações:")
+        lines.append(app.t(.txtRecommendations))
         for rec in result.recommendations {
-            lines.append("- \(rec.title): \(rec.status.displayName)")
+            lines.append("- \(rec.title): \(app.name(rec.status))")
         }
         if let plan = result.diureticPlan {
-            lines.append("Diurético IV: \(plan.perDoseMg.cleanString) mg \(plan.dosesPerDay)x/dia")
+            lines.append("\(app.t(.txtDiuretic)): \(diureticLine(plan))")
         }
         lines.append("")
-        lines.append("Alertas: \(result.safetyAlerts.count)")
+        lines.append("\(app.t(.txtAlerts)): \(result.safetyAlerts.count)")
         lines.append("")
-        lines.append("Ferramenta educacional — não substitui o julgamento clínico.")
+        lines.append(app.t(.txtDisclaimer))
         return lines.joined(separator: "\n")
     }
 }

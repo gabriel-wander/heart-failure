@@ -4,6 +4,7 @@ import ICFlowCore
 /// Tela 4 — Recomendações. Mostra os quatro pilares (ICFEr) ou a estratégia de
 /// diurético IV / encaminhamento (IC aguda).
 struct RecommendationsView: View {
+    @EnvironmentObject private var app: AppModel
     let result: AssessmentResult
 
     var body: some View {
@@ -23,7 +24,7 @@ struct RecommendationsView: View {
 
                 if !result.generalNotes.isEmpty {
                     CardView {
-                        CardSectionHeader(title: "Notas gerais", systemImage: "note.text")
+                        CardSectionHeader(title: app.t(.generalNotesTitle), systemImage: "note.text")
                         BulletList(items: result.generalNotes, tint: .secondary)
                     }
                 }
@@ -32,15 +33,15 @@ struct RecommendationsView: View {
             }
             .padding()
         }
-        .navigationTitle("Recomendações")
+        .navigationTitle(app.t(.tabRecommendations))
     }
 
     private func profileBanner(_ profile: CongestionProfile) -> some View {
         CardView {
-            CardSectionHeader(title: "Perfil hemodinâmico", systemImage: "waveform.path.ecg")
-            Text(profile.displayName)
+            CardSectionHeader(title: app.t(.profileTitle), systemImage: "waveform.path.ecg")
+            Text(app.name(profile))
                 .font(.title3.bold())
-            Text(profile.summary)
+            Text(app.summary(profile))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -49,18 +50,18 @@ struct RecommendationsView: View {
     private func diureticPlanCard(_ plan: DiureticPlan) -> some View {
         CardView {
             HStack {
-                CardSectionHeader(title: "Estimativa de diurético IV", systemImage: "drop.fill")
+                CardSectionHeader(title: app.t(.diureticEstimateTitle), systemImage: "drop.fill")
                 Spacer()
                 if plan.highDoseCaution {
                     SeverityBadge(severity: .warning)
                 }
             }
             HStack(spacing: 16) {
-                metric(value: "\(plan.perDoseMg.cleanString) mg", label: "por dose")
-                metric(value: "\(plan.dosesPerDay)×/dia", label: "frequência")
-                metric(value: "\(plan.totalDailyIVFurosemideMg.cleanString) mg", label: "total/dia")
+                metric(value: "\(app.format(plan.perDoseMg)) mg", label: app.t(.metricPerDose))
+                metric(value: "\(plan.dosesPerDay)\(app.t(.perDaySuffix))", label: app.t(.metricFrequency))
+                metric(value: "\(app.format(plan.totalDailyIVFurosemideMg)) mg", label: app.t(.metricTotalDay))
             }
-            Text(plan.strategy.displayName)
+            Text(app.name(plan.strategy))
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
             Text(plan.description)
@@ -80,6 +81,7 @@ struct RecommendationsView: View {
 
 /// Card de uma recomendação (classe de medicamento ou ação).
 struct RecommendationCard: View {
+    @EnvironmentObject private var app: AppModel
     let recommendation: Recommendation
 
     var body: some View {
@@ -99,7 +101,7 @@ struct RecommendationCard: View {
             }
 
             if !recommendation.justifications.isEmpty {
-                section(title: "Justificativa", icon: "text.alignleft") {
+                section(title: app.t(.secJustification), icon: "text.alignleft") {
                     BulletList(items: recommendation.justifications, tint: recommendation.status.color)
                 }
             }
@@ -109,13 +111,13 @@ struct RecommendationCard: View {
             }
 
             if !recommendation.monitoring.isEmpty {
-                section(title: "Monitoramento", icon: "stethoscope") {
+                section(title: app.t(.secMonitoring), icon: "stethoscope") {
                     BulletList(items: recommendation.monitoring, tint: .teal)
                 }
             }
 
             if !recommendation.safetyAlerts.isEmpty {
-                section(title: "Alertas de segurança", icon: "exclamationmark.triangle") {
+                section(title: app.t(.secSafetyAlerts), icon: "exclamationmark.triangle") {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(recommendation.safetyAlerts) { alert in
                             HStack(alignment: .top, spacing: 8) {
@@ -132,7 +134,7 @@ struct RecommendationCard: View {
             }
 
             if !recommendation.notes.isEmpty {
-                section(title: "Observações", icon: "note.text") {
+                section(title: app.t(.secNotes), icon: "note.text") {
                     BulletList(items: recommendation.notes, tint: .secondary)
                 }
             }
@@ -141,13 +143,13 @@ struct RecommendationCard: View {
 
     @ViewBuilder
     private var doseSection: some View {
-        section(title: "Doses (exemplo)", icon: "pills.fill") {
+        section(title: app.t(.secDoses), icon: "pills.fill") {
             VStack(alignment: .leading, spacing: 6) {
                 if let start = recommendation.startingDose {
-                    doseRow(label: "Inicial", value: start)
+                    doseRow(label: app.t(.doseInitial), value: start)
                 }
                 if let target = recommendation.targetDose {
-                    doseRow(label: "Alvo", value: target)
+                    doseRow(label: app.t(.doseTarget), value: target)
                 }
             }
         }

@@ -5,14 +5,23 @@ import Foundation
 /// Logic is grounded in Felker et al. (2020): an empiric IV loop dose of roughly
 /// 2.5× the total daily home (oral) dose given in divided doses, or a standard
 /// initial dose if the patient is loop-naive. All values are illustrative and
-/// must be individualized.
+/// must be individualized. Display text is taken from localized templates.
 public struct DiureticCalculator {
     private let config: AcuteCongestionConfig
+    private let messages: EngineMessages
+    private let language: AppLanguage
     /// Mapa de fator de equivalência por id de agente (ex.: "furosemide": 1.0).
     private let equivalenceFactors: [String: Double]
 
-    public init(config: AcuteCongestionConfig, loopDiuretics: [Medication]) {
+    public init(
+        config: AcuteCongestionConfig,
+        loopDiuretics: [Medication],
+        messages: EngineMessages,
+        language: AppLanguage
+    ) {
         self.config = config
+        self.messages = messages
+        self.language = language
         var factors: [String: Double] = [:]
         for med in loopDiuretics {
             if let factor = med.furosemideEquivalentFactor {
@@ -26,6 +35,7 @@ public struct DiureticCalculator {
     public func makePlan(
         priorUse: Bool,
         agentId: String?,
+        agentName: String?,
         oralDailyDoseMg: Double?
     ) -> DiureticPlan {
         // Decide whether we have enough info to treat as a prior oral user.
@@ -38,16 +48,19 @@ public struct DiureticCalculator {
             let roundedTotal = perDose * Double(doses)
             let highDose = totalIV > config.cautionDailyFurosemideEquivMg
 
-            let agentLabel = agentId ?? "diurético de alça"
-            var text = """
-            Em uso prévio de \(agentLabel) \(formatMg(dose)) mg/dia VO \
-            (≈ \(formatMg(furosemideEquiv)) mg/dia de furosemida equivalente). \
-            Dose IV inicial estimada ≈ \(config.ivLoopMultiplier.cleanString)× a dose oral diária = \
-            \(formatMg(roundedTotal)) mg/dia de furosemida IV, fracionada em \(doses)× \
-            (~\(formatMg(perDose)) mg por dose). Administrar ao menos 2×/dia e reavaliar resposta em 2–6 h.
-            """
+            let agentLabel = agentName ?? messages.diureticNaiveAgentFallback
+            var text = EngineMessages.fill(messages.diureticPriorUser, [
+                "agent": agentLabel,
+                "oralDose": language.format(dose),
+                "furoEquiv": language.format(furosemideEquiv),
+                "total": language.format(roundedTotal),
+                "doses": String(doses),
+                "perDose": language.format(perDose)
+            ])
             if highDose {
-                text += " Atenção: dose elevada (> \(formatMg(config.cautionDailyFurosemideEquivMg)) mg/dia de furosemida equivalente) com dados de segurança limitados."
+                text += " " + EngineMessages.fill(messages.diureticHighDoseSuffix, [
+                    "threshold": language.format(config.cautionDailyFurosemideEquivMg)
+                ])
             }
             return DiureticPlan(
                 strategy: .priorOralUser,
@@ -62,12 +75,9 @@ public struct DiureticCalculator {
 
         // Loop-naive (or insufficient data): standard initial dose.
         let initial = config.loopNaiveInitialFurosemideIVmg
-        let text = """
-        Paciente virgem de diurético de alça (ou sem dose oral informada). \
-        Dose inicial padrão sugerida: furosemida \(formatMg(initial)) mg IV em bolus \
-        (faixa habitual 40–80 mg). Reavaliar a resposta diurética em ~2 h e manter \
-        ao menos 2×/dia se necessário.
-        """
+        let text = EngineMessages.fill(messages.diureticLoopNaive, [
+            "dose": language.format(initial)
+        ])
         return DiureticPlan(
             strategy: .loopNaive,
             oralFurosemideEquivalentMg: nil,
@@ -86,19 +96,5 @@ public struct DiureticCalculator {
         let rounded = (value / step).rounded() * step
         // Never round a positive dose down to zero.
         return rounded < step ? step : rounded
-    }
-
-    private func formatMg(_ value: Double) -> String {
-        value.cleanString
-    }
-}
-
-extension Double {
-    /// Formats a number without a trailing ".0" (e.g. 200 -> "200", 2.5 -> "2,5").
-    public var cleanString: String {
-        if self == rounded() {
-            return String(Int(self))
-        }
-        return String(format: "%g", self).replacingOccurrences(of: ".", with: ",")
     }
 }

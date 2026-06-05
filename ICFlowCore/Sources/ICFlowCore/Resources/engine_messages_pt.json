@@ -1,0 +1,37 @@
+{
+  "hfrefEligibleDefault": "Sem contraindicações ou cautelas identificadas com os dados fornecidos.",
+  "hfrefAlternativesPrefix": "Alternativas da classe: ",
+  "hfrefLvefNote": "FEVE informada ({lvef}%) acima de 40%. Os critérios deste módulo assumem ICFEr (FEVE ≤ 40%).",
+  "hfrefDecompensationNote": "Sinais de descompensação presentes: priorizar compensação clínica antes de iniciar/uptitular betabloqueador; demais pilares geralmente podem ser iniciados/mantidos conforme tolerância.",
+  "hfrefMissingDataNote": "Campos não preenchidos não são avaliados pelas regras; preencha todos os dados para uma avaliação mais completa.",
+
+  "diureticPriorUser": "Em uso prévio de {agent} {oralDose} mg/dia VO (≈ {furoEquiv} mg/dia de furosemida equivalente). Dose IV inicial estimada ≈ 2,5× a dose oral diária = {total} mg/dia de furosemida IV, fracionada em {doses}× (~{perDose} mg por dose). Administrar ao menos 2×/dia e reavaliar resposta em 2–6 h.",
+  "diureticHighDoseSuffix": "Atenção: dose elevada (> {threshold} mg/dia de furosemida equivalente) com dados de segurança limitados.",
+  "diureticLoopNaive": "Paciente virgem de diurético de alça (ou sem dose oral informada). Dose inicial padrão sugerida: furosemida {dose} mg IV em bolus (faixa habitual 40–80 mg). Reavaliar a resposta diurética em ~2 h e manter ao menos 2×/dia se necessário.",
+  "diureticNaiveAgentFallback": "diurético de alça",
+
+  "acuteIvTitle": "Diurético de alça intravenoso",
+  "acuteIvDrug": "Furosemida IV",
+  "acuteIvJustification": "Congestão presente sem hipoperfusão grave nem hipotensão — indicação de diurético de alça IV.",
+  "acuteIvNotes": [
+    "Doses IV devem ser administradas ao menos 2×/dia (retenção de sódio pós-dose).",
+    "Reavaliar resposta (diurese/débito urinário) em 2–6 h e titular a dose conforme objetivo de débito urinário.",
+    "Resposta inadequada/oligúria sugere resistência diurética — considerar intensificação (bloqueio sequencial do néfron) e avaliação especializada."
+  ],
+  "acuteIvGeneralNote": "Estimativa de diurético é aproximada e educacional; individualizar conforme função renal, PA e resposta clínica.",
+
+  "acuteSpecialistTitle": "Avaliação especializada",
+  "acuteSpecialistJustification": "Congestão com hipoperfusão e/ou hipotensão (PAS < 90 mmHg) sugere baixo débito. Diurético isolado pode ser insuficiente ou deletério.",
+  "acuteSpecialistNotes": [
+    "Considerar avaliação para suporte inotrópico/vasoativo e monitorização. Fora do escopo deste fluxo (sem choque cardiogênico).",
+    "Diurético IV pode ser considerado com cautela após estabilização hemodinâmica."
+  ],
+  "acuteSpecialistGeneralNote": "Cenário fora do escopo do fluxo de diurético simples — priorizar avaliação especializada.",
+
+  "acuteNoDiureticTitle": "Diurético IV não indicado",
+  "acuteNoDiureticJustification": "Sem sinais de congestão registrados.",
+  "acuteNoDiureticNoteDefault": "Diurético de alça IV não é indicado na ausência de congestão. Reavaliar o diagnóstico e a volemia; otimizar a terapia de base (GDMT) conforme indicado.",
+  "acuteNoDiureticNoteHypoperfusion": "Hipoperfusão sem congestão sugere hipovolemia/baixo débito — avaliação especializada e reavaliação da volemia.",
+
+  "acuteGeneralNote": "Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal."
+}

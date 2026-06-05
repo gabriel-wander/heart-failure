@@ -4,11 +4,11 @@ import ICFlowCore
 /// Hosts the navigation stack and drives the linear MVP flow:
 /// Disclaimer → Cenário → Entrada de dados → Resultado (abas).
 struct RootView: View {
-    @EnvironmentObject private var viewModel: AssessmentViewModel
+    @EnvironmentObject private var app: AppModel
     @State private var path: [Route] = []
 
     var body: some View {
-        if let loadError = viewModel.loadError {
+        if let loadError = app.loadError {
             ContentLoadErrorView(message: loadError)
         } else {
             NavigationStack(path: $path) {
@@ -25,17 +25,17 @@ struct RootView: View {
         switch route {
         case .scenarioSelection:
             ScenarioSelectionView { scenario in
-                viewModel.startNewAssessment(scenario: scenario)
+                app.startNewAssessment(scenario: scenario)
                 path.append(.clinicalInput)
             }
         case .clinicalInput:
             ClinicalInputView {
-                viewModel.generate()
+                app.generate()
                 path.append(.results)
             }
         case .results:
             ResultsView {
-                viewModel.reset()
+                app.reset()
                 path = [.scenarioSelection]
             }
         }
@@ -51,7 +51,7 @@ struct ContentLoadErrorView: View {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 44))
                 .foregroundStyle(.orange)
-            Text("Não foi possível carregar o conteúdo clínico")
+            Text("Não foi possível carregar o conteúdo clínico / Could not load clinical content")
                 .font(.headline)
                 .multilineTextAlignment(.center)
             Text(message)

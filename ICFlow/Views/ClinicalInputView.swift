@@ -3,59 +3,59 @@ import ICFlowCore
 
 /// Tela 3 — Entrada de dados clínicos (anônimos). Compartilhada pelos dois fluxos.
 struct ClinicalInputView: View {
-    @EnvironmentObject private var viewModel: AssessmentViewModel
+    @EnvironmentObject private var app: AppModel
     let onGenerate: () -> Void
 
     var body: some View {
         Form {
             Section {
-                Label(viewModel.scenario.displayName, systemImage: viewModel.scenario.systemImage)
+                Label(app.name(app.scenario), systemImage: app.scenario.systemImage)
                     .font(.subheadline.bold())
             } footer: {
-                Text("Insira apenas dados clínicos anônimos. Campos em branco não são avaliados pelas regras.")
+                Text(app.t(.inputScenarioFooter))
             }
 
-            Section("Função ventricular e hemodinâmica") {
-                NumericRow(title: "FEVE", unit: "%", text: $viewModel.draft.lvef)
-                Picker("NYHA", selection: $viewModel.draft.nyha) {
-                    Text("—").tag(NYHAClass?.none)
+            Section(app.t(.sectionVentricular)) {
+                NumericRow(title: app.t(.fieldLVEF), unit: app.t(.unitPercent), text: $app.draft.lvef)
+                Picker(app.t(.fieldNYHA), selection: $app.draft.nyha) {
+                    Text(app.t(.nyhaNone)).tag(NYHAClass?.none)
                     ForEach(NYHAClass.allCases) { nyha in
-                        Text(nyha.displayName).tag(NYHAClass?.some(nyha))
+                        Text(app.name(nyha)).tag(NYHAClass?.some(nyha))
                     }
                 }
-                NumericRow(title: "PA sistólica", unit: "mmHg", text: $viewModel.draft.systolicBP)
-                NumericRow(title: "Frequência cardíaca", unit: "bpm", text: $viewModel.draft.heartRate)
-                Picker("Ritmo", selection: $viewModel.draft.rhythm) {
+                NumericRow(title: app.t(.fieldSBP), unit: app.t(.unitMmHg), text: $app.draft.systolicBP)
+                NumericRow(title: app.t(.fieldHR), unit: app.t(.unitBpm), text: $app.draft.heartRate)
+                Picker(app.t(.fieldRhythm), selection: $app.draft.rhythm) {
                     ForEach(Rhythm.allCases) { rhythm in
-                        Text(rhythm.displayName).tag(rhythm)
+                        Text(app.name(rhythm)).tag(rhythm)
                     }
                 }
             }
 
-            Section("Laboratório") {
-                NumericRow(title: "TFGe", unit: "mL/min/1,73m²", text: $viewModel.draft.egfr)
-                NumericRow(title: "Potássio", unit: "mmol/L", text: $viewModel.draft.potassium)
-                NumericRow(title: "Creatinina", unit: "mg/dL", text: $viewModel.draft.creatinine)
+            Section(app.t(.sectionLab)) {
+                NumericRow(title: app.t(.fieldEGFR), unit: app.t(.unitEgfr), text: $app.draft.egfr)
+                NumericRow(title: app.t(.fieldPotassium), unit: app.t(.unitMmolL), text: $app.draft.potassium)
+                NumericRow(title: app.t(.fieldCreatinine), unit: app.t(.unitMgdl), text: $app.draft.creatinine)
             }
 
-            Section("Estado clínico") {
-                Toggle("Sinais de congestão", isOn: $viewModel.draft.congestion)
-                Toggle("Sinais de hipoperfusão", isOn: $viewModel.draft.hypoperfusion)
-                Toggle("Uso prévio de diurético", isOn: $viewModel.draft.priorDiureticUse)
+            Section(app.t(.sectionClinical)) {
+                Toggle(app.t(.toggleCongestion), isOn: $app.draft.congestion)
+                Toggle(app.t(.toggleHypoperfusion), isOn: $app.draft.hypoperfusion)
+                Toggle(app.t(.togglePriorDiuretic), isOn: $app.draft.priorDiureticUse)
 
-                if viewModel.draft.priorDiureticUse {
-                    Picker("Diurético em uso", selection: loopAgentBinding) {
-                        ForEach(viewModel.loopAgents) { agent in
+                if app.draft.priorDiureticUse {
+                    Picker(app.t(.fieldLoopAgent), selection: loopAgentBinding) {
+                        ForEach(app.loopAgents) { agent in
                             Text(agent.genericName).tag(agent.id)
                         }
                     }
-                    NumericRow(title: "Dose oral total/dia", unit: "mg", text: $viewModel.draft.currentLoopOralDose)
+                    NumericRow(title: app.t(.fieldOralDose), unit: app.t(.unitMg), text: $app.draft.currentLoopOralDose)
                 }
             }
 
             Section {
                 Button(action: onGenerate) {
-                    Label("Gerar recomendações", systemImage: "wand.and.stars")
+                    Label(app.t(.generateButton), systemImage: "wand.and.stars")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                 }
@@ -63,20 +63,25 @@ struct ClinicalInputView: View {
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             } footer: {
-                if viewModel.scenario == .acuteCongestion {
-                    Text("No fluxo agudo, a dose IV de diurético é estimada a partir do uso prévio (≈ 2,5× a dose oral domiciliar) ou de uma dose inicial padrão se virgem de diurético.")
+                if app.scenario == .acuteCongestion {
+                    Text(app.t(.inputAcuteFooter))
                 }
             }
         }
-        .navigationTitle("Dados clínicos")
+        .navigationTitle(app.t(.navClinicalData))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LanguageMenu()
+            }
+        }
     }
 
     /// Picker binding that defaults to furosemide when nothing was chosen yet.
     private var loopAgentBinding: Binding<String> {
         Binding(
-            get: { viewModel.draft.currentLoopAgentId ?? "furosemide" },
-            set: { viewModel.draft.currentLoopAgentId = $0 }
+            get: { app.draft.currentLoopAgentId ?? "furosemide" },
+            set: { app.draft.currentLoopAgentId = $0 }
         )
     }
 }
