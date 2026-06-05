@@ -39,6 +39,11 @@ struct InputDraft: Equatable {
     var paspOver35: Bool? = nil
     var eOverEprimeOver9: Bool? = nil
 
+    // Cardiogenic shock / instability
+    var lactate = ""
+    var oliguria = false
+    var alteredMentation = false
+
     private func number(_ string: String) -> Double? {
         let normalized = string
             .replacingOccurrences(of: ",", with: ".")
@@ -78,6 +83,9 @@ struct InputDraft: Equatable {
             nonCardiacEdema: nonCardiacEdema,
             paspOver35: paspOver35,
             eOverEprimeOver9: eOverEprimeOver9,
+            lactate: number(lactate),
+            oliguria: oliguria,
+            alteredMentation: alteredMentation,
             currentLoopAgentId: priorDiureticUse ? (currentLoopAgentId ?? "furosemide") : nil,
             currentLoopOralDailyDoseMg: priorDiureticUse ? number(currentLoopOralDose) : nil
         )
@@ -104,6 +112,8 @@ struct InputDraft: Equatable {
             return m
         case .hfpefHFmrEF:
             return empty(lvef) ? [.lvef] : []
+        case .cardiogenicShock:
+            return empty(systolicBP) ? [.systolicBP] : []
         }
     }
 }

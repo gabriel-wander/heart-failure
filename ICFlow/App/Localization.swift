@@ -100,6 +100,9 @@ enum UIString: String {
     case calcEGFRTitle
     case calcIronTitle, calcWeight, calcHbCurrent, calcHbTarget, unitKg, unitGdl, calcDeficitLabel
     case calcSodiumTitle, calcNaMeasured, calcGlucose, calcCorrectedLabel
+
+    // v0.3 — cardiogenic shock inputs
+    case sectionShock, fieldLactate, toggleOliguria, toggleAlteredMentation
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -118,6 +121,8 @@ enum Localizer {
         case (.acuteCongestion, .en): return "Acute congestive HF"
         case (.hfpefHFmrEF, .pt): return "ICFEp / ICFEm"
         case (.hfpefHFmrEF, .en): return "HFpEF / HFmrEF"
+        case (.cardiogenicShock, .pt): return "Choque / IC refratária"
+        case (.cardiogenicShock, .en): return "Shock / refractory HF"
         }
     }
 
@@ -129,6 +134,8 @@ enum Localizer {
         case (.acuteCongestion, .en): return "Acute/decompensated HF with congestion, without cardiogenic shock."
         case (.hfpefHFmrEF, .pt): return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
         case (.hfpefHFmrEF, .en): return "Preserved or mildly reduced ejection fraction, focusing on diagnosis, comorbidities and congestion."
+        case (.cardiogenicShock, .pt): return "Triagem de instabilidade hemodinâmica / baixo débito — fora do fluxo de congestão simples."
+        case (.cardiogenicShock, .en): return "Triage of hemodynamic instability / low output — outside the simple congestion flow."
         }
     }
 
@@ -418,7 +425,11 @@ enum Localizer {
         .calcSodiumTitle: "Sódio corrigido (hiperglicemia)",
         .calcNaMeasured: "Sódio medido",
         .calcGlucose: "Glicemia",
-        .calcCorrectedLabel: "Sódio corrigido"
+        .calcCorrectedLabel: "Sódio corrigido",
+        .sectionShock: "Instabilidade / choque",
+        .fieldLactate: "Lactato",
+        .toggleOliguria: "Oligúria importante",
+        .toggleAlteredMentation: "Alteração de consciência"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -565,6 +576,10 @@ enum Localizer {
         .calcSodiumTitle: "Corrected sodium (hyperglycemia)",
         .calcNaMeasured: "Measured sodium",
         .calcGlucose: "Glucose",
-        .calcCorrectedLabel: "Corrected sodium"
+        .calcCorrectedLabel: "Corrected sodium",
+        .sectionShock: "Instability / shock",
+        .fieldLactate: "Lactate",
+        .toggleOliguria: "Significant oliguria",
+        .toggleAlteredMentation: "Altered mentation"
     ]
 }

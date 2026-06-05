@@ -126,5 +126,13 @@
     "message": "The diagnosis of HFpEF requires exclusion of mimics (e.g., cardiac amyloidosis, infiltrative cardiomyopathies, valvular disease, pericardial disease and pulmonary hypertension) and clinical/diagnostic confirmation.",
     "relatedClassIds": [],
     "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "shock_redflags",
+    "title": "Hemodynamic instability / possible shock",
+    "severity": "critical",
+    "message": "Hypotension, hypoperfusion, oliguria, altered mentation or elevated lactate suggest low output/shock. Manage in a monitored setting (ICU/ED) with immediate specialist evaluation.",
+    "relatedClassIds": [],
+    "referenceIds": ["felker2020"]
   }
 ]
