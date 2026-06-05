@@ -17,7 +17,7 @@ enum TestSupport {
 
 extension AssessmentResult {
     /// Status of the recommendation for a given medication class.
-    func status(forClass classId: String) -> EligibilityStatus? {
+    func status(forClass classId: String) -> RecommendationStatus? {
         recommendations.first(where: { $0.classId == classId })?.status
     }
 

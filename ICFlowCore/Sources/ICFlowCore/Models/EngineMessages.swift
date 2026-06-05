@@ -12,6 +12,10 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let hfrefLvefNote: String              // {lvef}
     public let hfrefDecompensationNote: String
     public let hfrefMissingDataNote: String
+    /// Mensagem quando faltam dados essenciais para a elegibilidade da classe.
+    public let hfrefInsufficientClass: String
+    /// Nota quando há hipoperfusão no fluxo crônico (cenário possivelmente instável).
+    public let hfrefHypoperfusionNote: String
 
     // Diuretic plan (acute)
     public let diureticPriorUser: String          // {agent} {oralDose} {furoEquiv} {total} {doses} {perDose}
@@ -35,6 +39,12 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let acuteNoDiureticJustification: String
     public let acuteNoDiureticNoteDefault: String
     public let acuteNoDiureticNoteHypoperfusion: String
+
+    /// Recomendação de diurético limitada por falta de fármaco/dose domiciliar.
+    public let acuteDiureticNeedsInfoTitle: String
+    public let acuteDiureticNeedsInfoJustification: String
+    /// Nota geral quando a avaliação aguda está limitada por dados ausentes.
+    public let acuteInsufficientDataNote: String
 
     public let acuteGeneralNote: String
 

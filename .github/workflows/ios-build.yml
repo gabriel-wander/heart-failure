@@ -6,7 +6,7 @@ name: iOS Build
 
 on:
   push:
-    branches: [ "claude/hopeful-pasteur-uQeCv", "main" ]
+    branches: [ "claude/hopeful-pasteur-uQeCv", "main", "feature/**" ]
   workflow_dispatch:
 
 jobs:

@@ -1,11 +1,18 @@
 {
+  "contentVersion": "0.2.0-dev",
+  "lastReviewed": "2026-06-05",
   "hfrefClassOrder": ["renin_angiotensin", "beta_blocker", "mra", "sglt2"],
   "classLabels": {
     "renin_angiotensin": "ARNI / ACEi / ARB",
     "beta_blocker": "Beta-blocker",
     "mra": "Mineralocorticoid receptor antagonist (MRA)",
     "sglt2": "SGLT2 inhibitor (SGLT2i)",
-    "loop_diuretic": "Loop diuretic"
+    "loop_diuretic": "Loop diuretic",
+    "hydralazine_nitrate": "Hydralazine + nitrate",
+    "ivabradine": "Ivabradine",
+    "vericiguat": "Vericiguat",
+    "digoxin": "Digoxin",
+    "iv_iron": "Intravenous iron (assessment)"
   },
   "acuteCongestionConfig": {
     "ivLoopMultiplier": 2.5,
@@ -193,6 +200,76 @@
       "conditions": [{ "field": "systolicBP", "op": "lt", "value": 95 }],
       "justification": "SBP < 95 mmHg: caution; SGLT2i has a mild diuretic effect — adjust diuretics to avoid hypotension.",
       "safetyAlertIds": ["sglt2_volume"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "ras_contra_angioedema",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "historyOfAngioedema", "op": "isTrue" }],
+      "justification": "History of angioedema: avoid ARNI and ACEi (risk of recurrence). If RAS blockade is essential, consider an ARB with caution and close monitoring.",
+      "safetyAlertIds": ["ras_angioedema"],
+      "referenceIds": ["patolia2023"]
+    }
+  ],
+  "hfrefAdditionalRules": [
+    {
+      "id": "add_hydralazine_nitrate",
+      "classId": "hydralazine_nitrate",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Hydralazine + nitrate",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Consider hydralazine + nitrate as add-on therapy in selected populations (e.g., self-identified Black patients with symptomatic HF on optimized GDMT) or when ARNI/ACEi/ARB are not tolerated.",
+      "safetyAlertIds": [],
+      "referenceIds": ["greene2023", "patolia2023"]
+    },
+    {
+      "id": "add_ivabradine",
+      "classId": "ivabradine",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Ivabradine",
+      "conditions": [
+        { "field": "rhythm", "op": "eq", "value": "sinus" },
+        { "field": "heartRate", "op": "gte", "value": 70 }
+      ],
+      "justification": "Consider ivabradine if sinus rhythm and HR ≥ 70 bpm despite a maximally tolerated beta-blocker. Not indicated in atrial fibrillation.",
+      "safetyAlertIds": ["bb_bradycardia"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "add_vericiguat",
+      "classId": "vericiguat",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Vericiguat",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Consider vericiguat after recent worsening HF despite GDMT (e.g., hospitalization or need for an IV diuretic).",
+      "safetyAlertIds": [],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "add_digoxin",
+      "classId": "digoxin",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Digoxin",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Consider digoxin for symptom relief despite GDMT, or as an adjunct for rate control in atrial fibrillation. Watch renal function, potassium and toxicity.",
+      "safetyAlertIds": [],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "add_iv_iron",
+      "classId": "iv_iron",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Intravenous iron (assessment)",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Assess iron deficiency (ferritin and transferrin saturation); consider IV iron repletion if confirmed, in symptomatic HFrEF.",
+      "safetyAlertIds": [],
       "referenceIds": ["greene2023"]
     }
   ],

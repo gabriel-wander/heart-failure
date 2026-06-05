@@ -78,7 +78,12 @@ final class AppModel: ObservableObject {
     func name(_ n: NYHAClass) -> String { Localizer.nyhaName(n, language) }
     func name(_ r: Rhythm) -> String { Localizer.rhythmName(r, language) }
     func name(_ s: EligibilityStatus) -> String { Localizer.statusName(s, language) }
+    func name(_ s: RecommendationStatus) -> String { Localizer.recStatusName(s, language) }
+    func name(_ f: ClinicalField) -> String { Localizer.fieldName(f, language) }
     func name(_ s: AlertSeverity) -> String { Localizer.severityName(s, language) }
+
+    /// Whether the bundled clinical content has been formally validated.
+    var isContentValidated: Bool { ClinicalContent.isClinicalContentValidated }
     func name(_ p: CongestionProfile) -> String { Localizer.profileName(p, language) }
     func summary(_ p: CongestionProfile) -> String { Localizer.profileSummary(p, language) }
     func name(_ s: DiureticPlan.Strategy) -> String { Localizer.strategyName(s, language) }

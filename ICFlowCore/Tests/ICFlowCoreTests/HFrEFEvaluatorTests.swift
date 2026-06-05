@@ -16,22 +16,55 @@ final class HFrEFEvaluatorTests: XCTestCase {
         potassium: Double? = 4.2,
         creatinine: Double? = 1.0,
         congestion: Bool = false,
-        hypoperfusion: Bool = false
+        hypoperfusion: Bool = false,
+        historyOfAngioedema: Bool = false
     ) -> PatientInput {
         PatientInput(
             scenario: .chronicHFrEF, lvef: lvef, nyha: nyha, systolicBP: sbp,
             heartRate: hr, rhythm: rhythm, egfr: egfr, potassium: potassium,
-            creatinine: creatinine, congestion: congestion, hypoperfusion: hypoperfusion
+            creatinine: creatinine, congestion: congestion, hypoperfusion: hypoperfusion,
+            historyOfAngioedema: historyOfAngioedema
         )
     }
 
-    func testStablePatientAllFourPillarsEligible() {
+    func testStablePatientAllFourPillarsConsidered() {
         let result = engine.evaluate(input())
-        XCTAssertEqual(result.recommendations.count, 4)
-        XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .eligible)
-        XCTAssertEqual(result.status(forClass: "beta_blocker"), .eligible)
-        XCTAssertEqual(result.status(forClass: "mra"), .eligible)
-        XCTAssertEqual(result.status(forClass: "sglt2"), .eligible)
+        let pillars = result.recommendations.filter { $0.group == .prognosis }
+        XCTAssertEqual(pillars.count, 4, "Os quatro pilares devem ser avaliados")
+        XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .consider)
+        XCTAssertEqual(result.status(forClass: "beta_blocker"), .consider)
+        XCTAssertEqual(result.status(forClass: "mra"), .consider)
+        XCTAssertEqual(result.status(forClass: "sglt2"), .consider)
+        XCTAssertTrue(result.missingEssentialData.isEmpty)
+    }
+
+    // MARK: - v0.2 additional therapies & extra rules
+
+    func testAngioedemaHistoryContraindicatesRAS() {
+        let result = engine.evaluate(input(historyOfAngioedema: true))
+        XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .contraindicated)
+    }
+
+    func testIvabradineConsideredInSinusWithHighHR() {
+        let result = engine.evaluate(input(hr: 78, rhythm: .sinus))
+        let ivabradine = result.recommendation(id: "add_ivabradine")
+        XCTAssertNotNil(ivabradine, "Ivabradina deve ser sugerida em ritmo sinusal com FC alta")
+        XCTAssertEqual(ivabradine?.status, .consider)
+        XCTAssertEqual(ivabradine?.group, .additional)
+    }
+
+    func testIvabradineNotRecommendedInAtrialFibrillation() {
+        let result = engine.evaluate(input(hr: 90, rhythm: .afib))
+        XCTAssertNil(result.recommendation(id: "add_ivabradine"),
+                     "Ivabradina não deve ser sugerida em fibrilação atrial")
+    }
+
+    func testAdditionalTherapiesAppearForHFrEF() {
+        let result = engine.evaluate(input(lvef: 30))
+        XCTAssertNotNil(result.recommendation(id: "add_vericiguat"))
+        XCTAssertNotNil(result.recommendation(id: "add_digoxin"))
+        let ironReferral = result.recommendation(id: "add_iv_iron")
+        XCTAssertEqual(ironReferral?.group, .referral)
     }
 
     func testSevereHyperkalemiaContraindicatesRASandMRA() {
@@ -66,14 +99,46 @@ final class HFrEFEvaluatorTests: XCTestCase {
     func testDecompensationMakesBetaBlockerCaution() {
         let result = engine.evaluate(input(congestion: true))
         XCTAssertEqual(result.status(forClass: "beta_blocker"), .caution)
-        // Outros pilares geralmente permanecem elegíveis.
-        XCTAssertEqual(result.status(forClass: "sglt2"), .eligible)
+        // Outros pilares geralmente permanecem candidatos a considerar.
+        XCTAssertEqual(result.status(forClass: "sglt2"), .consider)
     }
 
-    func testSGLT2RemainsEligibleAtModeratelyReducedEGFR() {
+    func testSGLT2RemainsConsideredAtModeratelyReducedEGFR() {
         // dapagliflozina pode ser iniciada em faixas baixas de TFGe (>= 25).
         let result = engine.evaluate(input(egfr: 30))
-        XCTAssertEqual(result.status(forClass: "sglt2"), .eligible)
+        XCTAssertEqual(result.status(forClass: "sglt2"), .consider)
+    }
+
+    // MARK: - v0.2 data-completeness gating
+
+    func testMissingBPMakesRASandMRAInsufficient() {
+        let result = engine.evaluate(input(sbp: nil))
+        XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .insufficientData)
+        XCTAssertEqual(result.status(forClass: "mra"), .insufficientData)
+        XCTAssertTrue(result.missingEssentialData.contains(.systolicBP))
+        let ras = result.recommendation(id: "renin_angiotensin")
+        XCTAssertTrue(ras?.missingData.contains(.systolicBP) ?? false)
+    }
+
+    func testMissingPotassiumOrEGFRMakesRASandMRAInsufficient() {
+        let noK = engine.evaluate(input(potassium: nil))
+        XCTAssertEqual(noK.status(forClass: "mra"), .insufficientData)
+        let noEGFR = engine.evaluate(input(egfr: nil))
+        XCTAssertEqual(noEGFR.status(forClass: "renin_angiotensin"), .insufficientData)
+    }
+
+    func testMissingHeartRateMakesBetaBlockerInsufficient() {
+        let result = engine.evaluate(input(hr: nil))
+        XCTAssertEqual(result.status(forClass: "beta_blocker"), .insufficientData)
+        XCTAssertTrue(result.missingEssentialData.contains(.heartRate))
+    }
+
+    func testHypoperfusionAddsUnstableScenarioNote() {
+        let result = engine.evaluate(input(hypoperfusion: true))
+        XCTAssertTrue(
+            result.generalNotes.contains { $0.lowercased().contains("hipoperfus") },
+            "Hipoperfusão no fluxo crônico deve gerar nota de cenário possivelmente instável"
+        )
     }
 
     func testContraindicationCarriesJustificationAndAlert() {

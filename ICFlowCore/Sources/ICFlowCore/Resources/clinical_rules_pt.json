@@ -1,11 +1,18 @@
 {
+  "contentVersion": "0.2.0-dev",
+  "lastReviewed": "2026-06-05",
   "hfrefClassOrder": ["renin_angiotensin", "beta_blocker", "mra", "sglt2"],
   "classLabels": {
     "renin_angiotensin": "INRA / IECA / BRA",
     "beta_blocker": "Betabloqueador",
     "mra": "Antagonista do receptor mineralocorticoide (MRA)",
     "sglt2": "Inibidor de SGLT2 (iSGLT2)",
-    "loop_diuretic": "Diurético de alça"
+    "loop_diuretic": "Diurético de alça",
+    "hydralazine_nitrate": "Hidralazina + nitrato",
+    "ivabradine": "Ivabradina",
+    "vericiguat": "Vericiguate",
+    "digoxin": "Digoxina",
+    "iv_iron": "Ferro intravenoso (avaliação)"
   },
   "acuteCongestionConfig": {
     "ivLoopMultiplier": 2.5,
@@ -193,6 +200,76 @@
       "conditions": [{ "field": "systolicBP", "op": "lt", "value": 95 }],
       "justification": "PAS < 95 mmHg: cautela; iSGLT2 tem efeito diurético leve — ajustar diuréticos para evitar hipotensão.",
       "safetyAlertIds": ["sglt2_volume"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "ras_contra_angioedema",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "historyOfAngioedema", "op": "isTrue" }],
+      "justification": "História de angioedema: evitar INRA e IECA (risco de recorrência). Se for imprescindível bloquear o SRAA, considerar BRA com cautela e vigilância.",
+      "safetyAlertIds": ["ras_angioedema"],
+      "referenceIds": ["patolia2023"]
+    }
+  ],
+  "hfrefAdditionalRules": [
+    {
+      "id": "add_hydralazine_nitrate",
+      "classId": "hydralazine_nitrate",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Hidralazina + nitrato",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Considerar hidralazina + nitrato como terapia adicional em populações selecionadas (ex.: afrodescendentes sintomáticos em GDMT otimizada) ou na intolerância a INRA/IECA/BRA.",
+      "safetyAlertIds": [],
+      "referenceIds": ["greene2023", "patolia2023"]
+    },
+    {
+      "id": "add_ivabradine",
+      "classId": "ivabradine",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Ivabradina",
+      "conditions": [
+        { "field": "rhythm", "op": "eq", "value": "sinus" },
+        { "field": "heartRate", "op": "gte", "value": 70 }
+      ],
+      "justification": "Considerar ivabradina se ritmo sinusal e FC ≥ 70 bpm apesar de betabloqueador em dose máxima tolerada. Não indicada em fibrilação atrial.",
+      "safetyAlertIds": ["bb_bradycardia"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "add_vericiguat",
+      "classId": "vericiguat",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Vericiguate",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Considerar vericiguate em piora recente da IC apesar de GDMT (ex.: hospitalização ou necessidade de diurético IV).",
+      "safetyAlertIds": [],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "add_digoxin",
+      "classId": "digoxin",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Digoxina",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Considerar digoxina para alívio sintomático apesar de GDMT, ou como adjuvante no controle de frequência na fibrilação atrial. Vigiar função renal, potássio e toxicidade.",
+      "safetyAlertIds": [],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "add_iv_iron",
+      "classId": "iv_iron",
+      "logic": "all",
+      "status": "eligible",
+      "title": "Ferro intravenoso (avaliação)",
+      "conditions": [{ "field": "lvef", "op": "lte", "value": 40 }],
+      "justification": "Avaliar deficiência de ferro (ferritina e índice de saturação de transferrina); considerar reposição de ferro IV se confirmada, em ICFEr sintomática.",
+      "safetyAlertIds": [],
       "referenceIds": ["greene2023"]
     }
   ],

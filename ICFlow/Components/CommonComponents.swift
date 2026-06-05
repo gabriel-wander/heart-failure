@@ -1,10 +1,11 @@
 import SwiftUI
 import ICFlowCore
 
-/// Small status pill for eligibility (Elegível / Cautela / Contraindicado).
+/// Small status pill for a recommendation status (Considerar / Cautela /
+/// Contraindicado / Dados insuficientes / Avaliação urgente …).
 struct StatusBadge: View {
     @EnvironmentObject private var app: AppModel
-    let status: EligibilityStatus
+    let status: RecommendationStatus
 
     var body: some View {
         Label(app.name(status), systemImage: status.systemImage)
@@ -122,6 +123,41 @@ struct DisclaimerBanner: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.blue.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+/// Banner shown while the clinical content is under validation (v0.2).
+struct ContentValidationBanner: View {
+    @EnvironmentObject private var app: AppModel
+
+    var body: some View {
+        if !app.isContentValidated {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: "checkmark.shield")
+                    .foregroundStyle(.orange)
+                Text(app.t(.contentValidationBanner))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.orange.opacity(0.10), in: RoundedRectangle(cornerRadius: 12))
+        }
+    }
+}
+
+/// Card listing the essential inputs missing for the current assessment.
+struct MissingDataCard: View {
+    @EnvironmentObject private var app: AppModel
+    let fields: [ClinicalField]
+
+    var body: some View {
+        if !fields.isEmpty {
+            CardView {
+                CardSectionHeader(title: app.t(.missingDataTitle), systemImage: "questionmark.circle")
+                BulletList(items: fields.map { app.name($0) }, tint: .gray)
+            }
+        }
     }
 }
 

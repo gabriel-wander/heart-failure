@@ -10,6 +10,8 @@ struct RecommendationsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                ContentValidationBanner()
+
                 if let profile = result.congestionProfile {
                     profileBanner(profile)
                 }
@@ -21,6 +23,8 @@ struct RecommendationsView: View {
                 ForEach(result.recommendations) { rec in
                     RecommendationCard(recommendation: rec)
                 }
+
+                MissingDataCard(fields: result.missingEssentialData)
 
                 if !result.generalNotes.isEmpty {
                     CardView {
@@ -130,6 +134,12 @@ struct RecommendationCard: View {
                             }
                         }
                     }
+                }
+            }
+
+            if !recommendation.missingData.isEmpty {
+                section(title: app.t(.missingDataTitle), icon: "questionmark.circle") {
+                    BulletList(items: recommendation.missingData.map { app.name($0) }, tint: .gray)
                 }
             }
 

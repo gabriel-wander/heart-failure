@@ -22,7 +22,9 @@ final class ContentRepositoryTests: XCTestCase {
 
     func testEveryRuleAlertReferenceResolves() {
         let repo = TestSupport.repository
-        let allRules = repo.ruleSet.hfrefRules + repo.ruleSet.acuteCongestionRules
+        let allRules = repo.ruleSet.hfrefRules
+            + (repo.ruleSet.hfrefAdditionalRules ?? [])
+            + repo.ruleSet.acuteCongestionRules
         for rule in allRules {
             for alertId in rule.safetyAlertIds {
                 XCTAssertEqual(repo.alerts(withIds: [alertId]).count, 1,
@@ -41,5 +43,11 @@ final class ContentRepositoryTests: XCTestCase {
         for loop in loops {
             XCTAssertNotNil(loop.furosemideEquivalentFactor)
         }
+    }
+
+    func testClinicalContentIsVersioned() {
+        let repo = TestSupport.repository
+        XCTAssertNotNil(repo.ruleSet.contentVersion, "Conteúdo clínico deve declarar versão")
+        XCTAssertNotNil(repo.ruleSet.lastReviewed, "Conteúdo clínico deve declarar data de revisão")
     }
 }

@@ -33,7 +33,7 @@ final class LocalizationContentTests: XCTestCase {
         )
         let result = engine.evaluate(input)
         let eligibleRas = result.recommendations.first { $0.classId == "renin_angiotensin" }
-        XCTAssertEqual(eligibleRas?.status, .eligible)
+        XCTAssertEqual(eligibleRas?.status, .consider)
         // English default justification.
         XCTAssertTrue(eligibleRas?.justifications.first?.contains("No contraindications") ?? false)
         // English missing-data note.

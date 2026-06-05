@@ -4,6 +4,8 @@
   "hfrefLvefNote": "FEVE informada ({lvef}%) acima de 40%. Os critérios deste módulo assumem ICFEr (FEVE ≤ 40%).",
   "hfrefDecompensationNote": "Sinais de descompensação presentes: priorizar compensação clínica antes de iniciar/uptitular betabloqueador; demais pilares geralmente podem ser iniciados/mantidos conforme tolerância.",
   "hfrefMissingDataNote": "Campos não preenchidos não são avaliados pelas regras; preencha todos os dados para uma avaliação mais completa.",
+  "hfrefInsufficientClass": "A elegibilidade desta classe não pode ser determinada com segurança sem os dados essenciais (ver \"Dados ausentes\"). Necessita julgamento clínico após completar os dados.",
+  "hfrefHypoperfusionNote": "Sinais de hipoperfusão registrados: o fluxo de ICFEr crônica pode não ser adequado. Considerar avaliação em fluxo agudo/instabilidade.",
 
   "diureticPriorUser": "Em uso prévio de {agent} {oralDose} mg/dia VO (≈ {furoEquiv} mg/dia de furosemida equivalente). Dose IV inicial estimada ≈ 2,5× a dose oral diária = {total} mg/dia de furosemida IV, fracionada em {doses}× (~{perDose} mg por dose). Administrar ao menos 2×/dia e reavaliar resposta em 2–6 h.",
   "diureticHighDoseSuffix": "Atenção: dose elevada (> {threshold} mg/dia de furosemida equivalente) com dados de segurança limitados.",
@@ -32,6 +34,10 @@
   "acuteNoDiureticJustification": "Sem sinais de congestão registrados.",
   "acuteNoDiureticNoteDefault": "Diurético de alça IV não é indicado na ausência de congestão. Reavaliar o diagnóstico e a volemia; otimizar a terapia de base (GDMT) conforme indicado.",
   "acuteNoDiureticNoteHypoperfusion": "Hipoperfusão sem congestão sugere hipovolemia/baixo débito — avaliação especializada e reavaliação da volemia.",
+
+  "acuteDiureticNeedsInfoTitle": "Estimativa de diurético indisponível",
+  "acuteDiureticNeedsInfoJustification": "Uso prévio de diurético marcado, mas fármaco e/ou dose domiciliar não informados — a dose IV não pode ser estimada com segurança. Informe o diurético e a dose diária para gerar a estimativa.",
+  "acuteInsufficientDataNote": "Recomendação limitada por dados ausentes (ver \"Dados ausentes\"). Completar os dados antes de decidir conduta.",
 
   "acuteGeneralNote": "Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal."
 }

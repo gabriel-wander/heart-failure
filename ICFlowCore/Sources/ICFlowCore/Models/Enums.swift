@@ -47,6 +47,15 @@ public enum NYHAClass: String, Codable, CaseIterable, Identifiable, Sendable {
     }
 }
 
+/// Biological sex (non-identifying), used for context (e.g., dosing nuances).
+public enum Sex: String, Codable, CaseIterable, Identifiable, Sendable {
+    case unspecified
+    case female
+    case male
+
+    public var id: String { rawValue }
+}
+
 /// Cardiac rhythm captured on the clinical input screen.
 public enum Rhythm: String, Codable, CaseIterable, Identifiable, Sendable {
     case sinus
