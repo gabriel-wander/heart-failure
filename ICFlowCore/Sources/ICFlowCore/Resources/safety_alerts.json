@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ras_hyperkalemia",
+    "title": "Risco de hipercalemia (bloqueio do SRAA)",
+    "severity": "warning",
+    "message": "IECA/BRA/INRA podem elevar o potássio, especialmente em associação com MRA e na disfunção renal. Monitorar potássio e função renal após início e ajustes.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023", "greene2023"]
+  },
+  {
+    "id": "ras_angioedema",
+    "title": "Angioedema",
+    "severity": "warning",
+    "message": "História de angioedema contraindica IECA e INRA. O INRA exige intervalo de 36 h sem IECA (washout) para reduzir o risco de angioedema.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "ras_hypotension",
+    "title": "Hipotensão sintomática",
+    "severity": "warning",
+    "message": "Hipotensão sintomática limita o início e a titulação de IECA/BRA/INRA. Iniciar com dose menor e reavaliar a PA sistólica.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "ras_renal",
+    "title": "Função renal no bloqueio do SRAA",
+    "severity": "info",
+    "message": "Pode ocorrer elevação da creatinina ao iniciar o bloqueio do SRAA; um aumento leve e estável costuma ser tolerável. Reavaliar TFGe/creatinina em 1–2 semanas.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "bb_decompensation",
+    "title": "Descompensação aguda",
+    "severity": "warning",
+    "message": "Não iniciar nem aumentar betabloqueador durante descompensação aguda com congestão importante ou hipoperfusão. Iniciar quando o paciente estiver euvolêmico e estável.",
+    "relatedClassIds": ["beta_blocker"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "bb_bradycardia",
+    "title": "Bradicardia / bloqueio AV",
+    "severity": "warning",
+    "message": "Bradicardia significativa ou bloqueio AV avançado limitam o uso de betabloqueador. Avaliar frequência cardíaca e ECG antes de iniciar/titular.",
+    "relatedClassIds": ["beta_blocker"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "mra_hyperkalemia",
+    "title": "Hipercalemia (MRA)",
+    "severity": "critical",
+    "message": "MRA aumenta o risco de hipercalemia. Contraindicado com potássio elevado e cautela na disfunção renal. Monitorar potássio e creatinina em 3 dias, 1 semana e depois mensalmente após início/ajuste.",
+    "relatedClassIds": ["mra"],
+    "referenceIds": ["patolia2023", "greene2023"]
+  },
+  {
+    "id": "mra_renal",
+    "title": "Função renal (MRA)",
+    "severity": "warning",
+    "message": "Evitar MRA quando TFGe < 30 mL/min/1,73 m². Cautela entre 30–45 mL/min/1,73 m², com monitorização mais frequente.",
+    "relatedClassIds": ["mra"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "sglt2_egfr",
+    "title": "TFGe e início de iSGLT2",
+    "severity": "info",
+    "message": "O benefício do iSGLT2 mantém-se em faixas amplas de função renal. Respeitar o limiar de TFGe para início (em geral evitar início com TFGe muito baixa, conforme bula).",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "sglt2_dka",
+    "title": "Cetoacidose euglicêmica",
+    "severity": "warning",
+    "message": "Risco de cetoacidose euglicêmica. Suspender o iSGLT2 em doença aguda grave, jejum prolongado ou pré-operatório. Orientar higiene genital (risco de infecção micótica).",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "sglt2_volume",
+    "title": "Depleção volêmica (iSGLT2)",
+    "severity": "info",
+    "message": "iSGLT2 tem efeito diurético leve; ajustar a dose de diuréticos para evitar depleção volêmica e hipotensão, sobretudo no início.",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "acute_hypotension",
+    "title": "Hipotensão / hipoperfusão",
+    "severity": "critical",
+    "message": "PAS < 90 mmHg e/ou sinais de hipoperfusão sugerem baixo débito. Avaliar necessidade de suporte inotrópico/vasoativo e monitorização — fora do escopo deste fluxo (sem choque cardiogênico).",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_hyperkalemia",
+    "title": "Hipercalemia grave",
+    "severity": "critical",
+    "message": "Potássio > 6,0 mmol/L requer manejo imediato e investigação da causa antes/durante a intensificação diurética.",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_renal",
+    "title": "Deterioração renal",
+    "severity": "warning",
+    "message": "TFGe baixa ou piora importante da função renal durante a diurese exige reavaliação da estratégia e da volemia (descongestão vs. depleção).",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_electrolytes",
+    "title": "Distúrbios eletrolíticos",
+    "severity": "warning",
+    "message": "Diuréticos de alça podem causar hipocalemia, hipomagnesemia e hiponatremia. Monitorar sódio, potássio e magnésio durante a diurese.",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  }
+]
