@@ -81,11 +81,11 @@ public final class ContentRepository: Sendable {
     }
 
     /// Loads the repository for a language (defaults to Portuguese) from the
-    /// given bundle (defaults to the package bundle).
-    public static func load(
-        language: AppLanguage = .pt,
-        bundle: Bundle = .module
-    ) throws -> ContentRepository {
+    /// package's resource bundle.
+    public static func load(language: AppLanguage = .pt) throws -> ContentRepository {
+        // `Bundle.module` is internal to the package; reference it here (in the
+        // function body) rather than as a public default argument.
+        let bundle = Bundle.module
         let decoder = JSONDecoder()
         let suffix = language.resourceSuffix
         let medications = try decode("medications_\(suffix)", bundle: bundle, as: [Medication].self, decoder: decoder)
