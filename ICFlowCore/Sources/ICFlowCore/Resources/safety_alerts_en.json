@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ras_hyperkalemia",
+    "title": "Hyperkalemia risk (RAAS blockade)",
+    "severity": "warning",
+    "message": "ACEi/ARB/ARNI can raise potassium, especially when combined with an MRA and in renal dysfunction. Monitor potassium and renal function after start and adjustments.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023", "greene2023"]
+  },
+  {
+    "id": "ras_angioedema",
+    "title": "Angioedema",
+    "severity": "warning",
+    "message": "A history of angioedema contraindicates ACEi and ARNI. ARNI requires a 36-hour ACEi-free interval (washout) to reduce angioedema risk.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "ras_hypotension",
+    "title": "Symptomatic hypotension",
+    "severity": "warning",
+    "message": "Symptomatic hypotension limits starting and up-titrating ACEi/ARB/ARNI. Start at a lower dose and reassess systolic BP.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "ras_renal",
+    "title": "Renal function on RAAS blockade",
+    "severity": "info",
+    "message": "A rise in creatinine can occur when starting RAAS blockade; a mild, stable increase is usually tolerable. Reassess eGFR/creatinine in 1–2 weeks.",
+    "relatedClassIds": ["renin_angiotensin"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "bb_decompensation",
+    "title": "Acute decompensation",
+    "severity": "warning",
+    "message": "Do not start or increase a beta-blocker during acute decompensation with significant congestion or hypoperfusion. Start once the patient is euvolemic and stable.",
+    "relatedClassIds": ["beta_blocker"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "bb_bradycardia",
+    "title": "Bradycardia / AV block",
+    "severity": "warning",
+    "message": "Significant bradycardia or advanced AV block limit beta-blocker use. Assess heart rate and ECG before starting/titrating.",
+    "relatedClassIds": ["beta_blocker"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "mra_hyperkalemia",
+    "title": "Hyperkalemia (MRA)",
+    "severity": "critical",
+    "message": "MRAs increase the risk of hyperkalemia. Contraindicated with elevated potassium and caution in renal dysfunction. Monitor potassium and creatinine at 3 days, 1 week, then monthly after start/adjustment.",
+    "relatedClassIds": ["mra"],
+    "referenceIds": ["patolia2023", "greene2023"]
+  },
+  {
+    "id": "mra_renal",
+    "title": "Renal function (MRA)",
+    "severity": "warning",
+    "message": "Avoid MRA when eGFR < 30 mL/min/1.73 m². Use caution between 30–45 mL/min/1.73 m², with more frequent monitoring.",
+    "relatedClassIds": ["mra"],
+    "referenceIds": ["patolia2023"]
+  },
+  {
+    "id": "sglt2_egfr",
+    "title": "eGFR and SGLT2i initiation",
+    "severity": "info",
+    "message": "The benefit of SGLT2i is maintained across a wide range of renal function. Respect the eGFR threshold for initiation (generally avoid starting at very low eGFR, per label).",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "sglt2_dka",
+    "title": "Euglycemic ketoacidosis",
+    "severity": "warning",
+    "message": "Risk of euglycemic ketoacidosis. Hold the SGLT2i during serious acute illness, prolonged fasting or before surgery. Counsel on genital hygiene (mycotic infection risk).",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "sglt2_volume",
+    "title": "Volume depletion (SGLT2i)",
+    "severity": "info",
+    "message": "SGLT2i has a mild diuretic effect; adjust the diuretic dose to avoid volume depletion and hypotension, especially at the start.",
+    "relatedClassIds": ["sglt2"],
+    "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "acute_hypotension",
+    "title": "Hypotension / hypoperfusion",
+    "severity": "critical",
+    "message": "SBP < 90 mmHg and/or signs of hypoperfusion suggest low output. Evaluate the need for inotropic/vasoactive support and monitoring — out of scope for this flow (no cardiogenic shock).",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_hyperkalemia",
+    "title": "Severe hyperkalemia",
+    "severity": "critical",
+    "message": "Potassium > 6.0 mmol/L requires immediate management and investigation of the cause before/during diuretic intensification.",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_renal",
+    "title": "Renal deterioration",
+    "severity": "warning",
+    "message": "Low eGFR or significant worsening of renal function during diuresis requires reassessment of the strategy and volume status (decongestion vs. depletion).",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acute_electrolytes",
+    "title": "Electrolyte disturbances",
+    "severity": "warning",
+    "message": "Loop diuretics can cause hypokalemia, hypomagnesemia and hyponatremia. Monitor sodium, potassium and magnesium during diuresis.",
+    "relatedClassIds": ["loop_diuretic"],
+    "referenceIds": ["felker2020"]
+  }
+]

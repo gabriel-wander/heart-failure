@@ -2,9 +2,13 @@ import Foundation
 
 /// Evaluates the acute / decompensated congestion flow: classifies the
 /// hemodynamic profile, builds an IV diuretic strategy when appropriate, and
-/// surfaces red-flag alerts that warrant specialized evaluation.
+/// surfaces red-flag alerts that warrant specialized evaluation. All composed
+/// text comes from the repository's localized `EngineMessages`.
 struct AcuteCongestionEvaluator {
     let repository: ContentRepository
+
+    private var messages: EngineMessages { repository.messages }
+    private var language: AppLanguage { repository.language }
 
     func evaluate(_ input: PatientInput) -> AssessmentResult {
         let config = repository.ruleSet.acuteCongestionConfig
@@ -22,8 +26,7 @@ struct AcuteCongestionEvaluator {
         // Red-flag rules (status nil → pure alert rules for the acute flow).
         let triggeredRules = repository.ruleSet.acuteCongestionRules
             .filter { RuleMatcher.matches($0, input: input) }
-        let triggeredAlertIds = triggeredRules.flatMap { $0.safetyAlertIds }
-        triggeredAlertIds.forEach { usedAlertIds.insert($0) }
+        triggeredRules.flatMap { $0.safetyAlertIds }.forEach { usedAlertIds.insert($0) }
         triggeredRules.flatMap { $0.referenceIds }.forEach { usedReferenceIds.insert($0) }
 
         let needsSpecialist = profile.hasHypoperfusion
@@ -34,16 +37,24 @@ struct AcuteCongestionEvaluator {
 
         if profile.hasCongestion && !needsSpecialist {
             // Warm & wet → IV diuretic strategy.
-            let calculator = DiureticCalculator(config: config, loopDiuretics: repository.loopDiuretics())
+            let agentName = input.currentLoopAgentId.flatMap { id in
+                repository.medications.first(where: { $0.id == id })?.genericName
+            }
+            let calculator = DiureticCalculator(
+                config: config,
+                loopDiuretics: repository.loopDiuretics(),
+                messages: messages,
+                language: language
+            )
             let plan = calculator.makePlan(
                 priorUse: input.priorDiureticUse,
                 agentId: input.currentLoopAgentId,
+                agentName: agentName,
                 oralDailyDoseMg: input.currentLoopOralDailyDoseMg
             )
             diureticPlan = plan
 
-            // Standing alerts for the loop diuretic (e.g. distúrbios eletrolíticos)
-            // plus any red-flag alert triggered by the rules above.
+            // Standing alerts for the loop diuretic plus any triggered red flag.
             let standingAlertIds = repository
                 .primaryMedication(forClass: "loop_diuretic", scenario: .acuteCongestion)?
                 .safetyAlertIds ?? []
@@ -53,73 +64,59 @@ struct AcuteCongestionEvaluator {
             recommendations.append(
                 Recommendation(
                     id: "iv_diuretic",
-                    title: "Diurético de alça intravenoso",
+                    title: messages.acuteIvTitle,
                     classId: "loop_diuretic",
-                    displayDrug: "Furosemida IV",
+                    displayDrug: messages.acuteIvDrug,
                     status: .eligible,
-                    justifications: [
-                        "Perfil \(profile.displayName.lowercased()): congestão presente sem hipoperfusão grave — indicação de diurético de alça IV.",
-                        plan.description
-                    ],
+                    justifications: [messages.acuteIvJustification, plan.description],
                     startingDose: nil,
                     targetDose: nil,
                     monitoring: config.monitoringParameters,
                     safetyAlerts: planAlerts.sorted { $0.severity.sortRank < $1.severity.sortRank },
                     references: planReferences,
-                    notes: [
-                        "Doses IV devem ser administradas ao menos 2×/dia (retenção de sódio pós-dose).",
-                        "Reavaliar resposta (diurese/UOP) em 2–6 h e titular a dose conforme objetivo de débito urinário.",
-                        "Resposta inadequada/oligúria sugere resistência diurética — considerar intensificação (bloqueio sequencial do néfron) e avaliação especializada."
-                    ]
+                    notes: messages.acuteIvNotes
                 )
             )
-            generalNotes.append("Estimativa de diurético é aproximada e educacional; individualizar conforme função renal, PA e resposta clínica.")
+            generalNotes.append(messages.acuteIvGeneralNote)
         } else if profile.hasCongestion && needsSpecialist {
             // Wet & cold (or hypotensive) → out of scope, escalate.
             recommendations.append(
                 Recommendation(
                     id: "specialist_eval",
-                    title: "Avaliação especializada",
+                    title: messages.acuteSpecialistTitle,
                     classId: nil,
                     displayDrug: nil,
                     status: .caution,
-                    justifications: [
-                        "Congestão com hipoperfusão e/ou hipotensão (PAS < 90 mmHg) sugere baixo débito. Diurético isolado pode ser insuficiente ou deletério."
-                    ],
+                    justifications: [messages.acuteSpecialistJustification],
                     startingDose: nil,
                     targetDose: nil,
                     monitoring: config.monitoringParameters,
                     safetyAlerts: repository.alerts(withIds: Array(usedAlertIds))
                         .sorted { $0.severity.sortRank < $1.severity.sortRank },
                     references: planReferences,
-                    notes: [
-                        "Considerar avaliação para suporte inotrópico/vasoativo e monitorização. Fora do escopo deste fluxo (sem choque cardiogênico).",
-                        "Diurético IV pode ser considerado com cautela após estabilização hemodinâmica."
-                    ]
+                    notes: messages.acuteSpecialistNotes
                 )
             )
-            generalNotes.append("Cenário fora do escopo do fluxo de diurético simples — priorizar avaliação especializada.")
+            generalNotes.append(messages.acuteSpecialistGeneralNote)
         } else {
             // Dry profiles → diuretic not indicated.
+            let note = profile.hasHypoperfusion
+                ? messages.acuteNoDiureticNoteHypoperfusion
+                : messages.acuteNoDiureticNoteDefault
             recommendations.append(
                 Recommendation(
                     id: "no_diuretic",
-                    title: "Diurético IV não indicado",
+                    title: messages.acuteNoDiureticTitle,
                     classId: nil,
                     displayDrug: nil,
                     status: .caution,
-                    justifications: [
-                        "Sem sinais de congestão registrados (perfil \(profile.displayName.lowercased()))."
-                    ],
+                    justifications: [messages.acuteNoDiureticJustification],
                     startingDose: nil,
                     targetDose: nil,
                     monitoring: [],
                     safetyAlerts: [],
                     references: planReferences,
-                    notes: [
-                        "Reavaliar o diagnóstico e a volemia; otimizar terapia de base (GDMT) conforme indicado.",
-                        profile.hasHypoperfusion ? "Hipoperfusão sem congestão sugere hipovolemia/baixo débito — avaliação especializada." : "Diurético de alça IV não é indicado na ausência de congestão."
-                    ]
+                    notes: [note]
                 )
             )
         }
@@ -135,7 +132,7 @@ struct AcuteCongestionEvaluator {
                 if !acc.contains(where: { $0.id == ref.id }) { acc.append(ref) }
             }
 
-        generalNotes.append("Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal.")
+        generalNotes.append(messages.acuteGeneralNote)
 
         return AssessmentResult(
             scenario: .acuteCongestion,

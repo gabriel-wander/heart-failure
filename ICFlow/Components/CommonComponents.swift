@@ -3,10 +3,11 @@ import ICFlowCore
 
 /// Small status pill for eligibility (Elegível / Cautela / Contraindicado).
 struct StatusBadge: View {
+    @EnvironmentObject private var app: AppModel
     let status: EligibilityStatus
 
     var body: some View {
-        Label(status.displayName, systemImage: status.systemImage)
+        Label(app.name(status), systemImage: status.systemImage)
             .font(.caption.bold())
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
@@ -17,15 +18,39 @@ struct StatusBadge: View {
 
 /// Severity pill for safety alerts.
 struct SeverityBadge: View {
+    @EnvironmentObject private var app: AppModel
     let severity: AlertSeverity
 
     var body: some View {
-        Label(severity.displayName, systemImage: severity.systemImage)
+        Label(app.name(severity), systemImage: severity.systemImage)
             .font(.caption2.bold())
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(severity.color.opacity(0.15), in: Capsule())
             .foregroundStyle(severity.color)
+    }
+}
+
+/// In-app language switcher (globe menu).
+struct LanguageMenu: View {
+    @EnvironmentObject private var app: AppModel
+
+    var body: some View {
+        Menu {
+            ForEach(AppLanguage.allCases) { lang in
+                Button {
+                    app.setLanguage(lang)
+                } label: {
+                    if lang == app.language {
+                        Label(lang.nativeName, systemImage: "checkmark")
+                    } else {
+                        Text(lang.nativeName)
+                    }
+                }
+            }
+        } label: {
+            Label(app.language.shortTag, systemImage: "globe")
+        }
     }
 }
 
@@ -84,11 +109,13 @@ struct BulletList: View {
 
 /// Disclaimer banner reused on results screens.
 struct DisclaimerBanner: View {
+    @EnvironmentObject private var app: AppModel
+
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "info.circle.fill")
                 .foregroundStyle(.blue)
-            Text("Ferramenta educacional. As doses são exemplos e não substituem o julgamento clínico nem as bulas/diretrizes vigentes.")
+            Text(app.t(.disclaimerBanner))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -100,11 +127,13 @@ struct DisclaimerBanner: View {
 
 /// Placeholder shown if a results tab is opened without a computed result.
 struct EmptyResultView: View {
+    @EnvironmentObject private var app: AppModel
+
     var body: some View {
         ContentUnavailableViewCompat(
-            title: "Sem avaliação",
+            title: app.t(.emptyResultTitle),
             systemImage: "doc.text.magnifyingglass",
-            description: "Volte e gere uma avaliação a partir dos dados clínicos."
+            description: app.t(.emptyResultDesc)
         )
     }
 }

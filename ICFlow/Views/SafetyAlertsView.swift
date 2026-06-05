@@ -3,6 +3,7 @@ import ICFlowCore
 
 /// Tela 5 — Alertas de segurança agregados, agrupados por severidade.
 struct SafetyAlertsView: View {
+    @EnvironmentObject private var app: AppModel
     let alerts: [SafetyAlert]
 
     private var grouped: [(severity: AlertSeverity, alerts: [SafetyAlert])] {
@@ -18,9 +19,9 @@ struct SafetyAlertsView: View {
             VStack(spacing: 16) {
                 if alerts.isEmpty {
                     ContentUnavailableViewCompat(
-                        title: "Sem alertas",
+                        title: app.t(.alertsNoneTitle),
                         systemImage: "checkmark.shield",
-                        description: "Nenhum alerta de segurança específico foi disparado com os dados fornecidos. Mantenha a vigilância clínica habitual."
+                        description: app.t(.alertsNoneDesc)
                     )
                     .padding(.top, 40)
                 } else {
@@ -44,11 +45,12 @@ struct SafetyAlertsView: View {
             }
             .padding()
         }
-        .navigationTitle("Alertas")
+        .navigationTitle(app.t(.tabAlerts))
     }
 }
 
 private struct AlertCard: View {
+    @EnvironmentObject private var app: AppModel
     let alert: SafetyAlert
 
     var body: some View {
@@ -64,7 +66,7 @@ private struct AlertCard: View {
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             if !alert.referenceIds.isEmpty {
-                Text("Ref.: " + alert.referenceIds.joined(separator: ", "))
+                Text(app.t(.refPrefix) + alert.referenceIds.joined(separator: ", "))
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }

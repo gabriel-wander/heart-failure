@@ -1,0 +1,359 @@
+import Foundation
+import ICFlowCore
+
+/// Keys for every user-interface string (app chrome). Clinical text comes from
+/// the localized JSON via `ContentRepository`; this table covers buttons,
+/// titles, field labels and other interface chrome.
+enum UIString: String {
+    // App / disclaimer
+    case appSubtitle
+    case disclaimerWarningTitle
+    case disclaimerBullet1, disclaimerBullet2, disclaimerBullet3, disclaimerBullet4, disclaimerBullet5
+    case disclaimerAgree
+    case disclaimerFootnote
+
+    // Scenario
+    case scenarioSelectTitle
+    case navScenario
+
+    // Common
+    case disclaimerBanner
+    case emptyResultTitle, emptyResultDesc
+    case alertsNoneTitle, alertsNoneDesc
+    case referencesFootnote
+    case languageMenuTitle
+
+    // Input
+    case navClinicalData
+    case inputScenarioFooter
+    case sectionVentricular, sectionLab, sectionClinical
+    case fieldLVEF, fieldNYHA, fieldSBP, fieldHR, fieldRhythm
+    case fieldEGFR, fieldPotassium, fieldCreatinine
+    case toggleCongestion, toggleHypoperfusion, togglePriorDiuretic
+    case fieldLoopAgent, fieldOralDose
+    case generateButton
+    case inputAcuteFooter
+    case nyhaNone
+    case unitPercent, unitMmHg, unitBpm, unitEgfr, unitMmolL, unitMgdl, unitMg
+
+    // Results
+    case navResult
+    case tabRecommendations, tabAlerts, tabSummary, tabReferences
+    case newAssessment
+
+    // Recommendations
+    case profileTitle
+    case diureticEstimateTitle
+    case metricPerDose, metricFrequency, metricTotalDay
+    case generalNotesTitle
+    case secJustification, secDoses, doseInitial, doseTarget
+    case secMonitoring, secSafetyAlerts, secNotes
+    case perDaySuffix
+
+    // Alerts
+    case refPrefix
+
+    // Summary
+    case sumScenario, sumInputData, sumNoNumericData, sumRecsTitle
+    case sumDiureticTitle, sumAlertsTitle, sumCriticalPrefix
+    case copyButton, copiedButton
+    case yes, no
+    case sumCongestion, sumHypoperfusion, sumPriorDiuretic
+    case sumProfile
+    case txtHeader, txtData, txtRecommendations, txtDiuretic, txtAlerts, txtDisclaimer
+
+    // References
+    case refsThisCase, refsAll, refsOthers
+}
+
+/// Static lookup of interface strings and enum labels per language.
+enum Localizer {
+    static func string(_ key: UIString, _ language: AppLanguage) -> String {
+        (table[language]?[key]) ?? (table[.pt]?[key]) ?? key.rawValue
+    }
+
+    // MARK: - Enum labels
+
+    static func scenarioName(_ s: Scenario, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.chronicHFrEF, .pt): return "ICFEr crônica"
+        case (.chronicHFrEF, .en): return "Chronic HFrEF"
+        case (.acuteCongestion, .pt): return "IC aguda congesta"
+        case (.acuteCongestion, .en): return "Acute congestive HF"
+        }
+    }
+
+    static func scenarioDetail(_ s: Scenario, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.chronicHFrEF, .pt): return "Insuficiência cardíaca crônica com fração de ejeção reduzida (FEVE ≤ 40%)."
+        case (.chronicHFrEF, .en): return "Chronic heart failure with reduced ejection fraction (LVEF ≤ 40%)."
+        case (.acuteCongestion, .pt): return "IC aguda/descompensada com congestão, sem choque cardiogênico."
+        case (.acuteCongestion, .en): return "Acute/decompensated HF with congestion, without cardiogenic shock."
+        }
+    }
+
+    static func nyhaName(_ n: NYHAClass, _ l: AppLanguage) -> String { "NYHA \(n.rawValue)" }
+
+    static func rhythmName(_ r: Rhythm, _ l: AppLanguage) -> String {
+        switch (r, l) {
+        case (.sinus, .pt): return "Ritmo sinusal"
+        case (.sinus, .en): return "Sinus rhythm"
+        case (.afib, .pt): return "Fibrilação atrial"
+        case (.afib, .en): return "Atrial fibrillation"
+        case (.other, .pt): return "Outro"
+        case (.other, .en): return "Other"
+        }
+    }
+
+    static func statusName(_ s: EligibilityStatus, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.eligible, .pt): return "Elegível"
+        case (.eligible, .en): return "Eligible"
+        case (.caution, .pt): return "Cautela"
+        case (.caution, .en): return "Caution"
+        case (.contraindicated, .pt): return "Contraindicado"
+        case (.contraindicated, .en): return "Contraindicated"
+        }
+    }
+
+    static func severityName(_ s: AlertSeverity, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.info, .pt): return "Informativo"
+        case (.info, .en): return "Info"
+        case (.warning, .pt): return "Atenção"
+        case (.warning, .en): return "Warning"
+        case (.critical, .pt): return "Crítico"
+        case (.critical, .en): return "Critical"
+        }
+    }
+
+    static func profileName(_ p: CongestionProfile, _ l: AppLanguage) -> String {
+        switch (p, l) {
+        case (.wetWarm, .pt): return "Quente e úmido"
+        case (.wetWarm, .en): return "Warm and wet"
+        case (.wetCold, .pt): return "Frio e úmido"
+        case (.wetCold, .en): return "Cold and wet"
+        case (.dryWarm, .pt): return "Quente e seco"
+        case (.dryWarm, .en): return "Warm and dry"
+        case (.dryCold, .pt): return "Frio e seco"
+        case (.dryCold, .en): return "Cold and dry"
+        }
+    }
+
+    static func profileSummary(_ p: CongestionProfile, _ l: AppLanguage) -> String {
+        switch (p, l) {
+        case (.wetWarm, .pt): return "Congesto e bem perfundido — perfil típico para diurético IV."
+        case (.wetWarm, .en): return "Congested and well perfused — typical profile for an IV diuretic."
+        case (.wetCold, .pt): return "Congesto e hipoperfundido — possível baixo débito; avaliação especializada."
+        case (.wetCold, .en): return "Congested and hypoperfused — possible low output; specialist evaluation."
+        case (.dryWarm, .pt): return "Sem congestão e bem perfundido — diurético IV não indicado."
+        case (.dryWarm, .en): return "No congestion and well perfused — IV diuretic not indicated."
+        case (.dryCold, .pt): return "Hipoperfundido sem congestão — avaliar hipovolemia/baixo débito; avaliação especializada."
+        case (.dryCold, .en): return "Hypoperfused without congestion — assess hypovolemia/low output; specialist evaluation."
+        }
+    }
+
+    static func strategyName(_ s: DiureticPlan.Strategy, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.loopNaive, .pt): return "Virgem de diurético"
+        case (.loopNaive, .en): return "Loop-diuretic-naive"
+        case (.priorOralUser, .pt): return "Uso prévio de diurético oral"
+        case (.priorOralUser, .en): return "Prior oral diuretic use"
+        }
+    }
+
+    // MARK: - Interface string table
+
+    static let table: [AppLanguage: [UIString: String]] = [
+        .pt: ptTable,
+        .en: enTable
+    ]
+
+    private static let ptTable: [UIString: String] = [
+        .appSubtitle: "Apoio à decisão em insuficiência cardíaca",
+        .disclaimerWarningTitle: "Aviso importante",
+        .disclaimerBullet1: "Ferramenta educacional destinada a médicos. Não substitui o julgamento clínico individual.",
+        .disclaimerBullet2: "As recomendações e doses são exemplos (mock) e devem ser confirmadas com diretrizes atuais, bulas e o contexto do paciente.",
+        .disclaimerBullet3: "Não armazena dados identificáveis de pacientes. Insira apenas parâmetros clínicos de forma anônima.",
+        .disclaimerBullet4: "Funciona totalmente offline. Não há login, banco de dados remoto nem integração externa.",
+        .disclaimerBullet5: "Escopo do MVP: ICFEr crônica e IC aguda congesta sem choque cardiogênico.",
+        .disclaimerAgree: "Li e concordo — continuar",
+        .disclaimerFootnote: "Ao continuar, você reconhece a natureza educacional desta ferramenta.",
+        .scenarioSelectTitle: "Selecione o cenário clínico",
+        .navScenario: "Cenário",
+        .disclaimerBanner: "Ferramenta educacional. As doses são exemplos e não substituem o julgamento clínico nem as bulas/diretrizes vigentes.",
+        .emptyResultTitle: "Sem avaliação",
+        .emptyResultDesc: "Volte e gere uma avaliação a partir dos dados clínicos.",
+        .alertsNoneTitle: "Sem alertas",
+        .alertsNoneDesc: "Nenhum alerta de segurança específico foi disparado com os dados fornecidos. Mantenha a vigilância clínica habitual.",
+        .referencesFootnote: "Conteúdo clínico baseado nas fontes acima. As referências são fornecidas para fins educacionais; consulte sempre as versões completas e as diretrizes vigentes.",
+        .languageMenuTitle: "Idioma",
+        .navClinicalData: "Dados clínicos",
+        .inputScenarioFooter: "Insira apenas dados clínicos anônimos. Campos em branco não são avaliados pelas regras.",
+        .sectionVentricular: "Função ventricular e hemodinâmica",
+        .sectionLab: "Laboratório",
+        .sectionClinical: "Estado clínico",
+        .fieldLVEF: "FEVE",
+        .fieldNYHA: "NYHA",
+        .fieldSBP: "PA sistólica",
+        .fieldHR: "Frequência cardíaca",
+        .fieldRhythm: "Ritmo",
+        .fieldEGFR: "TFGe",
+        .fieldPotassium: "Potássio",
+        .fieldCreatinine: "Creatinina",
+        .toggleCongestion: "Sinais de congestão",
+        .toggleHypoperfusion: "Sinais de hipoperfusão",
+        .togglePriorDiuretic: "Uso prévio de diurético",
+        .fieldLoopAgent: "Diurético em uso",
+        .fieldOralDose: "Dose oral total/dia",
+        .generateButton: "Gerar recomendações",
+        .inputAcuteFooter: "No fluxo agudo, a dose IV de diurético é estimada a partir do uso prévio (≈ 2,5× a dose oral domiciliar) ou de uma dose inicial padrão se virgem de diurético.",
+        .nyhaNone: "—",
+        .unitPercent: "%",
+        .unitMmHg: "mmHg",
+        .unitBpm: "bpm",
+        .unitEgfr: "mL/min/1,73m²",
+        .unitMmolL: "mmol/L",
+        .unitMgdl: "mg/dL",
+        .unitMg: "mg",
+        .navResult: "Resultado",
+        .tabRecommendations: "Recomendações",
+        .tabAlerts: "Alertas",
+        .tabSummary: "Resumo",
+        .tabReferences: "Referências",
+        .newAssessment: "Nova avaliação",
+        .profileTitle: "Perfil hemodinâmico",
+        .diureticEstimateTitle: "Estimativa de diurético IV",
+        .metricPerDose: "por dose",
+        .metricFrequency: "frequência",
+        .metricTotalDay: "total/dia",
+        .generalNotesTitle: "Notas gerais",
+        .secJustification: "Justificativa",
+        .secDoses: "Doses (exemplo)",
+        .doseInitial: "Inicial",
+        .doseTarget: "Alvo",
+        .secMonitoring: "Monitoramento",
+        .secSafetyAlerts: "Alertas de segurança",
+        .secNotes: "Observações",
+        .perDaySuffix: "×/dia",
+        .refPrefix: "Ref.: ",
+        .sumScenario: "Cenário",
+        .sumInputData: "Dados inseridos",
+        .sumNoNumericData: "Nenhum dado numérico informado.",
+        .sumRecsTitle: "Síntese das recomendações",
+        .sumDiureticTitle: "Diurético IV (estimativa)",
+        .sumAlertsTitle: "Alertas",
+        .sumCriticalPrefix: "Crítico: ",
+        .copyButton: "Copiar resumo (texto)",
+        .copiedButton: "Resumo copiado",
+        .yes: "Sim",
+        .no: "Não",
+        .sumCongestion: "Congestão",
+        .sumHypoperfusion: "Hipoperfusão",
+        .sumPriorDiuretic: "Uso prévio de diurético",
+        .sumProfile: "Perfil",
+        .txtHeader: "IC Flow — resumo (educacional, dados anônimos)",
+        .txtData: "Dados",
+        .txtRecommendations: "Recomendações:",
+        .txtDiuretic: "Diurético IV",
+        .txtAlerts: "Alertas",
+        .txtDisclaimer: "Ferramenta educacional — não substitui o julgamento clínico.",
+        .refsThisCase: "Referências deste caso",
+        .refsAll: "Referências",
+        .refsOthers: "Outras referências"
+    ]
+
+    private static let enTable: [UIString: String] = [
+        .appSubtitle: "Heart failure decision support",
+        .disclaimerWarningTitle: "Important notice",
+        .disclaimerBullet1: "Educational tool intended for physicians. It does not replace individual clinical judgment.",
+        .disclaimerBullet2: "Recommendations and doses are examples (mock) and must be confirmed against current guidelines, labels and the patient's context.",
+        .disclaimerBullet3: "Stores no identifiable patient data. Enter only anonymous clinical parameters.",
+        .disclaimerBullet4: "Works fully offline. No login, remote database or external integration.",
+        .disclaimerBullet5: "MVP scope: chronic HFrEF and acute congestive HF without cardiogenic shock.",
+        .disclaimerAgree: "I have read and agree — continue",
+        .disclaimerFootnote: "By continuing, you acknowledge the educational nature of this tool.",
+        .scenarioSelectTitle: "Select the clinical scenario",
+        .navScenario: "Scenario",
+        .disclaimerBanner: "Educational tool. Doses are examples and do not replace clinical judgment or current labels/guidelines.",
+        .emptyResultTitle: "No assessment",
+        .emptyResultDesc: "Go back and generate an assessment from the clinical data.",
+        .alertsNoneTitle: "No alerts",
+        .alertsNoneDesc: "No specific safety alert was triggered with the data provided. Maintain usual clinical vigilance.",
+        .referencesFootnote: "Clinical content based on the sources above. References are provided for educational purposes; always consult the full versions and current guidelines.",
+        .languageMenuTitle: "Language",
+        .navClinicalData: "Clinical data",
+        .inputScenarioFooter: "Enter only anonymous clinical data. Blank fields are not evaluated by the rules.",
+        .sectionVentricular: "Ventricular function and hemodynamics",
+        .sectionLab: "Laboratory",
+        .sectionClinical: "Clinical status",
+        .fieldLVEF: "LVEF",
+        .fieldNYHA: "NYHA",
+        .fieldSBP: "Systolic BP",
+        .fieldHR: "Heart rate",
+        .fieldRhythm: "Rhythm",
+        .fieldEGFR: "eGFR",
+        .fieldPotassium: "Potassium",
+        .fieldCreatinine: "Creatinine",
+        .toggleCongestion: "Signs of congestion",
+        .toggleHypoperfusion: "Signs of hypoperfusion",
+        .togglePriorDiuretic: "Prior diuretic use",
+        .fieldLoopAgent: "Current diuretic",
+        .fieldOralDose: "Total oral dose/day",
+        .generateButton: "Generate recommendations",
+        .inputAcuteFooter: "In the acute flow, the IV diuretic dose is estimated from prior use (≈ 2.5× the home oral dose) or a standard initial dose if loop-diuretic-naive.",
+        .nyhaNone: "—",
+        .unitPercent: "%",
+        .unitMmHg: "mmHg",
+        .unitBpm: "bpm",
+        .unitEgfr: "mL/min/1.73m²",
+        .unitMmolL: "mmol/L",
+        .unitMgdl: "mg/dL",
+        .unitMg: "mg",
+        .navResult: "Result",
+        .tabRecommendations: "Recommendations",
+        .tabAlerts: "Alerts",
+        .tabSummary: "Summary",
+        .tabReferences: "References",
+        .newAssessment: "New assessment",
+        .profileTitle: "Hemodynamic profile",
+        .diureticEstimateTitle: "IV diuretic estimate",
+        .metricPerDose: "per dose",
+        .metricFrequency: "frequency",
+        .metricTotalDay: "total/day",
+        .generalNotesTitle: "General notes",
+        .secJustification: "Rationale",
+        .secDoses: "Doses (example)",
+        .doseInitial: "Initial",
+        .doseTarget: "Target",
+        .secMonitoring: "Monitoring",
+        .secSafetyAlerts: "Safety alerts",
+        .secNotes: "Notes",
+        .perDaySuffix: "×/day",
+        .refPrefix: "Ref.: ",
+        .sumScenario: "Scenario",
+        .sumInputData: "Entered data",
+        .sumNoNumericData: "No numeric data entered.",
+        .sumRecsTitle: "Recommendation summary",
+        .sumDiureticTitle: "IV diuretic (estimate)",
+        .sumAlertsTitle: "Alerts",
+        .sumCriticalPrefix: "Critical: ",
+        .copyButton: "Copy summary (text)",
+        .copiedButton: "Summary copied",
+        .yes: "Yes",
+        .no: "No",
+        .sumCongestion: "Congestion",
+        .sumHypoperfusion: "Hypoperfusion",
+        .sumPriorDiuretic: "Prior diuretic use",
+        .sumProfile: "Profile",
+        .txtHeader: "IC Flow — summary (educational, anonymous data)",
+        .txtData: "Data",
+        .txtRecommendations: "Recommendations:",
+        .txtDiuretic: "IV diuretic",
+        .txtAlerts: "Alerts",
+        .txtDisclaimer: "Educational tool — does not replace clinical judgment.",
+        .refsThisCase: "References for this case",
+        .refsAll: "References",
+        .refsOthers: "Other references"
+    ]
+}

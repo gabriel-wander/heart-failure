@@ -4,37 +4,40 @@ import ICFlowCore
 /// Container das telas de resultado (abas): Recomendações, Alertas, Resumo e
 /// Referências. Telas 4 a 7 do MVP.
 struct ResultsView: View {
-    @EnvironmentObject private var viewModel: AssessmentViewModel
+    @EnvironmentObject private var app: AppModel
     let onRestart: () -> Void
 
     var body: some View {
         Group {
-            if let result = viewModel.result {
+            if let result = app.result {
                 TabView {
                     RecommendationsView(result: result)
-                        .tabItem { Label("Recomendações", systemImage: "list.bullet.clipboard") }
+                        .tabItem { Label(app.t(.tabRecommendations), systemImage: "list.bullet.clipboard") }
 
                     SafetyAlertsView(alerts: result.safetyAlerts)
-                        .tabItem { Label("Alertas", systemImage: "exclamationmark.triangle") }
+                        .tabItem { Label(app.t(.tabAlerts), systemImage: "exclamationmark.triangle") }
 
-                    SummaryView(result: result, draft: viewModel.draft)
-                        .tabItem { Label("Resumo", systemImage: "doc.text") }
+                    SummaryView(result: result, draft: app.draft)
+                        .tabItem { Label(app.t(.tabSummary), systemImage: "doc.text") }
 
                     ReferencesView(
                         usedReferences: result.references,
-                        allReferences: viewModel.repository?.references ?? []
+                        allReferences: app.repository?.references ?? []
                     )
-                    .tabItem { Label("Referências", systemImage: "books.vertical") }
+                    .tabItem { Label(app.t(.tabReferences), systemImage: "books.vertical") }
                 }
             } else {
                 EmptyResultView()
             }
         }
-        .navigationTitle("Resultado")
+        .navigationTitle(app.t(.navResult))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                LanguageMenu()
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Nova avaliação", action: onRestart)
+                Button(app.t(.newAssessment), action: onRestart)
             }
         }
     }

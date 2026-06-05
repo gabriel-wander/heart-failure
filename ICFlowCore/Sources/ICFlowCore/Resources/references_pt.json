@@ -1,0 +1,26 @@
+[
+  {
+    "id": "felker2020",
+    "authors": "Felker GM, Ellison DH, Mullens W, Cox ZL, Testani JM.",
+    "title": "Diuretic Therapy for Patients With Heart Failure: JACC State-of-the-Art Review",
+    "source": "J Am Coll Cardiol. 2020;75(10):1178–1195",
+    "year": 2020,
+    "topics": ["acuteCongestion", "diuretics"]
+  },
+  {
+    "id": "greene2023",
+    "authors": "Greene SJ, Bauersachs J, Brugts JJ, et al.",
+    "title": "Management of Worsening Heart Failure With Reduced Ejection Fraction: JACC State-of-the-Art Review",
+    "source": "J Am Coll Cardiol. 2023;82(6):559–571",
+    "year": 2023,
+    "topics": ["chronicHFrEF", "worseningHF", "gdmt"]
+  },
+  {
+    "id": "patolia2023",
+    "authors": "Patolia H, Khan MS, Fonarow GC, Greene SJ, Khan SS.",
+    "title": "Implementing Guideline-Directed Medical Therapy for Heart Failure",
+    "source": "J Am Coll Cardiol. 2023;82(6):529–543",
+    "year": 2023,
+    "topics": ["chronicHFrEF", "gdmt", "implementation"]
+  }
+]

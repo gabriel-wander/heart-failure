@@ -4,6 +4,7 @@ import ICFlowCore
 /// Tela 7 — Referências. Lista as fontes utilizadas no caso e todas as
 /// referências disponíveis no app.
 struct ReferencesView: View {
+    @EnvironmentObject private var app: AppModel
     let usedReferences: [Reference]
     let allReferences: [Reference]
 
@@ -13,7 +14,7 @@ struct ReferencesView: View {
         ScrollView {
             VStack(spacing: 16) {
                 if !usedReferences.isEmpty {
-                    sectionTitle("Referências deste caso")
+                    sectionTitle(app.t(.refsThisCase))
                     ForEach(usedReferences) { reference in
                         ReferenceCard(reference: reference, highlighted: true)
                     }
@@ -21,20 +22,20 @@ struct ReferencesView: View {
 
                 let others = allReferences.filter { !usedIds.contains($0.id) }
                 if !others.isEmpty {
-                    sectionTitle(usedReferences.isEmpty ? "Referências" : "Outras referências")
+                    sectionTitle(usedReferences.isEmpty ? app.t(.refsAll) : app.t(.refsOthers))
                     ForEach(others) { reference in
                         ReferenceCard(reference: reference, highlighted: false)
                     }
                 }
 
-                Text("Conteúdo clínico baseado nas fontes acima. As referências são fornecidas para fins educacionais; consulte sempre as versões completas e as diretrizes vigentes.")
+                Text(app.t(.referencesFootnote))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding()
         }
-        .navigationTitle("Referências")
+        .navigationTitle(app.t(.tabReferences))
     }
 
     private func sectionTitle(_ text: String) -> some View {

@@ -1,0 +1,37 @@
+{
+  "hfrefEligibleDefault": "No contraindications or cautions identified with the data provided.",
+  "hfrefAlternativesPrefix": "Class alternatives: ",
+  "hfrefLvefNote": "Reported LVEF ({lvef}%) is above 40%. This module's criteria assume HFrEF (LVEF ≤ 40%).",
+  "hfrefDecompensationNote": "Signs of decompensation present: prioritize clinical compensation before starting/up-titrating a beta-blocker; the other pillars can usually be started/continued as tolerated.",
+  "hfrefMissingDataNote": "Fields left blank are not evaluated by the rules; fill in all data for a more complete assessment.",
+
+  "diureticPriorUser": "On prior {agent} {oralDose} mg/day PO (≈ {furoEquiv} mg/day furosemide equivalent). Estimated initial IV dose ≈ 2.5× the daily oral dose = {total} mg/day IV furosemide, split into {doses} doses (~{perDose} mg per dose). Give at least twice daily and reassess response in 2–6 h.",
+  "diureticHighDoseSuffix": "Caution: high dose (> {threshold} mg/day furosemide equivalent) with limited safety data.",
+  "diureticLoopNaive": "Loop-diuretic-naive patient (or no oral dose provided). Suggested standard initial dose: furosemide {dose} mg IV bolus (usual range 40–80 mg). Reassess the diuretic response in ~2 h and continue at least twice daily if needed.",
+  "diureticNaiveAgentFallback": "loop diuretic",
+
+  "acuteIvTitle": "Intravenous loop diuretic",
+  "acuteIvDrug": "IV furosemide",
+  "acuteIvJustification": "Congestion present without severe hypoperfusion or hypotension — indication for an IV loop diuretic.",
+  "acuteIvNotes": [
+    "IV doses should be given at least twice daily (post-dose sodium retention).",
+    "Reassess the response (diuresis/urine output) in 2–6 h and titrate the dose to the urine output goal.",
+    "Inadequate response/oliguria suggests diuretic resistance — consider intensification (sequential nephron blockade) and specialist evaluation."
+  ],
+  "acuteIvGeneralNote": "The diuretic estimate is approximate and educational; individualize according to renal function, blood pressure and clinical response.",
+
+  "acuteSpecialistTitle": "Specialist evaluation",
+  "acuteSpecialistJustification": "Congestion with hypoperfusion and/or hypotension (SBP < 90 mmHg) suggests low output. A diuretic alone may be insufficient or harmful.",
+  "acuteSpecialistNotes": [
+    "Consider evaluation for inotropic/vasoactive support and monitoring. Out of scope for this flow (no cardiogenic shock).",
+    "An IV diuretic may be considered cautiously after hemodynamic stabilization."
+  ],
+  "acuteSpecialistGeneralNote": "Scenario outside the scope of the simple diuretic flow — prioritize specialist evaluation.",
+
+  "acuteNoDiureticTitle": "IV diuretic not indicated",
+  "acuteNoDiureticJustification": "No signs of congestion recorded.",
+  "acuteNoDiureticNoteDefault": "An IV loop diuretic is not indicated in the absence of congestion. Reassess the diagnosis and volume status; optimize background therapy (GDMT) as indicated.",
+  "acuteNoDiureticNoteHypoperfusion": "Hypoperfusion without congestion suggests hypovolemia/low output — specialist evaluation and reassessment of volume status.",
+
+  "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function."
+}

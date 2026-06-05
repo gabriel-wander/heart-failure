@@ -1,30 +1,38 @@
 import Foundation
 
-/// Loads and holds all clinical content from the bundled JSON files.
+/// Loads and holds all clinical content for a given language from the bundled
+/// JSON files.
 ///
 /// The repository is the single source of truth for medications, clinical rules,
-/// safety alerts and references. Updating the medical content is done by editing
-/// the JSON resources — no Swift code changes required (see README).
+/// safety alerts, references and engine message templates. Updating the medical
+/// content (in any language) is done by editing the JSON resources — no Swift
+/// code changes required (see README).
 public final class ContentRepository: Sendable {
+    public let language: AppLanguage
     public let medications: [Medication]
     public let safetyAlerts: [SafetyAlert]
     public let references: [Reference]
     public let ruleSet: ClinicalRuleSet
+    public let messages: EngineMessages
 
     // Fast lookup tables.
     private let alertsById: [String: SafetyAlert]
     private let referencesById: [String: Reference]
 
     public init(
+        language: AppLanguage,
         medications: [Medication],
         safetyAlerts: [SafetyAlert],
         references: [Reference],
-        ruleSet: ClinicalRuleSet
+        ruleSet: ClinicalRuleSet,
+        messages: EngineMessages
     ) {
+        self.language = language
         self.medications = medications
         self.safetyAlerts = safetyAlerts
         self.references = references
         self.ruleSet = ruleSet
+        self.messages = messages
         self.alertsById = Dictionary(safetyAlerts.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         self.referencesById = Dictionary(references.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
     }
@@ -72,18 +80,26 @@ public final class ContentRepository: Sendable {
         }
     }
 
-    /// Loads the repository from the given bundle (defaults to the package bundle).
-    public static func load(bundle: Bundle = .module) throws -> ContentRepository {
+    /// Loads the repository for a language (defaults to Portuguese) from the
+    /// package's resource bundle.
+    public static func load(language: AppLanguage = .pt) throws -> ContentRepository {
+        // `Bundle.module` is internal to the package; reference it here (in the
+        // function body) rather than as a public default argument.
+        let bundle = Bundle.module
         let decoder = JSONDecoder()
-        let medications: [Medication] = try decode("medications", bundle: bundle, as: [Medication].self, decoder: decoder)
-        let alerts: [SafetyAlert] = try decode("safety_alerts", bundle: bundle, as: [SafetyAlert].self, decoder: decoder)
-        let references: [Reference] = try decode("references", bundle: bundle, as: [Reference].self, decoder: decoder)
-        let ruleSet: ClinicalRuleSet = try decode("clinical_rules", bundle: bundle, as: ClinicalRuleSet.self, decoder: decoder)
+        let suffix = language.resourceSuffix
+        let medications = try decode("medications_\(suffix)", bundle: bundle, as: [Medication].self, decoder: decoder)
+        let alerts = try decode("safety_alerts_\(suffix)", bundle: bundle, as: [SafetyAlert].self, decoder: decoder)
+        let references = try decode("references_\(suffix)", bundle: bundle, as: [Reference].self, decoder: decoder)
+        let ruleSet = try decode("clinical_rules_\(suffix)", bundle: bundle, as: ClinicalRuleSet.self, decoder: decoder)
+        let messages = try decode("engine_messages_\(suffix)", bundle: bundle, as: EngineMessages.self, decoder: decoder)
         return ContentRepository(
+            language: language,
             medications: medications,
             safetyAlerts: alerts,
             references: references,
-            ruleSet: ruleSet
+            ruleSet: ruleSet,
+            messages: messages
         )
     }
 
