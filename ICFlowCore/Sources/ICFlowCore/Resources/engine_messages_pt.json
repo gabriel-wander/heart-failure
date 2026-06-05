@@ -60,5 +60,23 @@
   "hfpefComorbiditiesJustification": "Otimizar o manejo das comorbidades que mais impactam a ICFEp: hipertensão, fibrilação atrial, obesidade, diabetes, doença renal crônica, doença coronariana e apneia do sono.",
   "hfpefReferralTitle": "Avaliação especializada",
   "hfpefReferralJustification": "Considerar avaliação especializada: suspeita de amiloidose/cardiomiopatia infiltrativa, valvopatia importante, hipertensão pulmonar importante, doença pulmonar relevante ou diagnóstico incerto.",
-  "hfpefGeneralNote": "Módulo educacional de ICFEp/ICFEm: priorizar diagnóstico correto (exclusão de mimetizadores), tratamento da congestão e das comorbidades."
+  "hfpefGeneralNote": "Módulo educacional de ICFEp/ICFEm: priorizar diagnóstico correto (exclusão de mimetizadores), tratamento da congestão e das comorbidades.",
+
+  "gdmtTitle": "Plano de otimização (GDMT)",
+  "gdmtIntro": "Otimizar a terapia dos quatro pilares conforme tolerância, buscando as doses-alvo.",
+  "gdmtOptimize": "Considerar iniciar/otimizar: {classes}.",
+  "gdmtBlocked": "Reavaliar após corrigir os fatores limitantes (ver cada classe): {classes}.",
+  "gdmtDualRASMRANote": "Bloqueio do SRAA + ARM: risco aditivo de hipercalemia. Monitorar potássio e função renal de perto (ex.: ~1 e 4 semanas após início/ajuste) e orientar dieta.",
+
+  "shockTitle": "Instabilidade / possível choque — avaliação urgente",
+  "shockJustification": "Sinais de baixo débito/instabilidade hemodinâmica. Conduta em ambiente monitorizado; fora do escopo do fluxo de congestão simples.",
+  "shockSteps": [
+    "Encaminhar a ambiente monitorizado (UTI/emergência) e acionar a cardiologia.",
+    "Avaliação hemodinâmica e identificação/tratamento da causa (ex.: SCA, arritmia, mecânica).",
+    "Considerar suporte inotrópico/vasoativo conforme perfil e protocolo institucional.",
+    "Considerar suporte circulatório mecânico e transferência para centro de referência se refratário.",
+    "Diurético isolado pode ser insuficiente ou deletério na hipoperfusão."
+  ],
+  "shockStableNote": "Sem critérios óbvios de choque com os dados atuais — manter vigilância e reavaliar continuamente PA, perfusão, diurese e lactato.",
+  "shockGeneralNote": "Fluxo de triagem educacional para instabilidade/baixo débito. Não substitui protocolos de choque/refratariedade da instituição."
 }

@@ -9,6 +9,8 @@ struct SummaryView: View {
     let draft: InputDraft
 
     @State private var copied = false
+    @State private var shareURL: URL?
+    @State private var showShare = false
 
     var body: some View {
         ScrollView {
@@ -90,11 +92,28 @@ struct SummaryView: View {
                 }
                 .buttonStyle(.bordered)
 
+                Button {
+                    let exporter = AssessmentExport(app: app, result: result, draft: draft)
+                    if let url = exporter.makePDFURL() {
+                        shareURL = url
+                        showShare = true
+                    }
+                } label: {
+                    Label(app.t(.exportButton), systemImage: "square.and.arrow.up")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+
                 DisclaimerBanner()
             }
             .padding()
         }
         .navigationTitle(app.t(.tabSummary))
+        .sheet(isPresented: $showShare) {
+            if let url = shareURL {
+                ActivityView(items: [url])
+            }
+        }
     }
 
     /// Numeric/clinical fields actually filled in, for the recap card.

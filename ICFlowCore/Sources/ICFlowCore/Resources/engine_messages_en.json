@@ -60,5 +60,23 @@
   "hfpefComorbiditiesJustification": "Optimize management of the comorbidities that most affect HFpEF: hypertension, atrial fibrillation, obesity, diabetes, chronic kidney disease, coronary disease and sleep apnea.",
   "hfpefReferralTitle": "Specialist evaluation",
   "hfpefReferralJustification": "Consider specialist evaluation: suspected amyloidosis/infiltrative cardiomyopathy, significant valvular disease, significant pulmonary hypertension, relevant pulmonary disease or an uncertain diagnosis.",
-  "hfpefGeneralNote": "Educational HFpEF/HFmrEF module: prioritize a correct diagnosis (exclusion of mimics), treatment of congestion and of comorbidities."
+  "hfpefGeneralNote": "Educational HFpEF/HFmrEF module: prioritize a correct diagnosis (exclusion of mimics), treatment of congestion and of comorbidities.",
+
+  "gdmtTitle": "Optimization plan (GDMT)",
+  "gdmtIntro": "Optimize the four-pillar therapy as tolerated, aiming for target doses.",
+  "gdmtOptimize": "Consider starting/optimizing: {classes}.",
+  "gdmtBlocked": "Reassess after correcting the limiting factors (see each class): {classes}.",
+  "gdmtDualRASMRANote": "RAS blockade + MRA: additive hyperkalemia risk. Monitor potassium and renal function closely (e.g., ~1 and 4 weeks after start/adjustment) and advise on diet.",
+
+  "shockTitle": "Instability / possible shock — urgent evaluation",
+  "shockJustification": "Signs of low output/hemodynamic instability. Manage in a monitored setting; outside the scope of the simple congestion flow.",
+  "shockSteps": [
+    "Transfer to a monitored setting (ICU/ED) and involve cardiology.",
+    "Hemodynamic assessment and identification/treatment of the cause (e.g., ACS, arrhythmia, mechanical).",
+    "Consider inotropic/vasoactive support per profile and institutional protocol.",
+    "Consider mechanical circulatory support and transfer to a referral center if refractory.",
+    "A diuretic alone may be insufficient or harmful in hypoperfusion."
+  ],
+  "shockStableNote": "No obvious shock criteria with the current data — maintain vigilance and continuously reassess BP, perfusion, urine output and lactate.",
+  "shockGeneralNote": "Educational triage flow for instability/low output. It does not replace the institution's shock/refractory protocols."
 }

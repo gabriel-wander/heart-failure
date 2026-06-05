@@ -126,5 +126,13 @@
     "message": "O diagnóstico de ICFEp exige a exclusão de mimetizadores (ex.: amiloidose cardíaca, cardiomiopatias infiltrativas, valvopatias, pericardiopatias e hipertensão pulmonar) e confirmação clínica/por exames.",
     "relatedClassIds": [],
     "referenceIds": ["greene2023"]
+  },
+  {
+    "id": "shock_redflags",
+    "title": "Instabilidade hemodinâmica / possível choque",
+    "severity": "critical",
+    "message": "Hipotensão, hipoperfusão, oligúria, alteração de consciência ou lactato elevado sugerem baixo débito/choque. Conduzir em ambiente monitorizado (UTI/emergência) com avaliação especializada imediata.",
+    "relatedClassIds": [],
+    "referenceIds": ["felker2020"]
   }
 ]

@@ -6,6 +6,7 @@ struct ScenarioSelectionView: View {
     @EnvironmentObject private var app: AppModel
     let onSelect: (Scenario) -> Void
     var onOpenChecklist: () -> Void = {}
+    var onOpenCalculators: () -> Void = {}
 
     var body: some View {
         ScrollView {
@@ -23,29 +24,10 @@ struct ScenarioSelectionView: View {
                     .buttonStyle(.plain)
                 }
 
-                Button(action: onOpenChecklist) {
-                    HStack(spacing: 14) {
-                        Image(systemName: "checklist")
-                            .font(.system(size: 26))
-                            .foregroundStyle(.teal)
-                            .frame(width: 44)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(app.t(.checklistNavTitle))
-                                .font(.headline)
-                                .foregroundStyle(.primary)
-                            Text(app.t(.checklistSubtitle))
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.leading)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right").foregroundStyle(.tertiary)
-                    }
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
-                }
-                .buttonStyle(.plain)
+                toolButton(icon: "checklist", title: app.t(.checklistNavTitle),
+                           subtitle: app.t(.checklistSubtitle), action: onOpenChecklist)
+                toolButton(icon: "function", title: app.t(.calcNavTitle),
+                           subtitle: app.t(.calcSubtitle), action: onOpenCalculators)
 
                 DisclaimerBanner()
             }
@@ -58,6 +40,32 @@ struct ScenarioSelectionView: View {
                 LanguageMenu()
             }
         }
+    }
+
+    private func toolButton(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: icon)
+                    .font(.system(size: 26))
+                    .foregroundStyle(.teal)
+                    .frame(width: 44)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+        }
+        .buttonStyle(.plain)
     }
 
     private func scenarioCard(_ scenario: Scenario) -> some View {

@@ -32,6 +32,17 @@
 - **Conteúdo versionado** (`contentVersion` / `lastReviewed`) e **rastreável por
   referência**.
 
+## Ferramentas adicionais (v0.3)
+
+- **Exportar/compartilhar** a avaliação como **PDF anônimo** (aba Resumo → folha de
+  compartilhamento do iOS). Sem identificadores de paciente.
+- **Calculadoras**: CHA₂DS₂-VASc, TFGe (CKD-EPI 2021), déficit de ferro (Ganzoni) e
+  sódio corrigido para hiperglicemia.
+- **Plano de otimização (GDMT)** no fluxo ICFEr: quais pilares considerar otimizar vs.
+  bloqueados, com **alerta de interação** (duplo bloqueio SRAA + ARM → hipercalemia).
+- **Novo cenário: Choque / IC refratária** — triagem educacional de instabilidade/baixo
+  débito (encaminhamento a ambiente monitorizado), fora do fluxo de congestão simples.
+
 **Idiomas:** português (padrão) e inglês, com **seletor de idioma dentro do app**
 (menu do globo 🌐). A troca é ao vivo: recarrega o conteúdo clínico e reavalia o caso.
 

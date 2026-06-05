@@ -90,6 +90,19 @@ enum UIString: String {
     case toggleInfiltrative, toggleValvular, togglePulmonary, toggleAnemia, toggleNonCardiacEdema
     case fieldPASP, fieldEoverE, triNotAssessed
     case resultBlocksTitle
+
+    // v0.3 — export
+    case exportButton
+
+    // v0.3 — calculators
+    case calcNavTitle, calcSubtitle
+    case calcCHA2Title, calcHF, calcStroke, calcVascular, calcFemale, calcScoreLabel
+    case calcEGFRTitle
+    case calcIronTitle, calcWeight, calcHbCurrent, calcHbTarget, unitKg, unitGdl, calcDeficitLabel
+    case calcSodiumTitle, calcNaMeasured, calcGlucose, calcCorrectedLabel
+
+    // v0.3 — cardiogenic shock inputs
+    case sectionShock, fieldLactate, toggleOliguria, toggleAlteredMentation
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -108,6 +121,8 @@ enum Localizer {
         case (.acuteCongestion, .en): return "Acute congestive HF"
         case (.hfpefHFmrEF, .pt): return "ICFEp / ICFEm"
         case (.hfpefHFmrEF, .en): return "HFpEF / HFmrEF"
+        case (.cardiogenicShock, .pt): return "Choque / IC refratária"
+        case (.cardiogenicShock, .en): return "Shock / refractory HF"
         }
     }
 
@@ -119,6 +134,8 @@ enum Localizer {
         case (.acuteCongestion, .en): return "Acute/decompensated HF with congestion, without cardiogenic shock."
         case (.hfpefHFmrEF, .pt): return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
         case (.hfpefHFmrEF, .en): return "Preserved or mildly reduced ejection fraction, focusing on diagnosis, comorbidities and congestion."
+        case (.cardiogenicShock, .pt): return "Triagem de instabilidade hemodinâmica / baixo débito — fora do fluxo de congestão simples."
+        case (.cardiogenicShock, .en): return "Triage of hemodynamic instability / low output — outside the simple congestion flow."
         }
     }
 
@@ -387,7 +404,32 @@ enum Localizer {
         .fieldPASP: "PSAP estimada > 35 mmHg",
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Não avaliado",
-        .resultBlocksTitle: "Recomendações"
+        .resultBlocksTitle: "Recomendações",
+        .exportButton: "Exportar / compartilhar (PDF)",
+        .calcNavTitle: "Calculadoras",
+        .calcSubtitle: "Escores e cálculos de apoio (anônimos).",
+        .calcCHA2Title: "CHA₂DS₂-VASc (risco de AVC na FA)",
+        .calcHF: "Insuficiência cardíaca / disfunção de VE",
+        .calcStroke: "AVC / AIT / tromboembolismo prévio",
+        .calcVascular: "Doença vascular",
+        .calcFemale: "Sexo feminino",
+        .calcScoreLabel: "Escore",
+        .calcEGFRTitle: "TFGe (CKD-EPI 2021)",
+        .calcIronTitle: "Déficit de ferro (Ganzoni)",
+        .calcWeight: "Peso",
+        .calcHbCurrent: "Hb atual",
+        .calcHbTarget: "Hb alvo",
+        .unitKg: "kg",
+        .unitGdl: "g/dL",
+        .calcDeficitLabel: "Déficit de ferro",
+        .calcSodiumTitle: "Sódio corrigido (hiperglicemia)",
+        .calcNaMeasured: "Sódio medido",
+        .calcGlucose: "Glicemia",
+        .calcCorrectedLabel: "Sódio corrigido",
+        .sectionShock: "Instabilidade / choque",
+        .fieldLactate: "Lactato",
+        .toggleOliguria: "Oligúria importante",
+        .toggleAlteredMentation: "Alteração de consciência"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -513,6 +555,31 @@ enum Localizer {
         .fieldPASP: "Estimated PASP > 35 mmHg",
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Not assessed",
-        .resultBlocksTitle: "Recommendations"
+        .resultBlocksTitle: "Recommendations",
+        .exportButton: "Export / share (PDF)",
+        .calcNavTitle: "Calculators",
+        .calcSubtitle: "Supportive scores and calculations (anonymous).",
+        .calcCHA2Title: "CHA₂DS₂-VASc (AF stroke risk)",
+        .calcHF: "Heart failure / LV dysfunction",
+        .calcStroke: "Prior stroke / TIA / thromboembolism",
+        .calcVascular: "Vascular disease",
+        .calcFemale: "Female sex",
+        .calcScoreLabel: "Score",
+        .calcEGFRTitle: "eGFR (CKD-EPI 2021)",
+        .calcIronTitle: "Iron deficit (Ganzoni)",
+        .calcWeight: "Weight",
+        .calcHbCurrent: "Current Hb",
+        .calcHbTarget: "Target Hb",
+        .unitKg: "kg",
+        .unitGdl: "g/dL",
+        .calcDeficitLabel: "Iron deficit",
+        .calcSodiumTitle: "Corrected sodium (hyperglycemia)",
+        .calcNaMeasured: "Measured sodium",
+        .calcGlucose: "Glucose",
+        .calcCorrectedLabel: "Corrected sodium",
+        .sectionShock: "Instability / shock",
+        .fieldLactate: "Lactate",
+        .toggleOliguria: "Significant oliguria",
+        .toggleAlteredMentation: "Altered mentation"
     ]
 }

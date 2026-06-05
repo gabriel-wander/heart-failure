@@ -16,6 +16,7 @@ struct ClinicalInputView: View {
         case .chronicHFrEF: return [.lvef, .systolicBP, .heartRate, .egfr, .potassium]
         case .acuteCongestion: return [.systolicBP, .egfr, .potassium]
         case .hfpefHFmrEF: return [.lvef]
+        case .cardiogenicShock: return [.systolicBP]
         }
     }
 
@@ -71,6 +72,14 @@ struct ClinicalInputView: View {
 
             if app.scenario == .hfpefHFmrEF {
                 hfpefSection
+            }
+
+            if app.scenario == .cardiogenicShock {
+                Section(app.t(.sectionShock)) {
+                    NumericRow(title: app.t(.fieldLactate), unit: app.t(.unitMmolL), text: $app.draft.lactate)
+                    Toggle(app.t(.toggleOliguria), isOn: $app.draft.oliguria)
+                    Toggle(app.t(.toggleAlteredMentation), isOn: $app.draft.alteredMentation)
+                }
             }
 
             if !missingEssential.isEmpty {

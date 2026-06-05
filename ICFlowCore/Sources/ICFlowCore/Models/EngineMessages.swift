@@ -69,6 +69,20 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let hfpefReferralJustification: String
     public let hfpefGeneralNote: String
 
+    // GDMT optimization (chronic HFrEF synthesis)
+    public let gdmtTitle: String
+    public let gdmtIntro: String
+    public let gdmtOptimize: String          // {classes}
+    public let gdmtBlocked: String           // {classes}
+    public let gdmtDualRASMRANote: String
+
+    // Cardiogenic shock / advanced-refractory triage
+    public let shockTitle: String
+    public let shockJustification: String
+    public let shockSteps: [String]
+    public let shockStableNote: String
+    public let shockGeneralNote: String
+
     /// Replaces `{key}` tokens in `template` with the provided values.
     public static func fill(_ template: String, _ values: [String: String]) -> String {
         var result = template

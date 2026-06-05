@@ -67,6 +67,27 @@ final class HFrEFEvaluatorTests: XCTestCase {
         XCTAssertEqual(ironReferral?.group, .referral)
     }
 
+    // MARK: - GDMT optimization synthesis
+
+    func testGDMTOptimizationCardListsPillarsAndDualBlockAlert() {
+        let result = engine.evaluate(input())
+        let gdmt = result.recommendation(id: "gdmt_optimization")
+        XCTAssertNotNil(gdmt)
+        let text = gdmt!.justifications.joined(separator: " ")
+        XCTAssertTrue(text.contains("Betabloqueador"), "Deve listar pilares a otimizar")
+        // RAS + MRA both candidates → additive hyperkalemia interaction note + alerts.
+        XCTAssertTrue(text.lowercased().contains("hipercalemia"))
+        XCTAssertTrue(gdmt!.safetyAlerts.contains { $0.id == "mra_hyperkalemia" || $0.id == "ras_hyperkalemia" })
+    }
+
+    func testGDMTNoDualBlockNoteWhenBothContraindicated() {
+        let result = engine.evaluate(input(potassium: 5.8))
+        let gdmt = result.recommendation(id: "gdmt_optimization")
+        let text = gdmt!.justifications.joined(separator: " ")
+        XCTAssertFalse(text.lowercased().contains("aditivo de hipercalemia"),
+                       "Sem nota de duplo bloqueio quando ambos estão contraindicados")
+    }
+
     func testSevereHyperkalemiaContraindicatesRASandMRA() {
         let result = engine.evaluate(input(potassium: 5.8))
         XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .contraindicated)

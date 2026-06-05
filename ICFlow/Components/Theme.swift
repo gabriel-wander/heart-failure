@@ -69,6 +69,7 @@ extension Scenario {
         case .chronicHFrEF: return "heart.text.square.fill"
         case .acuteCongestion: return "drop.fill"
         case .hfpefHFmrEF: return "heart.circle.fill"
+        case .cardiogenicShock: return "bolt.heart.fill"
         }
     }
 }

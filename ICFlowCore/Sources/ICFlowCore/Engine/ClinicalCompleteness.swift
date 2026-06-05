@@ -27,6 +27,10 @@ public enum ClinicalCompleteness {
         case .hfpefHFmrEF:
             // Ejection fraction is the minimum needed to classify HFpEF/HFmrEF.
             return input.lvef == nil ? [.lvef] : []
+
+        case .cardiogenicShock:
+            // Blood pressure anchors the instability triage.
+            return input.systolicBP == nil ? [.systolicBP] : []
         }
     }
 

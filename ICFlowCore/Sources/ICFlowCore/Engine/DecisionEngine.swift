@@ -9,12 +9,14 @@ public struct DecisionEngine {
     private let hfref: HFrEFEvaluator
     private let acute: AcuteCongestionEvaluator
     private let hfpef: HFpEFEvaluator
+    private let shock: CardiogenicShockEvaluator
 
     public init(repository: ContentRepository) {
         self.repository = repository
         self.hfref = HFrEFEvaluator(repository: repository)
         self.acute = AcuteCongestionEvaluator(repository: repository)
         self.hfpef = HFpEFEvaluator(repository: repository)
+        self.shock = CardiogenicShockEvaluator(repository: repository)
     }
 
     /// Produces a full assessment for the given de-identified input.
@@ -26,6 +28,8 @@ public struct DecisionEngine {
             return acute.evaluate(input)
         case .hfpefHFmrEF:
             return hfpef.evaluate(input)
+        case .cardiogenicShock:
+            return shock.evaluate(input)
         }
     }
 }

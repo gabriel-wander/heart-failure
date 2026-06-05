@@ -8,6 +8,8 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
     case acuteCongestion
     /// Preserved or mildly reduced ejection fraction (HFpEF / HFmrEF).
     case hfpefHFmrEF
+    /// Cardiogenic shock / advanced-refractory HF triage.
+    case cardiogenicShock
 
     public var id: String { rawValue }
 
@@ -16,6 +18,7 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
         case .chronicHFrEF: return "ICFEr crônica"
         case .acuteCongestion: return "IC aguda congesta"
         case .hfpefHFmrEF: return "ICFEp / ICFEm"
+        case .cardiogenicShock: return "Choque / IC refratária"
         }
     }
 
@@ -27,6 +30,8 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
             return "IC aguda/descompensada com congestão, sem choque cardiogênico."
         case .hfpefHFmrEF:
             return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
+        case .cardiogenicShock:
+            return "Triagem de instabilidade hemodinâmica/baixo débito — fora do fluxo de congestão simples."
         }
     }
 }

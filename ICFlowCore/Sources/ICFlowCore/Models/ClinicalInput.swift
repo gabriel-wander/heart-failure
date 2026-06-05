@@ -53,6 +53,11 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
     public var paspOver35: Bool?       // PSAP estimada > 35 mmHg (eco) — nil = não avaliado
     public var eOverEprimeOver9: Bool? // E/e' > 9 (eco) — nil = não avaliado
 
+    // Cardiogenic shock / instability context
+    public var lactate: Double?        // Lactato (mmol/L)
+    public var oliguria: Bool          // Oligúria importante
+    public var alteredMentation: Bool  // Alteração do estado de consciência
+
     // Optional details for the IV diuretic estimate (acute flow).
     public var currentLoopAgentId: String?       // ex.: "furosemide"
     public var currentLoopOralDailyDoseMg: Double?
@@ -94,6 +99,9 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
         nonCardiacEdema: Bool = false,
         paspOver35: Bool? = nil,
         eOverEprimeOver9: Bool? = nil,
+        lactate: Double? = nil,
+        oliguria: Bool = false,
+        alteredMentation: Bool = false,
         currentLoopAgentId: String? = nil,
         currentLoopOralDailyDoseMg: Double? = nil
     ) {
@@ -133,6 +141,9 @@ public struct ClinicalInput: Codable, Equatable, Sendable {
         self.nonCardiacEdema = nonCardiacEdema
         self.paspOver35 = paspOver35
         self.eOverEprimeOver9 = eOverEprimeOver9
+        self.lactate = lactate
+        self.oliguria = oliguria
+        self.alteredMentation = alteredMentation
         self.currentLoopAgentId = currentLoopAgentId
         self.currentLoopOralDailyDoseMg = currentLoopOralDailyDoseMg
     }

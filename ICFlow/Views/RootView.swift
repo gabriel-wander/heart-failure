@@ -29,10 +29,13 @@ struct RootView: View {
                     app.startNewAssessment(scenario: scenario)
                     path.append(.clinicalInput)
                 },
-                onOpenChecklist: { path.append(.dischargeChecklist) }
+                onOpenChecklist: { path.append(.dischargeChecklist) },
+                onOpenCalculators: { path.append(.calculators) }
             )
         case .dischargeChecklist:
             DischargeChecklistView()
+        case .calculators:
+            CalculatorsView()
         case .clinicalInput:
             ClinicalInputView {
                 app.generate()
