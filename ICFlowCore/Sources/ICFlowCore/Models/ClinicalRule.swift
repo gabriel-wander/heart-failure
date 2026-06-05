@@ -187,6 +187,8 @@ public struct AcuteCongestionConfig: Codable, Equatable, Sendable {
 /// Top-level structure decoded from `clinical_rules.json`.
 public struct ClinicalRuleSet: Codable, Equatable, Sendable {
     public let hfrefRules: [ClinicalRule]
+    /// Regras que sugerem terapias adicionais (não-pilares) conforme perfil.
+    public let hfrefAdditionalRules: [ClinicalRule]?
     public let acuteCongestionRules: [ClinicalRule]
     public let acuteCongestionConfig: AcuteCongestionConfig
     /// Ordem de exibição das classes do módulo ICFEr.
@@ -203,6 +205,7 @@ public struct ClinicalRuleSet: Codable, Equatable, Sendable {
 
     public init(
         hfrefRules: [ClinicalRule],
+        hfrefAdditionalRules: [ClinicalRule]? = nil,
         acuteCongestionRules: [ClinicalRule],
         acuteCongestionConfig: AcuteCongestionConfig,
         hfrefClassOrder: [String],
@@ -211,6 +214,7 @@ public struct ClinicalRuleSet: Codable, Equatable, Sendable {
         lastReviewed: String? = nil
     ) {
         self.hfrefRules = hfrefRules
+        self.hfrefAdditionalRules = hfrefAdditionalRules
         self.acuteCongestionRules = acuteCongestionRules
         self.acuteCongestionConfig = acuteCongestionConfig
         self.hfrefClassOrder = hfrefClassOrder

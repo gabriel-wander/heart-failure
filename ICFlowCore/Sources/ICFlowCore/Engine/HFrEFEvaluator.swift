@@ -84,6 +84,7 @@ struct HFrEFEvaluator {
                     classId: classId,
                     displayDrug: "\(primary.genericName) (\(primary.subclass))",
                     status: status,
+                    group: .prognosis,
                     justifications: justifications,
                     startingDose: primary.startingDose,
                     targetDose: primary.targetDose,
@@ -92,6 +93,42 @@ struct HFrEFEvaluator {
                     references: recReferences,
                     missingData: missingForClass,
                     notes: alternativeNote(forClass: classId, excluding: primary)
+                )
+            )
+        }
+
+        // Additional, profile-based therapies (non-pillars): ivabradine,
+        // hydralazine+nitrate, vericiguat, digoxin, IV iron referral, etc.
+        for rule in (ruleSet.hfrefAdditionalRules ?? []) where RuleMatcher.matches(rule, input: input) {
+            guard
+                let classId = rule.classId,
+                let med = repository.primaryMedication(forClass: classId, scenario: .chronicHFrEF)
+            else { continue }
+
+            let recStatus = rule.status.map { RecommendationStatus(eligibility: $0) } ?? .consider
+            let group: RecommendationGroup = (classId == "iv_iron") ? .referral : .additional
+            let recAlerts = repository.alerts(withIds: rule.safetyAlertIds + med.safetyAlertIds)
+                .reduce(into: [SafetyAlert]()) { acc, a in if !acc.contains(where: { $0.id == a.id }) { acc.append(a) } }
+            let refs = repository.references(withIds: rule.referenceIds + med.referenceIds)
+                .reduce(into: [Reference]()) { acc, r in if !acc.contains(where: { $0.id == r.id }) { acc.append(r) } }
+            refs.forEach { usedReferenceIds.insert($0.id) }
+            recAlerts.forEach { usedAlertIds.insert($0.id) }
+
+            recommendations.append(
+                Recommendation(
+                    id: "add_\(med.id)",
+                    title: rule.title ?? med.genericName,
+                    classId: classId,
+                    displayDrug: med.genericName,
+                    status: recStatus,
+                    group: group,
+                    justifications: [rule.justification],
+                    startingDose: med.startingDose,
+                    targetDose: med.targetDose,
+                    monitoring: med.monitoring,
+                    safetyAlerts: recAlerts,
+                    references: refs,
+                    notes: []
                 )
             )
         }

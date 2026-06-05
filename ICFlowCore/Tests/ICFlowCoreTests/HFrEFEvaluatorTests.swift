@@ -16,23 +16,55 @@ final class HFrEFEvaluatorTests: XCTestCase {
         potassium: Double? = 4.2,
         creatinine: Double? = 1.0,
         congestion: Bool = false,
-        hypoperfusion: Bool = false
+        hypoperfusion: Bool = false,
+        historyOfAngioedema: Bool = false
     ) -> PatientInput {
         PatientInput(
             scenario: .chronicHFrEF, lvef: lvef, nyha: nyha, systolicBP: sbp,
             heartRate: hr, rhythm: rhythm, egfr: egfr, potassium: potassium,
-            creatinine: creatinine, congestion: congestion, hypoperfusion: hypoperfusion
+            creatinine: creatinine, congestion: congestion, hypoperfusion: hypoperfusion,
+            historyOfAngioedema: historyOfAngioedema
         )
     }
 
     func testStablePatientAllFourPillarsConsidered() {
         let result = engine.evaluate(input())
-        XCTAssertEqual(result.recommendations.count, 4)
+        let pillars = result.recommendations.filter { $0.group == .prognosis }
+        XCTAssertEqual(pillars.count, 4, "Os quatro pilares devem ser avaliados")
         XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .consider)
         XCTAssertEqual(result.status(forClass: "beta_blocker"), .consider)
         XCTAssertEqual(result.status(forClass: "mra"), .consider)
         XCTAssertEqual(result.status(forClass: "sglt2"), .consider)
         XCTAssertTrue(result.missingEssentialData.isEmpty)
+    }
+
+    // MARK: - v0.2 additional therapies & extra rules
+
+    func testAngioedemaHistoryContraindicatesRAS() {
+        let result = engine.evaluate(input(historyOfAngioedema: true))
+        XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .contraindicated)
+    }
+
+    func testIvabradineConsideredInSinusWithHighHR() {
+        let result = engine.evaluate(input(hr: 78, rhythm: .sinus))
+        let ivabradine = result.recommendation(id: "add_ivabradine")
+        XCTAssertNotNil(ivabradine, "Ivabradina deve ser sugerida em ritmo sinusal com FC alta")
+        XCTAssertEqual(ivabradine?.status, .consider)
+        XCTAssertEqual(ivabradine?.group, .additional)
+    }
+
+    func testIvabradineNotRecommendedInAtrialFibrillation() {
+        let result = engine.evaluate(input(hr: 90, rhythm: .afib))
+        XCTAssertNil(result.recommendation(id: "add_ivabradine"),
+                     "Ivabradina não deve ser sugerida em fibrilação atrial")
+    }
+
+    func testAdditionalTherapiesAppearForHFrEF() {
+        let result = engine.evaluate(input(lvef: 30))
+        XCTAssertNotNil(result.recommendation(id: "add_vericiguat"))
+        XCTAssertNotNil(result.recommendation(id: "add_digoxin"))
+        let ironReferral = result.recommendation(id: "add_iv_iron")
+        XCTAssertEqual(ironReferral?.group, .referral)
     }
 
     func testSevereHyperkalemiaContraindicatesRASandMRA() {
