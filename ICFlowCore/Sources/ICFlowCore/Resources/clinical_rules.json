@@ -1,0 +1,233 @@
+{
+  "hfrefClassOrder": ["renin_angiotensin", "beta_blocker", "mra", "sglt2"],
+  "classLabels": {
+    "renin_angiotensin": "INRA / IECA / BRA",
+    "beta_blocker": "Betabloqueador",
+    "mra": "Antagonista do receptor mineralocorticoide (MRA)",
+    "sglt2": "Inibidor de SGLT2 (iSGLT2)",
+    "loop_diuretic": "Diurético de alça"
+  },
+  "acuteCongestionConfig": {
+    "ivLoopMultiplier": 2.5,
+    "loopNaiveInitialFurosemideIVmg": 40,
+    "minDailyDoses": 2,
+    "cautionDailyFurosemideEquivMg": 1000,
+    "monitoringParameters": [
+      "Diurese (idealmente débito urinário horário)",
+      "Peso diário",
+      "Balanço hídrico",
+      "PA e frequência cardíaca",
+      "Creatinina e TFGe",
+      "Sódio",
+      "Potássio",
+      "Magnésio"
+    ],
+    "referenceIds": ["felker2020", "greene2023"]
+  },
+  "hfrefRules": [
+    {
+      "id": "ras_contra_hypotension",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "systolicBP", "op": "lt", "value": 90 }],
+      "justification": "Hipotensão (PAS < 90 mmHg): não iniciar/uptitular bloqueio do SRAA até estabilização hemodinâmica.",
+      "safetyAlertIds": ["ras_hypotension"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "ras_caution_lowbp",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "systolicBP", "op": "lt", "value": 100 }],
+      "justification": "PAS limítrofe (< 100 mmHg): iniciar em dose reduzida (ex.: INRA 24/26 mg 2×/dia) e monitorar a PA.",
+      "safetyAlertIds": ["ras_hypotension"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "ras_contra_hyperkalemia",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "potassium", "op": "gt", "value": 5.5 }],
+      "justification": "Potássio > 5,5 mmol/L: corrigir antes de iniciar/aumentar IECA/BRA/INRA.",
+      "safetyAlertIds": ["ras_hyperkalemia"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "ras_caution_hyperkalemia",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "potassium", "op": "gte", "value": 5.0 }],
+      "justification": "Potássio 5,0–5,5 mmol/L: cautela, sobretudo se associado a MRA; monitorar de perto.",
+      "safetyAlertIds": ["ras_hyperkalemia"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "ras_caution_renal",
+      "classId": "renin_angiotensin",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 30 }],
+      "justification": "TFGe < 30 mL/min/1,73 m²: cautela; ajustar dose e monitorar função renal e potássio.",
+      "safetyAlertIds": ["ras_renal", "ras_hyperkalemia"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "bb_contra_bradycardia",
+      "classId": "beta_blocker",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "heartRate", "op": "lt", "value": 50 }],
+      "justification": "FC < 50 bpm: não iniciar/uptitular betabloqueador; avaliar bradiarritmia/bloqueio AV.",
+      "safetyAlertIds": ["bb_bradycardia"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "bb_caution_bradycardia",
+      "classId": "beta_blocker",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "heartRate", "op": "lt", "value": 60 }],
+      "justification": "FC 50–59 bpm: cautela ao iniciar/uptitular betabloqueador.",
+      "safetyAlertIds": ["bb_bradycardia"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "bb_caution_congestion",
+      "classId": "beta_blocker",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "congestion", "op": "isTrue" }],
+      "justification": "Congestão/descompensação: não iniciar nem aumentar betabloqueador até euvolemia e estabilidade; manter dose vigente se já em uso e tolerada.",
+      "safetyAlertIds": ["bb_decompensation"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "bb_caution_hypoperfusion",
+      "classId": "beta_blocker",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "hypoperfusion", "op": "isTrue" }],
+      "justification": "Hipoperfusão/baixo débito: evitar início ou aumento de betabloqueador.",
+      "safetyAlertIds": ["bb_decompensation"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "bb_caution_lowbp",
+      "classId": "beta_blocker",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "systolicBP", "op": "lt", "value": 90 }],
+      "justification": "PAS < 90 mmHg: cautela ao iniciar/uptitular betabloqueador.",
+      "safetyAlertIds": ["bb_decompensation"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "mra_contra_hyperkalemia",
+      "classId": "mra",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "potassium", "op": "gt", "value": 5.5 }],
+      "justification": "Potássio > 5,5 mmol/L: contraindicado iniciar MRA; corrigir e reavaliar.",
+      "safetyAlertIds": ["mra_hyperkalemia"],
+      "referenceIds": ["patolia2023", "greene2023"]
+    },
+    {
+      "id": "mra_caution_hyperkalemia",
+      "classId": "mra",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "potassium", "op": "gte", "value": 5.0 }],
+      "justification": "Potássio 5,0–5,5 mmol/L: cautela; monitorar potássio em 3 dias e 1 semana após início.",
+      "safetyAlertIds": ["mra_hyperkalemia"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "mra_contra_renal",
+      "classId": "mra",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 30 }],
+      "justification": "TFGe < 30 mL/min/1,73 m²: em geral evitar MRA pelo risco de hipercalemia.",
+      "safetyAlertIds": ["mra_renal", "mra_hyperkalemia"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "mra_caution_renal",
+      "classId": "mra",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 45 }],
+      "justification": "TFGe 30–45 mL/min/1,73 m²: cautela, com monitorização mais frequente de potássio e creatinina.",
+      "safetyAlertIds": ["mra_renal"],
+      "referenceIds": ["patolia2023"]
+    },
+    {
+      "id": "sglt2_contra_egfr",
+      "classId": "sglt2",
+      "logic": "all",
+      "status": "contraindicated",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 20 }],
+      "justification": "TFGe < 20 mL/min/1,73 m²: em geral não iniciar iSGLT2 (verificar limiar de bula do agente).",
+      "safetyAlertIds": ["sglt2_egfr"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "sglt2_caution_egfr",
+      "classId": "sglt2",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 25 }],
+      "justification": "TFGe 20–25 mL/min/1,73 m²: cautela ao iniciar; o benefício mantém-se na doença renal crônica.",
+      "safetyAlertIds": ["sglt2_egfr"],
+      "referenceIds": ["greene2023"]
+    },
+    {
+      "id": "sglt2_caution_hypotension",
+      "classId": "sglt2",
+      "logic": "all",
+      "status": "caution",
+      "conditions": [{ "field": "systolicBP", "op": "lt", "value": 95 }],
+      "justification": "PAS < 95 mmHg: cautela; iSGLT2 tem efeito diurético leve — ajustar diuréticos para evitar hipotensão.",
+      "safetyAlertIds": ["sglt2_volume"],
+      "referenceIds": ["greene2023"]
+    }
+  ],
+  "acuteCongestionRules": [
+    {
+      "id": "acute_rf_hypotension",
+      "logic": "all",
+      "conditions": [{ "field": "systolicBP", "op": "lt", "value": 90 }],
+      "justification": "PAS < 90 mmHg: possível baixo débito — avaliação especializada e suporte hemodinâmico.",
+      "safetyAlertIds": ["acute_hypotension"],
+      "referenceIds": ["felker2020"]
+    },
+    {
+      "id": "acute_rf_hypoperfusion",
+      "logic": "all",
+      "conditions": [{ "field": "hypoperfusion", "op": "isTrue" }],
+      "justification": "Sinais de hipoperfusão: avaliar baixo débito; diurético isolado pode ser insuficiente ou deletério.",
+      "safetyAlertIds": ["acute_hypotension"],
+      "referenceIds": ["felker2020"]
+    },
+    {
+      "id": "acute_rf_hyperkalemia",
+      "logic": "all",
+      "conditions": [{ "field": "potassium", "op": "gt", "value": 6.0 }],
+      "justification": "Potássio > 6,0 mmol/L: hipercalemia grave — manejo imediato.",
+      "safetyAlertIds": ["acute_hyperkalemia"],
+      "referenceIds": ["felker2020"]
+    },
+    {
+      "id": "acute_rf_renal",
+      "logic": "all",
+      "conditions": [{ "field": "egfr", "op": "lt", "value": 30 }],
+      "justification": "TFGe < 30 mL/min/1,73 m²: maior risco de resistência diurética e deterioração renal — monitorar de perto.",
+      "safetyAlertIds": ["acute_renal"],
+      "referenceIds": ["felker2020"]
+    }
+  ]
+}
