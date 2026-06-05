@@ -240,5 +240,44 @@
     "safetyAlertIds": ["acute_electrolytes"],
     "referenceIds": ["felker2020"],
     "furosemideEquivalentFactor": 2.0
+  },
+  {
+    "id": "hydrochlorothiazide",
+    "genericName": "Hidroclorotiazida",
+    "classId": "sequential_nephron",
+    "subclass": "Tiazídico",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "25 mg VO 1×/dia (associada ao diurético de alça)",
+    "targetDose": "Até 50 mg/dia conforme resposta",
+    "monitoring": ["Potássio", "Sódio", "Função renal", "Volemia/PA"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "metolazone",
+    "genericName": "Metolazona",
+    "classId": "sequential_nephron",
+    "subclass": "Tiazídico-símile",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "2,5 mg VO 1×/dia (~30 min antes do diurético de alça)",
+    "targetDose": "Até 5–10 mg/dia conforme resposta",
+    "monitoring": ["Potássio", "Sódio", "Função renal", "Volemia/PA"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acetazolamide",
+    "genericName": "Acetazolamida",
+    "classId": "sequential_nephron",
+    "subclass": "Inibidor da anidrase carbônica",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "500 mg IV/VO 1×/dia (adjuvante ao diurético de alça)",
+    "targetDose": "Conforme protocolo institucional",
+    "monitoring": ["Sódio", "Potássio", "Bicarbonato", "Função renal"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
   }
 ]

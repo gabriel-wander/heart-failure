@@ -39,5 +39,13 @@
   "acuteDiureticNeedsInfoJustification": "Uso prévio de diurético marcado, mas fármaco e/ou dose domiciliar não informados — a dose IV não pode ser estimada com segurança. Informe o diurético e a dose diária para gerar a estimativa.",
   "acuteInsufficientDataNote": "Recomendação limitada por dados ausentes (ver \"Dados ausentes\"). Completar os dados antes de decidir conduta.",
 
+  "acuteResistanceTitle": "Resposta inadequada / resistência diurética",
+  "acuteResistanceJustification": "Se a resposta diurética for inadequada: reavaliar adesão, absorção, dose, congestão residual e função renal. Considerar escalonar a dose do diurético de alça e, conforme o contexto e o protocolo institucional, o bloqueio sequencial do néfron.",
+  "acuteResistanceNotes": [
+    "Vigiar hipocalemia, hiponatremia, piora da função renal e hipotensão.",
+    "Reavaliar resposta (diurese, peso, balanço hídrico) após cada ajuste."
+  ],
+  "acuteEquivalenceNote": "Equivalências aproximadas de diurético de alça: furosemida 40 mg VO ≈ furosemida 20 mg IV ≈ torsemida 20 mg VO ≈ bumetanida 1 mg (VO/IV). Biodisponibilidade oral da furosemida ~50% (torsemida/bumetanida ~80–100%).",
+
   "acuteGeneralNote": "Fluxo restrito a congestão sem choque cardiogênico. Reavaliar continuamente PA, perfusão e função renal."
 }

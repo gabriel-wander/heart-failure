@@ -39,5 +39,13 @@
   "acuteDiureticNeedsInfoJustification": "Prior diuretic use was marked, but the agent and/or home dose were not provided — the IV dose cannot be estimated safely. Enter the diuretic and the daily dose to generate the estimate.",
   "acuteInsufficientDataNote": "Recommendation limited by missing data (see \"Missing data\"). Complete the data before deciding management.",
 
+  "acuteResistanceTitle": "Inadequate response / diuretic resistance",
+  "acuteResistanceJustification": "If the diuretic response is inadequate: reassess adherence, absorption, dose, residual congestion and renal function. Consider escalating the loop-diuretic dose and, per context and institutional protocol, sequential nephron blockade.",
+  "acuteResistanceNotes": [
+    "Watch for hypokalemia, hyponatremia, worsening renal function and hypotension.",
+    "Reassess the response (diuresis, weight, fluid balance) after each adjustment."
+  ],
+  "acuteEquivalenceNote": "Approximate loop-diuretic equivalences: furosemide 40 mg PO ≈ furosemide 20 mg IV ≈ torsemide 20 mg PO ≈ bumetanide 1 mg (PO/IV). Oral furosemide bioavailability ~50% (torsemide/bumetanide ~80–100%).",
+
   "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function."
 }

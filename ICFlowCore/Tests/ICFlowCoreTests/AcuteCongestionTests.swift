@@ -100,4 +100,19 @@ final class AcuteCongestionTests: XCTestCase {
         XCTAssertTrue(result.missingEssentialData.contains(.systolicBP))
         XCTAssertTrue(result.missingEssentialData.contains(.potassium))
     }
+
+    func testWarmAndWetIncludesDiureticResistanceGuidance() {
+        let result = engine.evaluate(input())
+        let resistance = result.recommendation(id: "diuretic_resistance")
+        XCTAssertNotNil(resistance, "Deve oferecer orientação de resposta inadequada")
+        XCTAssertEqual(resistance?.status, .consider)
+        let notes = resistance?.notes.joined(separator: " ") ?? ""
+        XCTAssertTrue(notes.contains("Metolazona"), "Deve listar opções de bloqueio sequencial do néfron")
+    }
+
+    func testEquivalenceNoteShownWithDiureticPlan() {
+        let result = engine.evaluate(input())
+        let notes = result.recommendation(id: "iv_diuretic")?.notes.joined(separator: " ") ?? ""
+        XCTAssertTrue(notes.contains("bumetanida"), "Deve exibir a tabela de equivalências de diurético de alça")
+    }
 }

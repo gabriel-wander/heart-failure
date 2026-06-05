@@ -98,10 +98,33 @@ struct AcuteCongestionEvaluator {
                         monitoring: config.monitoringParameters,
                         safetyAlerts: planAlerts.sorted { $0.severity.sortRank < $1.severity.sortRank },
                         references: planReferences,
-                        notes: messages.acuteIvNotes
+                        notes: messages.acuteIvNotes + [messages.acuteEquivalenceNote]
                     )
                 )
                 generalNotes.append(messages.acuteIvGeneralNote)
+
+                // Inadequate response → sequential nephron blockade options.
+                let nephronOptions = repository.medications(forClass: "sequential_nephron", scenario: .acuteCongestion)
+                if !nephronOptions.isEmpty {
+                    let optionNotes = nephronOptions.map { "\($0.genericName) (\($0.subclass)): \($0.startingDose)" }
+                    let resistAlerts = repository.alerts(withIds: ["acute_electrolytes"])
+                    resistAlerts.forEach { usedAlertIds.insert($0.id) }
+                    recommendations.append(
+                        Recommendation(
+                            id: "diuretic_resistance",
+                            title: messages.acuteResistanceTitle,
+                            classId: "sequential_nephron",
+                            displayDrug: nil,
+                            status: .consider,
+                            group: .additional,
+                            justifications: [messages.acuteResistanceJustification],
+                            monitoring: [],
+                            safetyAlerts: resistAlerts,
+                            references: planReferences,
+                            notes: optionNotes + messages.acuteResistanceNotes
+                        )
+                    )
+                }
             } else {
                 // Prior diuretic use marked without agent/dose → do not compute a
                 // dose silently; ask for the missing information.

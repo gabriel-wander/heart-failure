@@ -46,6 +46,13 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     /// Nota geral quando a avaliação aguda está limitada por dados ausentes.
     public let acuteInsufficientDataNote: String
 
+    // Diuretic resistance / sequential nephron blockade
+    public let acuteResistanceTitle: String
+    public let acuteResistanceJustification: String
+    public let acuteResistanceNotes: [String]
+    /// Tabela de equivalências de diurético de alça (texto pronto).
+    public let acuteEquivalenceNote: String
+
     public let acuteGeneralNote: String
 
     /// Replaces `{key}` tokens in `template` with the provided values.

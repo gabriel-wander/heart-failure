@@ -240,5 +240,44 @@
     "safetyAlertIds": ["acute_electrolytes"],
     "referenceIds": ["felker2020"],
     "furosemideEquivalentFactor": 2.0
+  },
+  {
+    "id": "hydrochlorothiazide",
+    "genericName": "Hydrochlorothiazide",
+    "classId": "sequential_nephron",
+    "subclass": "Thiazide",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "25 mg PO once daily (added to the loop diuretic)",
+    "targetDose": "Up to 50 mg/day as response dictates",
+    "monitoring": ["Potassium", "Sodium", "Renal function", "Volume status/BP"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "metolazone",
+    "genericName": "Metolazone",
+    "classId": "sequential_nephron",
+    "subclass": "Thiazide-like",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "2.5 mg PO once daily (~30 min before the loop diuretic)",
+    "targetDose": "Up to 5–10 mg/day as response dictates",
+    "monitoring": ["Potassium", "Sodium", "Renal function", "Volume status/BP"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
+  },
+  {
+    "id": "acetazolamide",
+    "genericName": "Acetazolamide",
+    "classId": "sequential_nephron",
+    "subclass": "Carbonic anhydrase inhibitor",
+    "scenario": "acuteCongestion",
+    "isPrimary": false,
+    "startingDose": "500 mg IV/PO once daily (adjunct to the loop diuretic)",
+    "targetDose": "Per institutional protocol",
+    "monitoring": ["Sodium", "Potassium", "Bicarbonate", "Renal function"],
+    "safetyAlertIds": ["acute_electrolytes"],
+    "referenceIds": ["felker2020"]
   }
 ]
