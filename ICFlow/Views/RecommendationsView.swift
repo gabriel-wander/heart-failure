@@ -7,6 +7,10 @@ struct RecommendationsView: View {
     @EnvironmentObject private var app: AppModel
     let result: AssessmentResult
 
+    /// Order in which recommendation blocks are shown.
+    private let orderedGroups: [RecommendationGroup] =
+        [.general, .prognosis, .symptomCongestion, .additional, .referral]
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -24,8 +28,8 @@ struct RecommendationsView: View {
                     diureticPlanCard(plan)
                 }
 
-                ForEach(result.recommendations) { rec in
-                    RecommendationCard(recommendation: rec)
+                ForEach(orderedGroups, id: \.self) { group in
+                    groupBlock(group)
                 }
 
                 MissingDataCard(fields: result.missingEssentialData)
@@ -52,6 +56,23 @@ struct RecommendationsView: View {
             Text(app.summary(profile))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private func groupBlock(_ group: RecommendationGroup) -> some View {
+        let recs = result.recommendations.filter { $0.group == group }
+        if !recs.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(app.groupName(group))
+                    .font(.footnote.bold())
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                ForEach(recs) { rec in
+                    RecommendationCard(recommendation: rec)
+                }
+            }
         }
     }
 

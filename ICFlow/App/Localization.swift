@@ -78,6 +78,18 @@ enum UIString: String {
     case checklistNavTitle
     case checklistSubtitle
     case checklistFootnote
+
+    // v0.2 — input markers & HFpEF section
+    case essentialLegend
+    case essentialMissingWarning
+    case sectionHFpEF
+    case fieldAge, unitYears
+    case toggleAngioedema
+    case toggleSymptomsHF, toggleObesity, toggleHypertension, toggleAntihtn2
+    case toggleAtrialFib, toggleDiabetes, toggleCKD, toggleCoronary, toggleSleepApnea
+    case toggleInfiltrative, toggleValvular, togglePulmonary, toggleAnemia, toggleNonCardiacEdema
+    case fieldPASP, fieldEoverE, triNotAssessed
+    case resultBlocksTitle
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -351,7 +363,31 @@ enum Localizer {
         .h2fpefIncompleteHint: "Escore incompleto: informe idade, PSAP estimada (> 35 mmHg) e E/e' (> 9) para estimar a probabilidade.",
         .checklistNavTitle: "Checklist de alta",
         .checklistSubtitle: "Verificação de prontidão para alta pós-descompensação.",
-        .checklistFootnote: "Lista educacional de apoio; não substitui o julgamento clínico. Nada é armazenado."
+        .checklistFootnote: "Lista educacional de apoio; não substitui o julgamento clínico. Nada é armazenado.",
+        .essentialLegend: "• Campo essencial para a recomendação",
+        .essentialMissingWarning: "Campos essenciais em branco podem limitar a recomendação:",
+        .sectionHFpEF: "ICFEp / comorbidades",
+        .fieldAge: "Idade",
+        .unitYears: "anos",
+        .toggleAngioedema: "História de angioedema",
+        .toggleSymptomsHF: "Sintomas/sinais de IC",
+        .toggleObesity: "Obesidade (IMC > 30)",
+        .toggleHypertension: "Hipertensão arterial",
+        .toggleAntihtn2: "≥ 2 anti-hipertensivos",
+        .toggleAtrialFib: "Fibrilação atrial",
+        .toggleDiabetes: "Diabetes",
+        .toggleCKD: "Doença renal crônica",
+        .toggleCoronary: "Doença coronariana",
+        .toggleSleepApnea: "Apneia do sono",
+        .toggleInfiltrative: "Suspeita de amiloidose/infiltrativa",
+        .toggleValvular: "Doença valvar relevante",
+        .togglePulmonary: "Doença pulmonar relevante",
+        .toggleAnemia: "Anemia",
+        .toggleNonCardiacEdema: "Edema possivelmente não cardíaco",
+        .fieldPASP: "PSAP estimada > 35 mmHg",
+        .fieldEoverE: "E/e' > 9",
+        .triNotAssessed: "Não avaliado",
+        .resultBlocksTitle: "Recomendações"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -453,6 +489,30 @@ enum Localizer {
         .h2fpefIncompleteHint: "Incomplete score: provide age, estimated PASP (> 35 mmHg) and E/e' (> 9) to estimate the probability.",
         .checklistNavTitle: "Discharge checklist",
         .checklistSubtitle: "Readiness check for post-decompensation discharge.",
-        .checklistFootnote: "Educational support list; it does not replace clinical judgment. Nothing is stored."
+        .checklistFootnote: "Educational support list; it does not replace clinical judgment. Nothing is stored.",
+        .essentialLegend: "• Field essential to the recommendation",
+        .essentialMissingWarning: "Essential fields left blank may limit the recommendation:",
+        .sectionHFpEF: "HFpEF / comorbidities",
+        .fieldAge: "Age",
+        .unitYears: "years",
+        .toggleAngioedema: "History of angioedema",
+        .toggleSymptomsHF: "Symptoms/signs of HF",
+        .toggleObesity: "Obesity (BMI > 30)",
+        .toggleHypertension: "Hypertension",
+        .toggleAntihtn2: "≥ 2 antihypertensives",
+        .toggleAtrialFib: "Atrial fibrillation",
+        .toggleDiabetes: "Diabetes",
+        .toggleCKD: "Chronic kidney disease",
+        .toggleCoronary: "Coronary disease",
+        .toggleSleepApnea: "Sleep apnea",
+        .toggleInfiltrative: "Suspected amyloidosis/infiltrative",
+        .toggleValvular: "Significant valvular disease",
+        .togglePulmonary: "Significant pulmonary disease",
+        .toggleAnemia: "Anemia",
+        .toggleNonCardiacEdema: "Possibly non-cardiac edema",
+        .fieldPASP: "Estimated PASP > 35 mmHg",
+        .fieldEoverE: "E/e' > 9",
+        .triNotAssessed: "Not assessed",
+        .resultBlocksTitle: "Recommendations"
     ]
 }
