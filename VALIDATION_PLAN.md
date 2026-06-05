@@ -22,6 +22,8 @@ conteúdo (JSON), motor de decisão e interface.
 
 ## 2. Testes com casos clínicos fictícios
 
+- As vinhetas iniciais estão em **`VIGNETTES.md`** (revisão pelo cardiologista) com
+  testes correspondentes em `ICFlowCoreTests/ClinicalVignettesTests.swift`.
 - Elaborar um conjunto de **vinhetas clínicas fictícias** (sem dados reais de pacientes)
   cobrindo: paciente estável; hipercalemia leve/grave; TFGe reduzida; hipotensão;
   bradicardia; FA; angioedema; congestão quente-úmida; frio-úmido; hipotensão aguda;
