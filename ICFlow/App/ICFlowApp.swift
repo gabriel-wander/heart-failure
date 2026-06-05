@@ -7,11 +7,13 @@ import ICFlowCore
 @main
 struct ICFlowApp: App {
     @StateObject private var app = AppModel()
+    @StateObject private var history = CaseHistoryStore()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(app)
+                .environmentObject(history)
         }
     }
 }

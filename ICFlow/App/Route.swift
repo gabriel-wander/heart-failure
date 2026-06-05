@@ -7,4 +7,5 @@ enum Route: Hashable {
     case results
     case dischargeChecklist
     case calculators
+    case history
 }

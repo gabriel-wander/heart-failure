@@ -7,6 +7,7 @@ struct ScenarioSelectionView: View {
     let onSelect: (Scenario) -> Void
     var onOpenChecklist: () -> Void = {}
     var onOpenCalculators: () -> Void = {}
+    var onOpenHistory: () -> Void = {}
 
     var body: some View {
         ScrollView {
@@ -28,6 +29,8 @@ struct ScenarioSelectionView: View {
                            subtitle: app.t(.checklistSubtitle), action: onOpenChecklist)
                 toolButton(icon: "function", title: app.t(.calcNavTitle),
                            subtitle: app.t(.calcSubtitle), action: onOpenCalculators)
+                toolButton(icon: "clock.arrow.circlepath", title: app.t(.historyNavTitle),
+                           subtitle: app.t(.historySubtitle), action: onOpenHistory)
 
                 DisclaimerBanner()
             }

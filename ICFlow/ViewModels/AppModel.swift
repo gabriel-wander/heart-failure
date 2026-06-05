@@ -217,4 +217,11 @@ final class AppModel: ObservableObject {
         draft = InputDraft()
         result = nil
     }
+
+    /// Loads a saved (anonymous) case and re-runs the engine on it.
+    func load(_ saved: SavedCase) {
+        scenario = saved.scenario
+        draft = InputDraft(from: saved.input)
+        generate()
+    }
 }

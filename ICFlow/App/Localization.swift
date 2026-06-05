@@ -103,6 +103,13 @@ enum UIString: String {
 
     // v0.3 — cardiogenic shock inputs
     case sectionShock, fieldLactate, toggleOliguria, toggleAlteredMentation
+
+    // v0.4 — anonymous local history
+    case cancel
+    case historyNavTitle, historySubtitle
+    case historyEmptyTitle, historyEmptyDesc, historyFootnote
+    case historyDeleteAll, historySaveButton, historySaved
+    case historySaveMessage, historyLabelPlaceholder
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -429,7 +436,18 @@ enum Localizer {
         .sectionShock: "Instabilidade / choque",
         .fieldLactate: "Lactato",
         .toggleOliguria: "Oligúria importante",
-        .toggleAlteredMentation: "Alteração de consciência"
+        .toggleAlteredMentation: "Alteração de consciência",
+        .cancel: "Cancelar",
+        .historyNavTitle: "Histórico",
+        .historySubtitle: "Casos salvos neste aparelho (anônimos).",
+        .historyEmptyTitle: "Sem casos salvos",
+        .historyEmptyDesc: "Gere uma avaliação e toque em \"Salvar no histórico\" no Resumo.",
+        .historyFootnote: "Casos salvos apenas neste aparelho, de forma anônima. Não insira identificadores (nome, CPF, prontuário). Você pode apagar a qualquer momento.",
+        .historyDeleteAll: "Apagar tudo",
+        .historySaveButton: "Salvar no histórico",
+        .historySaved: "Salvo no histórico",
+        .historySaveMessage: "Salvo apenas neste aparelho, sem identificadores de paciente. Use um rótulo não identificável (ex.: \"Leito 3B\").",
+        .historyLabelPlaceholder: "Rótulo (opcional, sem identificadores)"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -580,6 +598,17 @@ enum Localizer {
         .sectionShock: "Instability / shock",
         .fieldLactate: "Lactate",
         .toggleOliguria: "Significant oliguria",
-        .toggleAlteredMentation: "Altered mentation"
+        .toggleAlteredMentation: "Altered mentation",
+        .cancel: "Cancel",
+        .historyNavTitle: "History",
+        .historySubtitle: "Cases saved on this device (anonymous).",
+        .historyEmptyTitle: "No saved cases",
+        .historyEmptyDesc: "Generate an assessment and tap \"Save to history\" on the Summary.",
+        .historyFootnote: "Cases are saved only on this device, anonymously. Do not enter identifiers (name, ID, record number). You can delete them at any time.",
+        .historyDeleteAll: "Delete all",
+        .historySaveButton: "Save to history",
+        .historySaved: "Saved to history",
+        .historySaveMessage: "Saved only on this device, with no patient identifiers. Use a non-identifying label (e.g., \"Bed 3B\").",
+        .historyLabelPlaceholder: "Label (optional, no identifiers)"
     ]
 }
