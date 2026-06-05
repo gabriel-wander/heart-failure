@@ -6,4 +6,5 @@ enum Route: Hashable {
     case clinicalInput
     case results
     case dischargeChecklist
+    case calculators
 }

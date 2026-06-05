@@ -93,6 +93,13 @@ enum UIString: String {
 
     // v0.3 — export
     case exportButton
+
+    // v0.3 — calculators
+    case calcNavTitle, calcSubtitle
+    case calcCHA2Title, calcHF, calcStroke, calcVascular, calcFemale, calcScoreLabel
+    case calcEGFRTitle
+    case calcIronTitle, calcWeight, calcHbCurrent, calcHbTarget, unitKg, unitGdl, calcDeficitLabel
+    case calcSodiumTitle, calcNaMeasured, calcGlucose, calcCorrectedLabel
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -391,7 +398,27 @@ enum Localizer {
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Não avaliado",
         .resultBlocksTitle: "Recomendações",
-        .exportButton: "Exportar / compartilhar (PDF)"
+        .exportButton: "Exportar / compartilhar (PDF)",
+        .calcNavTitle: "Calculadoras",
+        .calcSubtitle: "Escores e cálculos de apoio (anônimos).",
+        .calcCHA2Title: "CHA₂DS₂-VASc (risco de AVC na FA)",
+        .calcHF: "Insuficiência cardíaca / disfunção de VE",
+        .calcStroke: "AVC / AIT / tromboembolismo prévio",
+        .calcVascular: "Doença vascular",
+        .calcFemale: "Sexo feminino",
+        .calcScoreLabel: "Escore",
+        .calcEGFRTitle: "TFGe (CKD-EPI 2021)",
+        .calcIronTitle: "Déficit de ferro (Ganzoni)",
+        .calcWeight: "Peso",
+        .calcHbCurrent: "Hb atual",
+        .calcHbTarget: "Hb alvo",
+        .unitKg: "kg",
+        .unitGdl: "g/dL",
+        .calcDeficitLabel: "Déficit de ferro",
+        .calcSodiumTitle: "Sódio corrigido (hiperglicemia)",
+        .calcNaMeasured: "Sódio medido",
+        .calcGlucose: "Glicemia",
+        .calcCorrectedLabel: "Sódio corrigido"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -518,6 +545,26 @@ enum Localizer {
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Not assessed",
         .resultBlocksTitle: "Recommendations",
-        .exportButton: "Export / share (PDF)"
+        .exportButton: "Export / share (PDF)",
+        .calcNavTitle: "Calculators",
+        .calcSubtitle: "Supportive scores and calculations (anonymous).",
+        .calcCHA2Title: "CHA₂DS₂-VASc (AF stroke risk)",
+        .calcHF: "Heart failure / LV dysfunction",
+        .calcStroke: "Prior stroke / TIA / thromboembolism",
+        .calcVascular: "Vascular disease",
+        .calcFemale: "Female sex",
+        .calcScoreLabel: "Score",
+        .calcEGFRTitle: "eGFR (CKD-EPI 2021)",
+        .calcIronTitle: "Iron deficit (Ganzoni)",
+        .calcWeight: "Weight",
+        .calcHbCurrent: "Current Hb",
+        .calcHbTarget: "Target Hb",
+        .unitKg: "kg",
+        .unitGdl: "g/dL",
+        .calcDeficitLabel: "Iron deficit",
+        .calcSodiumTitle: "Corrected sodium (hyperglycemia)",
+        .calcNaMeasured: "Measured sodium",
+        .calcGlucose: "Glucose",
+        .calcCorrectedLabel: "Corrected sodium"
     ]
 }
