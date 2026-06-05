@@ -99,6 +99,7 @@ struct BulletList: View {
                         .font(.system(size: 6))
                         .padding(.top, 6)
                         .foregroundStyle(tint)
+                        .accessibilityHidden(true)
                     Text(item)
                         .font(.subheadline)
                         .fixedSize(horizontal: false, vertical: true)

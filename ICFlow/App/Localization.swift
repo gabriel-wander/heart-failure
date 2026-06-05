@@ -107,6 +107,9 @@ enum UIString: String {
     // v0.4 — natriuresis calculator
     case calcNatriuresisTitle, calcUrineNa, calcUrineOutput, unitMlH, calcResponseLabel
 
+    // v0.4 — references search
+    case referencesSearch, referencesNoResults
+
     // v0.4 — anonymous local history
     case cancel
     case historyNavTitle, historySubtitle
@@ -452,6 +455,8 @@ enum Localizer {
         .calcUrineOutput: "Débito urinário",
         .unitMlH: "mL/h",
         .calcResponseLabel: "Resposta",
+        .referencesSearch: "Buscar referências",
+        .referencesNoResults: "Nenhuma referência encontrada.",
         .sectionShock: "Instabilidade / choque",
         .fieldLactate: "Lactato",
         .toggleOliguria: "Oligúria importante",
@@ -619,6 +624,8 @@ enum Localizer {
         .calcUrineOutput: "Urine output",
         .unitMlH: "mL/h",
         .calcResponseLabel: "Response",
+        .referencesSearch: "Search references",
+        .referencesNoResults: "No references found.",
         .sectionShock: "Instability / shock",
         .fieldLactate: "Lactate",
         .toggleOliguria: "Significant oliguria",
