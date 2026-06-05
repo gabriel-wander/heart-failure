@@ -88,6 +88,18 @@ final class HFrEFEvaluatorTests: XCTestCase {
                        "Sem nota de duplo bloqueio quando ambos estão contraindicados")
     }
 
+    // MARK: - Comorbidity overlays
+
+    func testAtrialFibrillationOverlayAppears() {
+        XCTAssertNotNil(engine.evaluate(input(rhythm: .afib)).recommendation(id: "hf_af"))
+        XCTAssertNil(engine.evaluate(input(rhythm: .sinus)).recommendation(id: "hf_af"))
+    }
+
+    func testCKDOverlayAppearsBelow60() {
+        XCTAssertNotNil(engine.evaluate(input(egfr: 40)).recommendation(id: "hf_ckd"))
+        XCTAssertNil(engine.evaluate(input(egfr: 90)).recommendation(id: "hf_ckd"))
+    }
+
     func testSevereHyperkalemiaContraindicatesRASandMRA() {
         let result = engine.evaluate(input(potassium: 5.8))
         XCTAssertEqual(result.status(forClass: "renin_angiotensin"), .contraindicated)

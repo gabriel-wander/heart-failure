@@ -83,6 +83,14 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let shockStableNote: String
     public let shockGeneralNote: String
 
+    // Comorbidity overlays (chronic HFrEF)
+    public let afTitle: String
+    public let afJustification: String
+    public let afNotes: [String]
+    public let ckdTitle: String
+    public let ckdJustification: String
+    public let ckdNotes: [String]
+
     /// Replaces `{key}` tokens in `template` with the provided values.
     public static func fill(_ template: String, _ values: [String: String]) -> String {
         var result = template

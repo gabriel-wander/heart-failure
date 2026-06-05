@@ -78,5 +78,20 @@
     "Diurético isolado pode ser insuficiente ou deletério na hipoperfusão."
   ],
   "shockStableNote": "Sem critérios óbvios de choque com os dados atuais — manter vigilância e reavaliar continuamente PA, perfusão, diurese e lactato.",
-  "shockGeneralNote": "Fluxo de triagem educacional para instabilidade/baixo débito. Não substitui protocolos de choque/refratariedade da instituição."
+  "shockGeneralNote": "Fluxo de triagem educacional para instabilidade/baixo débito. Não substitui protocolos de choque/refratariedade da instituição.",
+
+  "afTitle": "IC + fibrilação atrial",
+  "afJustification": "Otimizar controle de frequência/ritmo conforme sintomas e FE; avaliar anticoagulação (ver CHA₂DS₂-VASc). Evitar ivabradina; cautela com agentes nodais que reduzam o débito.",
+  "afNotes": [
+    "Na ICFEr, o betabloqueador é preferível para controle de frequência.",
+    "Evitar a maioria dos antiarrítmicos na ICFEr (amiodarona é a opção mais segura).",
+    "Considerar estratégia de controle de ritmo/ablação em casos selecionados."
+  ],
+  "ckdTitle": "IC + doença renal crônica",
+  "ckdJustification": "A GDMT permanece indicada na DRC; monitorar potássio e função renal mais de perto e ajustar conforme a TFGe. Quedas iniciais da TFGe com INRA/ARM/iSGLT2 podem ser esperadas.",
+  "ckdNotes": [
+    "Evitar AINEs e agentes nefrotóxicos.",
+    "iSGLT2 mantém benefício cardiorrenal em ampla faixa de TFGe.",
+    "Vigiar resistência diurética e hipercalemia (sobretudo com SRAA + ARM)."
+  ]
 }

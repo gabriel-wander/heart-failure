@@ -159,6 +159,7 @@ final class AppModel: ObservableObject {
     func name(_ p: CongestionProfile) -> String { Localizer.profileName(p, language) }
     func summary(_ p: CongestionProfile) -> String { Localizer.profileSummary(p, language) }
     func name(_ c: H2FPEFResult.Category) -> String { Localizer.h2fpefCategoryName(c, language) }
+    func name(_ r: Calculators.DiureticResponse) -> String { Localizer.diureticResponseName(r, language) }
     func groupName(_ g: RecommendationGroup) -> String { Localizer.groupName(g, language) }
     func name(_ s: DiureticPlan.Strategy) -> String { Localizer.strategyName(s, language) }
 

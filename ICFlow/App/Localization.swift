@@ -104,6 +104,9 @@ enum UIString: String {
     // v0.3 — cardiogenic shock inputs
     case sectionShock, fieldLactate, toggleOliguria, toggleAlteredMentation
 
+    // v0.4 — natriuresis calculator
+    case calcNatriuresisTitle, calcUrineNa, calcUrineOutput, unitMlH, calcResponseLabel
+
     // v0.4 — anonymous local history
     case cancel
     case historyNavTitle, historySubtitle
@@ -156,6 +159,17 @@ enum Localizer {
         case (.high, .en): return "High probability"
         case (.incomplete, .pt): return "Escore incompleto"
         case (.incomplete, .en): return "Incomplete score"
+        }
+    }
+
+    static func diureticResponseName(_ r: Calculators.DiureticResponse, _ l: AppLanguage) -> String {
+        switch (r, l) {
+        case (.adequate, .pt): return "Adequada"
+        case (.adequate, .en): return "Adequate"
+        case (.inadequate, .pt): return "Inadequada — considerar escalonar"
+        case (.inadequate, .en): return "Inadequate — consider escalation"
+        case (.incomplete, .pt): return "—"
+        case (.incomplete, .en): return "—"
         }
     }
 
@@ -433,6 +447,11 @@ enum Localizer {
         .calcNaMeasured: "Sódio medido",
         .calcGlucose: "Glicemia",
         .calcCorrectedLabel: "Sódio corrigido",
+        .calcNatriuresisTitle: "Natriurese / resposta ao diurético",
+        .calcUrineNa: "Sódio urinário (spot)",
+        .calcUrineOutput: "Débito urinário",
+        .unitMlH: "mL/h",
+        .calcResponseLabel: "Resposta",
         .sectionShock: "Instabilidade / choque",
         .fieldLactate: "Lactato",
         .toggleOliguria: "Oligúria importante",
@@ -595,6 +614,11 @@ enum Localizer {
         .calcNaMeasured: "Measured sodium",
         .calcGlucose: "Glucose",
         .calcCorrectedLabel: "Corrected sodium",
+        .calcNatriuresisTitle: "Natriuresis / diuretic response",
+        .calcUrineNa: "Spot urine sodium",
+        .calcUrineOutput: "Urine output",
+        .unitMlH: "mL/h",
+        .calcResponseLabel: "Response",
         .sectionShock: "Instability / shock",
         .fieldLactate: "Lactate",
         .toggleOliguria: "Significant oliguria",
