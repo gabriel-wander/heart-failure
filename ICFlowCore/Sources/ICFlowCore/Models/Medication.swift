@@ -27,6 +27,21 @@ public struct Medication: Codable, Identifiable, Equatable, Sendable {
     /// IDs de referências de apoio.
     public let referenceIds: [String]
 
+    // MARK: v0.2 — optional clinical detail (additive; absent in v0.1 JSON)
+
+    /// Indicações resumidas.
+    public let indications: [String]?
+    /// Intervalo de titulação sugerido.
+    public let titrationInterval: String?
+    /// Contraindicações destacadas.
+    public let contraindications: [String]?
+    /// Cautelas destacadas.
+    public let cautions: [String]?
+    /// Ajuste em disfunção renal.
+    public let renalAdjustment: String?
+    /// Efeitos adversos relevantes.
+    public let adverseEffects: [String]?
+
     // MARK: Loop-diuretic specific (acute flow)
 
     /// Fator de conversão da dose oral deste agente para furosemida oral equivalente.
@@ -45,6 +60,12 @@ public struct Medication: Codable, Identifiable, Equatable, Sendable {
         monitoring: [String] = [],
         safetyAlertIds: [String] = [],
         referenceIds: [String] = [],
+        indications: [String]? = nil,
+        titrationInterval: String? = nil,
+        contraindications: [String]? = nil,
+        cautions: [String]? = nil,
+        renalAdjustment: String? = nil,
+        adverseEffects: [String]? = nil,
         furosemideEquivalentFactor: Double? = nil
     ) {
         self.id = id
@@ -58,6 +79,17 @@ public struct Medication: Codable, Identifiable, Equatable, Sendable {
         self.monitoring = monitoring
         self.safetyAlertIds = safetyAlertIds
         self.referenceIds = referenceIds
+        self.indications = indications
+        self.titrationInterval = titrationInterval
+        self.contraindications = contraindications
+        self.cautions = cautions
+        self.renalAdjustment = renalAdjustment
+        self.adverseEffects = adverseEffects
         self.furosemideEquivalentFactor = furosemideEquivalentFactor
     }
+
+    /// Display name (alias of `genericName`).
+    public var name: String { genericName }
+    /// Therapeutic class identifier (alias of `classId`).
+    public var className: String { classId }
 }

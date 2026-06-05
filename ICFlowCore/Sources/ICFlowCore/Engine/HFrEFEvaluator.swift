@@ -35,23 +35,33 @@ struct HFrEFEvaluator {
             let contraindications = matched.filter { $0.status == .contraindicated }
             let cautions = matched.filter { $0.status == .caution }
 
-            let status: EligibilityStatus
+            let eligibility: EligibilityStatus
             let activeRules: [ClinicalRule]
             if !contraindications.isEmpty {
-                status = .contraindicated
+                eligibility = .contraindicated
                 activeRules = contraindications
             } else if !cautions.isEmpty {
-                status = .caution
+                eligibility = .caution
                 activeRules = cautions
             } else {
-                status = .eligible
+                eligibility = .eligible
                 activeRules = []
             }
 
-            // Justifications.
-            var justifications = activeRules.map { $0.justification }
-            if justifications.isEmpty {
-                justifications = [messages.hfrefEligibleDefault]
+            // Data-completeness gating: never assert a class-specific eligibility
+            // when the essential inputs for that class are missing.
+            let missingForClass = missingFields(forClass: classId, input: input)
+            let status: RecommendationStatus
+            var justifications: [String]
+            if missingForClass.isEmpty {
+                status = RecommendationStatus(eligibility: eligibility)
+                justifications = activeRules.map { $0.justification }
+                if justifications.isEmpty {
+                    justifications = [messages.hfrefEligibleDefault]
+                }
+            } else {
+                status = .insufficientData
+                justifications = [messages.hfrefInsufficientClass]
             }
 
             // Alerts: those triggered by active rules + the class's standing alerts.
@@ -74,17 +84,58 @@ struct HFrEFEvaluator {
                     classId: classId,
                     displayDrug: "\(primary.genericName) (\(primary.subclass))",
                     status: status,
+                    group: .prognosis,
                     justifications: justifications,
                     startingDose: primary.startingDose,
                     targetDose: primary.targetDose,
                     monitoring: primary.monitoring,
                     safetyAlerts: recAlerts,
                     references: recReferences,
+                    missingData: missingForClass,
                     notes: alternativeNote(forClass: classId, excluding: primary)
                 )
             )
         }
 
+        // Additional, profile-based therapies (non-pillars): ivabradine,
+        // hydralazine+nitrate, vericiguat, digoxin, IV iron referral, etc.
+        for rule in (ruleSet.hfrefAdditionalRules ?? []) where RuleMatcher.matches(rule, input: input) {
+            guard
+                let classId = rule.classId,
+                let med = repository.primaryMedication(forClass: classId, scenario: .chronicHFrEF)
+            else { continue }
+
+            let recStatus = rule.status.map { RecommendationStatus(eligibility: $0) } ?? .consider
+            let group: RecommendationGroup = (classId == "iv_iron") ? .referral : .additional
+            let recAlerts = repository.alerts(withIds: rule.safetyAlertIds + med.safetyAlertIds)
+                .reduce(into: [SafetyAlert]()) { acc, a in if !acc.contains(where: { $0.id == a.id }) { acc.append(a) } }
+            let refs = repository.references(withIds: rule.referenceIds + med.referenceIds)
+                .reduce(into: [Reference]()) { acc, r in if !acc.contains(where: { $0.id == r.id }) { acc.append(r) } }
+            refs.forEach { usedReferenceIds.insert($0.id) }
+            recAlerts.forEach { usedAlertIds.insert($0.id) }
+
+            recommendations.append(
+                Recommendation(
+                    id: "add_\(med.id)",
+                    title: rule.title ?? med.genericName,
+                    classId: classId,
+                    displayDrug: med.genericName,
+                    status: recStatus,
+                    group: group,
+                    justifications: [rule.justification],
+                    startingDose: med.startingDose,
+                    targetDose: med.targetDose,
+                    monitoring: med.monitoring,
+                    safetyAlerts: recAlerts,
+                    references: refs,
+                    notes: []
+                )
+            )
+        }
+
+        if input.hypoperfusion {
+            generalNotes.append(messages.hfrefHypoperfusionNote)
+        }
         if input.congestion || input.hypoperfusion {
             generalNotes.append(messages.hfrefDecompensationNote)
         }
@@ -99,11 +150,24 @@ struct HFrEFEvaluator {
             recommendations: recommendations,
             safetyAlerts: aggregatedAlerts,
             references: aggregatedReferences,
+            missingEssentialData: ClinicalCompleteness.missingEssential(for: input),
             generalNotes: generalNotes
         )
     }
 
     // MARK: - Helpers
+
+    /// Essential inputs whose absence prevents a class-specific recommendation.
+    private func missingFields(forClass classId: String, input: PatientInput) -> [ClinicalField] {
+        switch classId {
+        case "renin_angiotensin", "mra":
+            return ClinicalCompleteness.missingForRASandMRA(input)
+        case "beta_blocker":
+            return ClinicalCompleteness.missingForBetaBlocker(input)
+        default:
+            return []
+        }
+    }
 
     private func appliesToSubclass(_ rule: ClinicalRule, subclass: String) -> Bool {
         guard let subclasses = rule.appliesToSubclasses else { return true }

@@ -24,10 +24,15 @@ struct RootView: View {
     private func destination(for route: Route) -> some View {
         switch route {
         case .scenarioSelection:
-            ScenarioSelectionView { scenario in
-                app.startNewAssessment(scenario: scenario)
-                path.append(.clinicalInput)
-            }
+            ScenarioSelectionView(
+                onSelect: { scenario in
+                    app.startNewAssessment(scenario: scenario)
+                    path.append(.clinicalInput)
+                },
+                onOpenChecklist: { path.append(.dischargeChecklist) }
+            )
+        case .dischargeChecklist:
+            DischargeChecklistView()
         case .clinicalInput:
             ClinicalInputView {
                 app.generate()

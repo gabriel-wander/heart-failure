@@ -1,0 +1,12 @@
+[
+  { "id": "congestion_resolved", "text": "Congestão resolvida ou mínima", "detail": "Sem dispneia de repouso, edema/estase em redução; peso próximo ao seco." },
+  { "id": "hemodynamic_stability", "text": "Estabilidade hemodinâmica", "detail": "PA e FC estáveis; sem hipotensão sintomática." },
+  { "id": "oral_meds_tolerated", "text": "Medicações orais toleradas por ao menos 24 horas", "detail": "Transição do IV para VO bem tolerada." },
+  { "id": "renal_electrolytes_stable", "text": "Função renal e eletrólitos estáveis", "detail": "Creatinina/TFGe, sódio e potássio aceitáveis e estáveis." },
+  { "id": "oral_diuretic_defined", "text": "Diurético oral definido", "detail": "Dose de alta estabelecida e orientada." },
+  { "id": "four_pillars_reviewed", "text": "Quatro pilares avaliados (se ICFEr)", "detail": "INRA/IECA/BRA, betabloqueador, ARM e iSGLT2 considerados/otimizados." },
+  { "id": "education_weight_alarm", "text": "Educação sobre peso diário e sinais de alarme", "detail": "Orientação sobre restrição de sódio/fluidos e quando procurar ajuda." },
+  { "id": "early_followup", "text": "Seguimento precoce programado", "detail": "Retorno idealmente em 7–14 dias." },
+  { "id": "labs_plan", "text": "Plano de exames laboratoriais pós-alta", "detail": "Eletrólitos e função renal após ajuste de GDMT/diurético." },
+  { "id": "cardiology_followup", "text": "Referência/retorno com cardiologia quando indicado", "detail": "Encaminhamento conforme complexidade e disponibilidade." }
+]

@@ -1,0 +1,12 @@
+[
+  { "id": "congestion_resolved", "text": "Congestion resolved or minimal", "detail": "No rest dyspnea, decreasing edema/congestion; weight near dry weight." },
+  { "id": "hemodynamic_stability", "text": "Hemodynamic stability", "detail": "Stable BP and HR; no symptomatic hypotension." },
+  { "id": "oral_meds_tolerated", "text": "Oral medications tolerated for at least 24 hours", "detail": "IV-to-oral transition well tolerated." },
+  { "id": "renal_electrolytes_stable", "text": "Stable renal function and electrolytes", "detail": "Acceptable, stable creatinine/eGFR, sodium and potassium." },
+  { "id": "oral_diuretic_defined", "text": "Oral diuretic defined", "detail": "Discharge dose established and explained." },
+  { "id": "four_pillars_reviewed", "text": "Four pillars reviewed (if HFrEF)", "detail": "ARNI/ACEi/ARB, beta-blocker, MRA and SGLT2i considered/optimized." },
+  { "id": "education_weight_alarm", "text": "Education on daily weight and alarm signs", "detail": "Guidance on sodium/fluid restriction and when to seek help." },
+  { "id": "early_followup", "text": "Early follow-up scheduled", "detail": "Return ideally within 7–14 days." },
+  { "id": "labs_plan", "text": "Post-discharge laboratory plan", "detail": "Electrolytes and renal function after GDMT/diuretic adjustment." },
+  { "id": "cardiology_followup", "text": "Cardiology referral/follow-up when indicated", "detail": "Referral per complexity and availability." }
+]

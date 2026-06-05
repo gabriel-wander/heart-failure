@@ -7,20 +7,32 @@ struct RecommendationsView: View {
     @EnvironmentObject private var app: AppModel
     let result: AssessmentResult
 
+    /// Order in which recommendation blocks are shown.
+    private let orderedGroups: [RecommendationGroup] =
+        [.general, .prognosis, .symptomCongestion, .additional, .referral]
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                ContentValidationBanner()
+
                 if let profile = result.congestionProfile {
                     profileBanner(profile)
+                }
+
+                if let score = result.h2fpef {
+                    h2fpefCard(score)
                 }
 
                 if let plan = result.diureticPlan {
                     diureticPlanCard(plan)
                 }
 
-                ForEach(result.recommendations) { rec in
-                    RecommendationCard(recommendation: rec)
+                ForEach(orderedGroups, id: \.self) { group in
+                    groupBlock(group)
                 }
+
+                MissingDataCard(fields: result.missingEssentialData)
 
                 if !result.generalNotes.isEmpty {
                     CardView {
@@ -44,6 +56,47 @@ struct RecommendationsView: View {
             Text(app.summary(profile))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private func groupBlock(_ group: RecommendationGroup) -> some View {
+        let recs = result.recommendations.filter { $0.group == group }
+        if !recs.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(app.groupName(group))
+                    .font(.footnote.bold())
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                ForEach(recs) { rec in
+                    RecommendationCard(recommendation: rec)
+                }
+            }
+        }
+    }
+
+    private func h2fpefCard(_ score: H2FPEFResult) -> some View {
+        CardView {
+            CardSectionHeader(title: app.t(.h2fpefTitle), systemImage: "function")
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("\(score.points)")
+                    .font(.title.bold())
+                    .foregroundStyle(score.category.color)
+                Text(app.t(.h2fpefPointsLabel))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(app.name(score.category))
+                    .font(.subheadline.bold())
+                    .foregroundStyle(score.category.color)
+            }
+            if !score.isComplete {
+                Text(app.t(.h2fpefIncompleteHint))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 
@@ -130,6 +183,12 @@ struct RecommendationCard: View {
                             }
                         }
                     }
+                }
+            }
+
+            if !recommendation.missingData.isEmpty {
+                section(title: app.t(.missingDataTitle), icon: "questionmark.circle") {
+                    BulletList(items: recommendation.missingData.map { app.name($0) }, tint: .gray)
                 }
             }
 

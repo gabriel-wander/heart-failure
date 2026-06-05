@@ -1,5 +1,19 @@
 import Foundation
 
+/// Thematic block a recommendation belongs to, for the grouped results view.
+public enum RecommendationGroup: String, Codable, Sendable {
+    /// Terapias modificadoras de prognóstico (pilares).
+    case prognosis
+    /// Controle de sintomas / congestão.
+    case symptomCongestion
+    /// Terapias adicionais conforme perfil.
+    case additional
+    /// Encaminhamento / avaliação especializada.
+    case referral
+    /// Sem agrupamento específico.
+    case general
+}
+
 /// A single recommendation produced by the decision engine for a medication
 /// class (HFrEF flow) or for the IV diuretic strategy (acute flow).
 public struct Recommendation: Identifiable, Equatable, Sendable {
@@ -10,7 +24,9 @@ public struct Recommendation: Identifiable, Equatable, Sendable {
     public let classId: String?
     /// Fármaco/representante exibido (ex.: "Sacubitril/Valsartana (INRA)").
     public let displayDrug: String?
-    public let status: EligibilityStatus
+    public let status: RecommendationStatus
+    /// Bloco temático ao qual a recomendação pertence (visão em blocos).
+    public let group: RecommendationGroup
     /// Justificativas breves para o status.
     public let justifications: [String]
     public let startingDose: String?
@@ -18,6 +34,8 @@ public struct Recommendation: Identifiable, Equatable, Sendable {
     public let monitoring: [String]
     public let safetyAlerts: [SafetyAlert]
     public let references: [Reference]
+    /// Dados ausentes relevantes que limitam esta recomendação.
+    public let missingData: [ClinicalField]
     /// Observações adicionais (ex.: plano de diurético, notas de escopo).
     public let notes: [String]
 
@@ -26,13 +44,15 @@ public struct Recommendation: Identifiable, Equatable, Sendable {
         title: String,
         classId: String? = nil,
         displayDrug: String? = nil,
-        status: EligibilityStatus,
+        status: RecommendationStatus,
+        group: RecommendationGroup = .general,
         justifications: [String] = [],
         startingDose: String? = nil,
         targetDose: String? = nil,
         monitoring: [String] = [],
         safetyAlerts: [SafetyAlert] = [],
         references: [Reference] = [],
+        missingData: [ClinicalField] = [],
         notes: [String] = []
     ) {
         self.id = id
@@ -40,12 +60,14 @@ public struct Recommendation: Identifiable, Equatable, Sendable {
         self.classId = classId
         self.displayDrug = displayDrug
         self.status = status
+        self.group = group
         self.justifications = justifications
         self.startingDose = startingDose
         self.targetDose = targetDose
         self.monitoring = monitoring
         self.safetyAlerts = safetyAlerts
         self.references = references
+        self.missingData = missingData
         self.notes = notes
     }
 }
@@ -109,6 +131,10 @@ public struct AssessmentResult: Equatable, Sendable {
     public let congestionProfile: CongestionProfile?
     /// Plano de diurético IV (apenas fluxo agudo, quando indicado).
     public let diureticPlan: DiureticPlan?
+    /// Resultado do escore H2FPEF (apenas fluxo ICFEp/ICFEm).
+    public let h2fpef: H2FPEFResult?
+    /// Dados essenciais ausentes que limitam a avaliação global.
+    public let missingEssentialData: [ClinicalField]
     /// Notas gerais (ex.: dados ausentes, escopo, avaliação especializada).
     public let generalNotes: [String]
 
@@ -119,6 +145,8 @@ public struct AssessmentResult: Equatable, Sendable {
         references: [Reference],
         congestionProfile: CongestionProfile? = nil,
         diureticPlan: DiureticPlan? = nil,
+        h2fpef: H2FPEFResult? = nil,
+        missingEssentialData: [ClinicalField] = [],
         generalNotes: [String] = []
     ) {
         self.scenario = scenario
@@ -127,6 +155,8 @@ public struct AssessmentResult: Equatable, Sendable {
         self.references = references
         self.congestionProfile = congestionProfile
         self.diureticPlan = diureticPlan
+        self.h2fpef = h2fpef
+        self.missingEssentialData = missingEssentialData
         self.generalNotes = generalNotes
     }
 }

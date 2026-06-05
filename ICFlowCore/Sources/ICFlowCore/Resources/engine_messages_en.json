@@ -4,6 +4,8 @@
   "hfrefLvefNote": "Reported LVEF ({lvef}%) is above 40%. This module's criteria assume HFrEF (LVEF ≤ 40%).",
   "hfrefDecompensationNote": "Signs of decompensation present: prioritize clinical compensation before starting/up-titrating a beta-blocker; the other pillars can usually be started/continued as tolerated.",
   "hfrefMissingDataNote": "Fields left blank are not evaluated by the rules; fill in all data for a more complete assessment.",
+  "hfrefInsufficientClass": "Eligibility for this class cannot be determined safely without the essential data (see \"Missing data\"). Requires clinical judgment once the data is complete.",
+  "hfrefHypoperfusionNote": "Signs of hypoperfusion recorded: the chronic HFrEF flow may not be appropriate. Consider assessment in an acute/instability flow.",
 
   "diureticPriorUser": "On prior {agent} {oralDose} mg/day PO (≈ {furoEquiv} mg/day furosemide equivalent). Estimated initial IV dose ≈ 2.5× the daily oral dose = {total} mg/day IV furosemide, split into {doses} doses (~{perDose} mg per dose). Give at least twice daily and reassess response in 2–6 h.",
   "diureticHighDoseSuffix": "Caution: high dose (> {threshold} mg/day furosemide equivalent) with limited safety data.",
@@ -33,5 +35,30 @@
   "acuteNoDiureticNoteDefault": "An IV loop diuretic is not indicated in the absence of congestion. Reassess the diagnosis and volume status; optimize background therapy (GDMT) as indicated.",
   "acuteNoDiureticNoteHypoperfusion": "Hypoperfusion without congestion suggests hypovolemia/low output — specialist evaluation and reassessment of volume status.",
 
-  "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function."
+  "acuteDiureticNeedsInfoTitle": "Diuretic estimate unavailable",
+  "acuteDiureticNeedsInfoJustification": "Prior diuretic use was marked, but the agent and/or home dose were not provided — the IV dose cannot be estimated safely. Enter the diuretic and the daily dose to generate the estimate.",
+  "acuteInsufficientDataNote": "Recommendation limited by missing data (see \"Missing data\"). Complete the data before deciding management.",
+
+  "acuteResistanceTitle": "Inadequate response / diuretic resistance",
+  "acuteResistanceJustification": "If the diuretic response is inadequate: reassess adherence, absorption, dose, residual congestion and renal function. Consider escalating the loop-diuretic dose and, per context and institutional protocol, sequential nephron blockade.",
+  "acuteResistanceNotes": [
+    "Watch for hypokalemia, hyponatremia, worsening renal function and hypotension.",
+    "Reassess the response (diuresis, weight, fluid balance) after each adjustment."
+  ],
+  "acuteEquivalenceNote": "Approximate loop-diuretic equivalences: furosemide 40 mg PO ≈ furosemide 20 mg IV ≈ torsemide 20 mg PO ≈ bumetanide 1 mg (PO/IV). Oral furosemide bioavailability ~50% (torsemide/bumetanide ~80–100%).",
+
+  "acuteGeneralNote": "Flow restricted to congestion without cardiogenic shock. Continuously reassess blood pressure, perfusion and renal function.",
+
+  "hfpefClassificationTitle": "Ejection-fraction classification",
+  "hfpefClassPreserved": "LVEF ≥ 50% with compatible signs/symptoms: assess HFpEF (preserved ejection fraction). Requires exclusion of mimics and clinical confirmation.",
+  "hfpefClassMidrange": "LVEF 41–49%: HFmrEF (mildly reduced ejection fraction).",
+  "hfpefClassReduced": "LVEF ≤ 40%: an HFrEF pattern — consider the chronic HFrEF flow (four pillars).",
+  "hfpefSGLT2Title": "SGLT2 inhibitor",
+  "hfpefSGLT2Justification": "Consider an SGLT2 inhibitor (dapagliflozin or empagliflozin) if eligible — demonstrated benefit in HFpEF/HFmrEF.",
+  "hfpefCongestionNote": "If congestion is present, consider a diuretic for volume control at the lowest effective dose.",
+  "hfpefComorbiditiesTitle": "Comorbidity management",
+  "hfpefComorbiditiesJustification": "Optimize management of the comorbidities that most affect HFpEF: hypertension, atrial fibrillation, obesity, diabetes, chronic kidney disease, coronary disease and sleep apnea.",
+  "hfpefReferralTitle": "Specialist evaluation",
+  "hfpefReferralJustification": "Consider specialist evaluation: suspected amyloidosis/infiltrative cardiomyopathy, significant valvular disease, significant pulmonary hypertension, relevant pulmonary disease or an uncertain diagnosis.",
+  "hfpefGeneralNote": "Educational HFpEF/HFmrEF module: prioritize a correct diagnosis (exclusion of mimics), treatment of congestion and of comorbidities."
 }

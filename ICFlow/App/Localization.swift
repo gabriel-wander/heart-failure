@@ -64,6 +64,32 @@ enum UIString: String {
 
     // References
     case refsThisCase, refsAll, refsOthers
+
+    // v0.2 — content validation & missing data
+    case contentValidationBanner
+    case missingDataTitle
+
+    // v0.2 — H2FPEF (HFpEF/HFmrEF module)
+    case h2fpefTitle
+    case h2fpefPointsLabel
+    case h2fpefIncompleteHint
+
+    // v0.2 — discharge checklist
+    case checklistNavTitle
+    case checklistSubtitle
+    case checklistFootnote
+
+    // v0.2 — input markers & HFpEF section
+    case essentialLegend
+    case essentialMissingWarning
+    case sectionHFpEF
+    case fieldAge, unitYears
+    case toggleAngioedema
+    case toggleSymptomsHF, toggleObesity, toggleHypertension, toggleAntihtn2
+    case toggleAtrialFib, toggleDiabetes, toggleCKD, toggleCoronary, toggleSleepApnea
+    case toggleInfiltrative, toggleValvular, togglePulmonary, toggleAnemia, toggleNonCardiacEdema
+    case fieldPASP, fieldEoverE, triNotAssessed
+    case resultBlocksTitle
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -80,6 +106,8 @@ enum Localizer {
         case (.chronicHFrEF, .en): return "Chronic HFrEF"
         case (.acuteCongestion, .pt): return "IC aguda congesta"
         case (.acuteCongestion, .en): return "Acute congestive HF"
+        case (.hfpefHFmrEF, .pt): return "ICFEp / ICFEm"
+        case (.hfpefHFmrEF, .en): return "HFpEF / HFmrEF"
         }
     }
 
@@ -89,6 +117,36 @@ enum Localizer {
         case (.chronicHFrEF, .en): return "Chronic heart failure with reduced ejection fraction (LVEF ≤ 40%)."
         case (.acuteCongestion, .pt): return "IC aguda/descompensada com congestão, sem choque cardiogênico."
         case (.acuteCongestion, .en): return "Acute/decompensated HF with congestion, without cardiogenic shock."
+        case (.hfpefHFmrEF, .pt): return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
+        case (.hfpefHFmrEF, .en): return "Preserved or mildly reduced ejection fraction, focusing on diagnosis, comorbidities and congestion."
+        }
+    }
+
+    static func h2fpefCategoryName(_ c: H2FPEFResult.Category, _ l: AppLanguage) -> String {
+        switch (c, l) {
+        case (.low, .pt): return "Baixa probabilidade"
+        case (.low, .en): return "Low probability"
+        case (.intermediate, .pt): return "Probabilidade intermediária"
+        case (.intermediate, .en): return "Intermediate probability"
+        case (.high, .pt): return "Alta probabilidade"
+        case (.high, .en): return "High probability"
+        case (.incomplete, .pt): return "Escore incompleto"
+        case (.incomplete, .en): return "Incomplete score"
+        }
+    }
+
+    static func groupName(_ g: RecommendationGroup, _ l: AppLanguage) -> String {
+        switch (g, l) {
+        case (.prognosis, .pt): return "Terapias modificadoras de prognóstico"
+        case (.prognosis, .en): return "Prognosis-modifying therapies"
+        case (.symptomCongestion, .pt): return "Controle de sintomas/congestão"
+        case (.symptomCongestion, .en): return "Symptom/congestion control"
+        case (.additional, .pt): return "Terapias adicionais conforme perfil"
+        case (.additional, .en): return "Additional therapies by profile"
+        case (.referral, .pt): return "Encaminhamento/avaliação"
+        case (.referral, .en): return "Referral/evaluation"
+        case (.general, .pt): return "Avaliação"
+        case (.general, .en): return "Assessment"
         }
     }
 
@@ -113,6 +171,43 @@ enum Localizer {
         case (.caution, .en): return "Caution"
         case (.contraindicated, .pt): return "Contraindicado"
         case (.contraindicated, .en): return "Contraindicated"
+        }
+    }
+
+    static func recStatusName(_ s: RecommendationStatus, _ l: AppLanguage) -> String {
+        switch (s, l) {
+        case (.recommended, .pt): return "Recomendado"
+        case (.recommended, .en): return "Recommended"
+        case (.consider, .pt): return "Considerar"
+        case (.consider, .en): return "Consider"
+        case (.caution, .pt): return "Cautela"
+        case (.caution, .en): return "Caution"
+        case (.contraindicated, .pt): return "Contraindicado"
+        case (.contraindicated, .en): return "Contraindicated"
+        case (.insufficientData, .pt): return "Dados insuficientes"
+        case (.insufficientData, .en): return "Insufficient data"
+        case (.urgentReferral, .pt): return "Avaliação urgente"
+        case (.urgentReferral, .en): return "Urgent referral"
+        }
+    }
+
+    /// Localized label for a clinical input field (used in the missing-data list).
+    static func fieldName(_ f: ClinicalField, _ l: AppLanguage) -> String {
+        switch f {
+        case .lvef: return string(.fieldLVEF, l)
+        case .nyha: return string(.fieldNYHA, l)
+        case .systolicBP: return string(.fieldSBP, l)
+        case .heartRate: return string(.fieldHR, l)
+        case .rhythm: return string(.fieldRhythm, l)
+        case .egfr: return string(.fieldEGFR, l)
+        case .creatinine: return string(.fieldCreatinine, l)
+        case .potassium: return string(.fieldPotassium, l)
+        case .sodium: return l == .pt ? "Sódio" : "Sodium"
+        case .congestion: return string(.toggleCongestion, l)
+        case .hypoperfusion: return string(.toggleHypoperfusion, l)
+        case .priorDiureticUse: return string(.togglePriorDiuretic, l)
+        case .homeDiureticAgent: return string(.fieldLoopAgent, l)
+        case .homeDiureticDose: return string(.fieldOralDose, l)
         }
     }
 
@@ -173,7 +268,7 @@ enum Localizer {
         .appSubtitle: "Apoio à decisão em insuficiência cardíaca",
         .disclaimerWarningTitle: "Aviso importante",
         .disclaimerBullet1: "Ferramenta educacional destinada a médicos. Não substitui o julgamento clínico individual.",
-        .disclaimerBullet2: "As recomendações e doses são exemplos (mock) e devem ser confirmadas com diretrizes atuais, bulas e o contexto do paciente.",
+        .disclaimerBullet2: "Conteúdo clínico em validação. As recomendações devem ser interpretadas por médico habilitado, à luz do contexto clínico, diretrizes vigentes, protocolos institucionais e bulas oficiais.",
         .disclaimerBullet3: "Não armazena dados identificáveis de pacientes. Insira apenas parâmetros clínicos de forma anônima.",
         .disclaimerBullet4: "Funciona totalmente offline. Não há login, banco de dados remoto nem integração externa.",
         .disclaimerBullet5: "Escopo do MVP: ICFEr crônica e IC aguda congesta sem choque cardiogênico.",
@@ -181,7 +276,7 @@ enum Localizer {
         .disclaimerFootnote: "Ao continuar, você reconhece a natureza educacional desta ferramenta.",
         .scenarioSelectTitle: "Selecione o cenário clínico",
         .navScenario: "Cenário",
-        .disclaimerBanner: "Ferramenta educacional. As doses são exemplos e não substituem o julgamento clínico nem as bulas/diretrizes vigentes.",
+        .disclaimerBanner: "Ferramenta educacional, com conteúdo clínico em validação. Não substitui o julgamento clínico nem as bulas/diretrizes vigentes.",
         .emptyResultTitle: "Sem avaliação",
         .emptyResultDesc: "Volte e gere uma avaliação a partir dos dados clínicos.",
         .alertsNoneTitle: "Sem alertas",
@@ -260,14 +355,46 @@ enum Localizer {
         .txtDisclaimer: "Ferramenta educacional — não substitui o julgamento clínico.",
         .refsThisCase: "Referências deste caso",
         .refsAll: "Referências",
-        .refsOthers: "Outras referências"
+        .refsOthers: "Outras referências",
+        .contentValidationBanner: "Conteúdo clínico em validação — uso educacional, sujeito a revisão médica.",
+        .missingDataTitle: "Dados ausentes que limitam a recomendação",
+        .h2fpefTitle: "Escore H2FPEF",
+        .h2fpefPointsLabel: "pontos",
+        .h2fpefIncompleteHint: "Escore incompleto: informe idade, PSAP estimada (> 35 mmHg) e E/e' (> 9) para estimar a probabilidade.",
+        .checklistNavTitle: "Checklist de alta",
+        .checklistSubtitle: "Verificação de prontidão para alta pós-descompensação.",
+        .checklistFootnote: "Lista educacional de apoio; não substitui o julgamento clínico. Nada é armazenado.",
+        .essentialLegend: "• Campo essencial para a recomendação",
+        .essentialMissingWarning: "Campos essenciais em branco podem limitar a recomendação:",
+        .sectionHFpEF: "ICFEp / comorbidades",
+        .fieldAge: "Idade",
+        .unitYears: "anos",
+        .toggleAngioedema: "História de angioedema",
+        .toggleSymptomsHF: "Sintomas/sinais de IC",
+        .toggleObesity: "Obesidade (IMC > 30)",
+        .toggleHypertension: "Hipertensão arterial",
+        .toggleAntihtn2: "≥ 2 anti-hipertensivos",
+        .toggleAtrialFib: "Fibrilação atrial",
+        .toggleDiabetes: "Diabetes",
+        .toggleCKD: "Doença renal crônica",
+        .toggleCoronary: "Doença coronariana",
+        .toggleSleepApnea: "Apneia do sono",
+        .toggleInfiltrative: "Suspeita de amiloidose/infiltrativa",
+        .toggleValvular: "Doença valvar relevante",
+        .togglePulmonary: "Doença pulmonar relevante",
+        .toggleAnemia: "Anemia",
+        .toggleNonCardiacEdema: "Edema possivelmente não cardíaco",
+        .fieldPASP: "PSAP estimada > 35 mmHg",
+        .fieldEoverE: "E/e' > 9",
+        .triNotAssessed: "Não avaliado",
+        .resultBlocksTitle: "Recomendações"
     ]
 
     private static let enTable: [UIString: String] = [
         .appSubtitle: "Heart failure decision support",
         .disclaimerWarningTitle: "Important notice",
         .disclaimerBullet1: "Educational tool intended for physicians. It does not replace individual clinical judgment.",
-        .disclaimerBullet2: "Recommendations and doses are examples (mock) and must be confirmed against current guidelines, labels and the patient's context.",
+        .disclaimerBullet2: "Clinical content under validation. Recommendations must be interpreted by a qualified physician, in light of the clinical context, current guidelines, institutional protocols and official drug labels.",
         .disclaimerBullet3: "Stores no identifiable patient data. Enter only anonymous clinical parameters.",
         .disclaimerBullet4: "Works fully offline. No login, remote database or external integration.",
         .disclaimerBullet5: "MVP scope: chronic HFrEF and acute congestive HF without cardiogenic shock.",
@@ -275,7 +402,7 @@ enum Localizer {
         .disclaimerFootnote: "By continuing, you acknowledge the educational nature of this tool.",
         .scenarioSelectTitle: "Select the clinical scenario",
         .navScenario: "Scenario",
-        .disclaimerBanner: "Educational tool. Doses are examples and do not replace clinical judgment or current labels/guidelines.",
+        .disclaimerBanner: "Educational tool, with clinical content under validation. It does not replace clinical judgment or current labels/guidelines.",
         .emptyResultTitle: "No assessment",
         .emptyResultDesc: "Go back and generate an assessment from the clinical data.",
         .alertsNoneTitle: "No alerts",
@@ -354,6 +481,38 @@ enum Localizer {
         .txtDisclaimer: "Educational tool — does not replace clinical judgment.",
         .refsThisCase: "References for this case",
         .refsAll: "References",
-        .refsOthers: "Other references"
+        .refsOthers: "Other references",
+        .contentValidationBanner: "Clinical content under validation — educational use, pending medical review.",
+        .missingDataTitle: "Missing data limiting the recommendation",
+        .h2fpefTitle: "H2FPEF score",
+        .h2fpefPointsLabel: "points",
+        .h2fpefIncompleteHint: "Incomplete score: provide age, estimated PASP (> 35 mmHg) and E/e' (> 9) to estimate the probability.",
+        .checklistNavTitle: "Discharge checklist",
+        .checklistSubtitle: "Readiness check for post-decompensation discharge.",
+        .checklistFootnote: "Educational support list; it does not replace clinical judgment. Nothing is stored.",
+        .essentialLegend: "• Field essential to the recommendation",
+        .essentialMissingWarning: "Essential fields left blank may limit the recommendation:",
+        .sectionHFpEF: "HFpEF / comorbidities",
+        .fieldAge: "Age",
+        .unitYears: "years",
+        .toggleAngioedema: "History of angioedema",
+        .toggleSymptomsHF: "Symptoms/signs of HF",
+        .toggleObesity: "Obesity (BMI > 30)",
+        .toggleHypertension: "Hypertension",
+        .toggleAntihtn2: "≥ 2 antihypertensives",
+        .toggleAtrialFib: "Atrial fibrillation",
+        .toggleDiabetes: "Diabetes",
+        .toggleCKD: "Chronic kidney disease",
+        .toggleCoronary: "Coronary disease",
+        .toggleSleepApnea: "Sleep apnea",
+        .toggleInfiltrative: "Suspected amyloidosis/infiltrative",
+        .toggleValvular: "Significant valvular disease",
+        .togglePulmonary: "Significant pulmonary disease",
+        .toggleAnemia: "Anemia",
+        .toggleNonCardiacEdema: "Possibly non-cardiac edema",
+        .fieldPASP: "Estimated PASP > 35 mmHg",
+        .fieldEoverE: "E/e' > 9",
+        .triNotAssessed: "Not assessed",
+        .resultBlocksTitle: "Recommendations"
     ]
 }

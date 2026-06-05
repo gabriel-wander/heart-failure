@@ -73,4 +73,46 @@ final class AcuteCongestionTests: XCTestCase {
         XCTAssertTrue(monitoring.contains("Magnésio"))
         XCTAssertTrue(monitoring.contains("Sódio"))
     }
+
+    // MARK: - v0.2 status & data-completeness gating
+
+    func testWarmAndWetStatusIsConsider() {
+        let result = engine.evaluate(input())
+        XCTAssertEqual(result.recommendation(id: "iv_diuretic")?.status, .consider)
+    }
+
+    func testHypoperfusionStatusIsUrgentReferral() {
+        let result = engine.evaluate(input(hypoperfusion: true))
+        XCTAssertEqual(result.recommendation(id: "specialist_eval")?.status, .urgentReferral)
+    }
+
+    func testPriorDiureticWithoutDoseDoesNotComputeDose() {
+        // Prior use marked, but neither agent nor dose informed → no estimate.
+        let result = engine.evaluate(input(priorDiuretic: true, agentId: nil, oralDose: nil))
+        XCTAssertNil(result.diureticPlan, "Não deve calcular dose sem fármaco/dose domiciliar")
+        let rec = result.recommendation(id: "iv_diuretic")
+        XCTAssertEqual(rec?.status, .insufficientData)
+        XCTAssertTrue(rec?.missingData.contains(.homeDiureticDose) ?? false)
+    }
+
+    func testMissingEssentialDataIsReported() {
+        let result = engine.evaluate(input(sbp: nil, potassium: nil))
+        XCTAssertTrue(result.missingEssentialData.contains(.systolicBP))
+        XCTAssertTrue(result.missingEssentialData.contains(.potassium))
+    }
+
+    func testWarmAndWetIncludesDiureticResistanceGuidance() {
+        let result = engine.evaluate(input())
+        let resistance = result.recommendation(id: "diuretic_resistance")
+        XCTAssertNotNil(resistance, "Deve oferecer orientação de resposta inadequada")
+        XCTAssertEqual(resistance?.status, .consider)
+        let notes = resistance?.notes.joined(separator: " ") ?? ""
+        XCTAssertTrue(notes.contains("Metolazona"), "Deve listar opções de bloqueio sequencial do néfron")
+    }
+
+    func testEquivalenceNoteShownWithDiureticPlan() {
+        let result = engine.evaluate(input())
+        let notes = result.recommendation(id: "iv_diuretic")?.notes.joined(separator: " ") ?? ""
+        XCTAssertTrue(notes.contains("bumetanida"), "Deve exibir a tabela de equivalências de diurético de alça")
+    }
 }

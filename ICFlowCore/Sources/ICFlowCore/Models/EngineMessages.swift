@@ -12,6 +12,10 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let hfrefLvefNote: String              // {lvef}
     public let hfrefDecompensationNote: String
     public let hfrefMissingDataNote: String
+    /// Mensagem quando faltam dados essenciais para a elegibilidade da classe.
+    public let hfrefInsufficientClass: String
+    /// Nota quando há hipoperfusão no fluxo crônico (cenário possivelmente instável).
+    public let hfrefHypoperfusionNote: String
 
     // Diuretic plan (acute)
     public let diureticPriorUser: String          // {agent} {oralDose} {furoEquiv} {total} {doses} {perDose}
@@ -36,7 +40,34 @@ public struct EngineMessages: Codable, Equatable, Sendable {
     public let acuteNoDiureticNoteDefault: String
     public let acuteNoDiureticNoteHypoperfusion: String
 
+    /// Recomendação de diurético limitada por falta de fármaco/dose domiciliar.
+    public let acuteDiureticNeedsInfoTitle: String
+    public let acuteDiureticNeedsInfoJustification: String
+    /// Nota geral quando a avaliação aguda está limitada por dados ausentes.
+    public let acuteInsufficientDataNote: String
+
+    // Diuretic resistance / sequential nephron blockade
+    public let acuteResistanceTitle: String
+    public let acuteResistanceJustification: String
+    public let acuteResistanceNotes: [String]
+    /// Tabela de equivalências de diurético de alça (texto pronto).
+    public let acuteEquivalenceNote: String
+
     public let acuteGeneralNote: String
+
+    // HFpEF / HFmrEF
+    public let hfpefClassificationTitle: String
+    public let hfpefClassPreserved: String
+    public let hfpefClassMidrange: String
+    public let hfpefClassReduced: String
+    public let hfpefSGLT2Title: String
+    public let hfpefSGLT2Justification: String
+    public let hfpefCongestionNote: String
+    public let hfpefComorbiditiesTitle: String
+    public let hfpefComorbiditiesJustification: String
+    public let hfpefReferralTitle: String
+    public let hfpefReferralJustification: String
+    public let hfpefGeneralNote: String
 
     /// Replaces `{key}` tokens in `template` with the provided values.
     public static func fill(_ template: String, _ values: [String: String]) -> String {

@@ -6,6 +6,8 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
     case chronicHFrEF
     /// Acute / decompensated heart failure with congestion, without cardiogenic shock.
     case acuteCongestion
+    /// Preserved or mildly reduced ejection fraction (HFpEF / HFmrEF).
+    case hfpefHFmrEF
 
     public var id: String { rawValue }
 
@@ -13,6 +15,7 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
         switch self {
         case .chronicHFrEF: return "ICFEr crônica"
         case .acuteCongestion: return "IC aguda congesta"
+        case .hfpefHFmrEF: return "ICFEp / ICFEm"
         }
     }
 
@@ -22,6 +25,8 @@ public enum Scenario: String, Codable, CaseIterable, Identifiable, Sendable {
             return "Insuficiência cardíaca crônica com fração de ejeção reduzida (FEVE ≤ 40%)."
         case .acuteCongestion:
             return "IC aguda/descompensada com congestão, sem choque cardiogênico."
+        case .hfpefHFmrEF:
+            return "Fração de ejeção preservada ou levemente reduzida, com foco em diagnóstico, comorbidades e congestão."
         }
     }
 }
@@ -45,6 +50,15 @@ public enum NYHAClass: String, Codable, CaseIterable, Identifiable, Sendable {
         case .iv: return 4
         }
     }
+}
+
+/// Biological sex (non-identifying), used for context (e.g., dosing nuances).
+public enum Sex: String, Codable, CaseIterable, Identifiable, Sendable {
+    case unspecified
+    case female
+    case male
+
+    public var id: String { rawValue }
 }
 
 /// Cardiac rhythm captured on the clinical input screen.

@@ -18,6 +18,26 @@ struct InputDraft: Equatable {
     var priorDiureticUse = false
     var currentLoopAgentId: String? = nil
     var currentLoopOralDose = ""
+    var historyOfAngioedema = false
+
+    // HFpEF / HFmrEF module
+    var age = ""
+    var symptomsSignsHF = false
+    var obesity = false
+    var hypertension = false
+    var antihypertensives2plus = false
+    var atrialFibrillation = false
+    var diabetes = false
+    var ckd = false
+    var coronaryDisease = false
+    var sleepApnea = false
+    var suspectedInfiltrative = false
+    var valvularDisease = false
+    var pulmonaryDisease = false
+    var anemia = false
+    var nonCardiacEdema = false
+    var paspOver35: Bool? = nil
+    var eOverEprimeOver9: Bool? = nil
 
     private func number(_ string: String) -> Double? {
         let normalized = string
@@ -40,9 +60,51 @@ struct InputDraft: Equatable {
             congestion: congestion,
             hypoperfusion: hypoperfusion,
             priorDiureticUse: priorDiureticUse,
+            age: number(age),
+            diabetes: diabetes,
+            ckd: ckd,
+            atrialFibrillation: atrialFibrillation,
+            historyOfAngioedema: historyOfAngioedema,
+            symptomsSignsHF: symptomsSignsHF,
+            obesity: obesity,
+            hypertension: hypertension,
+            antihypertensives2plus: antihypertensives2plus,
+            coronaryDisease: coronaryDisease,
+            sleepApnea: sleepApnea,
+            suspectedInfiltrative: suspectedInfiltrative,
+            valvularDisease: valvularDisease,
+            pulmonaryDisease: pulmonaryDisease,
+            anemia: anemia,
+            nonCardiacEdema: nonCardiacEdema,
+            paspOver35: paspOver35,
+            eOverEprimeOver9: eOverEprimeOver9,
             currentLoopAgentId: priorDiureticUse ? (currentLoopAgentId ?? "furosemide") : nil,
             currentLoopOralDailyDoseMg: priorDiureticUse ? number(currentLoopOralDose) : nil
         )
+    }
+
+    /// Essential numeric fields missing for the current scenario (UI-side hint
+    /// mirroring the engine's completeness rules).
+    func missingEssential(scenario: Scenario) -> [ClinicalField] {
+        func empty(_ s: String) -> Bool { s.trimmingCharacters(in: .whitespaces).isEmpty }
+        switch scenario {
+        case .chronicHFrEF:
+            var m: [ClinicalField] = []
+            if empty(lvef) { m.append(.lvef) }
+            if empty(systolicBP) { m.append(.systolicBP) }
+            if empty(heartRate) { m.append(.heartRate) }
+            if empty(egfr) { m.append(.egfr) }
+            if empty(potassium) { m.append(.potassium) }
+            return m
+        case .acuteCongestion:
+            var m: [ClinicalField] = []
+            if empty(systolicBP) { m.append(.systolicBP) }
+            if empty(egfr) && empty(creatinine) { m.append(.egfr) }
+            if empty(potassium) { m.append(.potassium) }
+            return m
+        case .hfpefHFmrEF:
+            return empty(lvef) ? [.lvef] : []
+        }
     }
 }
 
@@ -78,9 +140,16 @@ final class AppModel: ObservableObject {
     func name(_ n: NYHAClass) -> String { Localizer.nyhaName(n, language) }
     func name(_ r: Rhythm) -> String { Localizer.rhythmName(r, language) }
     func name(_ s: EligibilityStatus) -> String { Localizer.statusName(s, language) }
+    func name(_ s: RecommendationStatus) -> String { Localizer.recStatusName(s, language) }
+    func name(_ f: ClinicalField) -> String { Localizer.fieldName(f, language) }
     func name(_ s: AlertSeverity) -> String { Localizer.severityName(s, language) }
+
+    /// Whether the bundled clinical content has been formally validated.
+    var isContentValidated: Bool { ClinicalContent.isClinicalContentValidated }
     func name(_ p: CongestionProfile) -> String { Localizer.profileName(p, language) }
     func summary(_ p: CongestionProfile) -> String { Localizer.profileSummary(p, language) }
+    func name(_ c: H2FPEFResult.Category) -> String { Localizer.h2fpefCategoryName(c, language) }
+    func groupName(_ g: RecommendationGroup) -> String { Localizer.groupName(g, language) }
     func name(_ s: DiureticPlan.Strategy) -> String { Localizer.strategyName(s, language) }
 
     /// Loop-diuretic agents available for the acute-flow picker.

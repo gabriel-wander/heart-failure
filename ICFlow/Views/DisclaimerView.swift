@@ -10,6 +10,8 @@ struct DisclaimerView: View {
             VStack(alignment: .leading, spacing: 20) {
                 header
 
+                ContentValidationBanner()
+
                 CardView {
                     CardSectionHeader(title: app.t(.disclaimerWarningTitle), systemImage: "exclamationmark.shield.fill")
                     BulletList(items: [
