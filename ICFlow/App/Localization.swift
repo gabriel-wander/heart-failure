@@ -90,6 +90,9 @@ enum UIString: String {
     case toggleInfiltrative, toggleValvular, togglePulmonary, toggleAnemia, toggleNonCardiacEdema
     case fieldPASP, fieldEoverE, triNotAssessed
     case resultBlocksTitle
+
+    // v0.3 — export
+    case exportButton
 }
 
 /// Static lookup of interface strings and enum labels per language.
@@ -387,7 +390,8 @@ enum Localizer {
         .fieldPASP: "PSAP estimada > 35 mmHg",
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Não avaliado",
-        .resultBlocksTitle: "Recomendações"
+        .resultBlocksTitle: "Recomendações",
+        .exportButton: "Exportar / compartilhar (PDF)"
     ]
 
     private static let enTable: [UIString: String] = [
@@ -513,6 +517,7 @@ enum Localizer {
         .fieldPASP: "Estimated PASP > 35 mmHg",
         .fieldEoverE: "E/e' > 9",
         .triNotAssessed: "Not assessed",
-        .resultBlocksTitle: "Recommendations"
+        .resultBlocksTitle: "Recommendations",
+        .exportButton: "Export / share (PDF)"
     ]
 }
