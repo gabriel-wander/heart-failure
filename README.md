@@ -1,21 +1,45 @@
 # IC Flow
 
-**Protótipo educacional de apoio à decisão clínica em insuficiência cardíaca (iOS · Swift · SwiftUI).**
+**App educacional de apoio à decisão clínica em insuficiência cardíaca (iOS · Swift · SwiftUI). Versão clínica 0.2.**
 
-> ⚠️ **Aviso:** ferramenta **educacional**, destinada a médicos. **Não substitui o
-> julgamento clínico** nem as diretrizes/bulas vigentes. As doses são **exemplos
-> (mock)**. O app **não armazena dados identificáveis de pacientes** e funciona
-> **totalmente offline**. Sem login, banco remoto, assinatura, notificações ou
-> integração externa.
+> ⚠️ **Aviso:** ferramenta **educacional**, destinada a médicos. **Conteúdo clínico
+> em validação** (ver `CLINICAL_CONTENT_STATUS.md` e `VALIDATION_PLAN.md`). As
+> recomendações devem ser interpretadas por médico habilitado, à luz do contexto
+> clínico, diretrizes vigentes, protocolos institucionais e bulas oficiais. **Não
+> substitui o julgamento clínico**, **não emite ordens absolutas** e **não armazena
+> dados identificáveis de pacientes**. Funciona **totalmente offline**: sem login,
+> banco remoto, assinatura, notificações ou integração externa.
+
+## Novidades da versão 0.2
+
+- **Motor clínico mais confiável**, com status de recomendação em **6 estados**
+  (`recommended / consider / caution / contraindicated / insufficientData /
+  urgentReferral`) e linguagem não imperativa.
+- **Validação de completude (dados ausentes):** o motor não ignora dados em falta;
+  exige os parâmetros essenciais por cenário e, quando faltam, marca a classe como
+  *dados insuficientes* em vez de afirmar elegibilidade. A interface mostra
+  "Dados ausentes que limitam a recomendação".
+- **ICFEr expandida:** além dos quatro pilares, terapias adicionais conforme perfil
+  (hidralazina+nitrato, ivabradina, vericiguate, digoxina, ferro IV como
+  encaminhamento) e regras novas (ex.: angioedema contraindica INRA/IECA; ivabradina
+  apenas em ritmo sinusal).
+- **IC aguda expandida:** equivalências de diurético de alça e orientação de
+  resposta inadequada com bloqueio sequencial do néfron (tiazídico, metolazona,
+  acetazolamida).
+- **Novo módulo ICFEp / ICFEm** com **escore H2FPEF** (reportado apenas quando há
+  dados objetivos; caso contrário, "escore incompleto").
+- **Checklist de alta** pós-descompensação (tela opcional).
+- **Conteúdo versionado** (`contentVersion` / `lastReviewed`) e **rastreável por
+  referência**.
 
 **Idiomas:** português (padrão) e inglês, com **seletor de idioma dentro do app**
 (menu do globo 🌐). A troca é ao vivo: recarrega o conteúdo clínico e reavalia o caso.
 
 ---
 
-## Escopo do MVP
+## Escopo
 
-Dois fluxos clínicos:
+Três fluxos clínicos + um checklist:
 
 1. **ICFEr crônica** — insuficiência cardíaca com fração de ejeção reduzida (FEVE ≤ 40%).
    Avalia elegibilidade dos quatro pilares fundamentais:
@@ -38,9 +62,16 @@ Dois fluxos clínicos:
    - **Alertas para avaliação especializada** em hipotensão, hipoperfusão, oligúria,
      hipercalemia grave ou deterioração renal importante.
 
+3. **ICFEp / ICFEm** — fração de ejeção preservada (≥ 50%) ou levemente reduzida
+   (41–49%), com foco em diagnóstico (exclusão de mimetizadores), **escore H2FPEF**,
+   consideração de iSGLT2, controle de congestão e manejo de comorbidades.
+
+Além disso, um **Checklist de alta** pós-descompensação (tela opcional).
+
 ### Telas
-Disclaimer → Escolha do cenário → Entrada de dados clínicos → Resultado, que reúne em
-abas: **Recomendações**, **Alertas de segurança**, **Resumo** e **Referências**.
+Disclaimer → Escolha do cenário (ou Checklist de alta) → Entrada de dados clínicos →
+Resultado, que reúne em abas: **Recomendações** (em blocos), **Alertas de segurança**,
+**Resumo** e **Referências**.
 
 ---
 
@@ -69,7 +100,8 @@ heart-failure/
     │       ├── clinical_rules_pt.json   / clinical_rules_en.json
     │       ├── safety_alerts_pt.json    / safety_alerts_en.json
     │       ├── references_pt.json       / references_en.json
-    │       └── engine_messages_pt.json  / engine_messages_en.json
+    │       ├── engine_messages_pt.json  / engine_messages_en.json
+    │       └── discharge_checklist_pt.json / discharge_checklist_en.json
     └── Tests/ICFlowCoreTests/  # Testes unitários das regras clínicas críticas
 ```
 
@@ -129,7 +161,10 @@ Cada item:
 | `furosemideEquivalentFactor` | só para diuréticos de alça (furosemida=1.0, bumetanida=40, torsemida=2) |
 
 ### 2. Regras clínicas — `clinical_rules.json`
+- `contentVersion` / `lastReviewed`: versão e data de revisão do conteúdo (rastreabilidade).
 - `hfrefRules`: regras de elegibilidade dos pilares (campo `status`).
+- `hfrefAdditionalRules`: regras que sugerem terapias adicionais (não-pilares) conforme
+  perfil (ivabradina, hidralazina+nitrato, vericiguate, digoxina, ferro IV).
 - `acuteCongestionRules`: regras de "red flag" do fluxo agudo (sem `status`, apenas alertas).
 - `acuteCongestionConfig`: parâmetros do cálculo de diurético
   (`ivLoopMultiplier`, `loopNaiveInitialFurosemideIVmg`, `minDailyDoses`,
@@ -180,8 +215,10 @@ seguir o idioma do sistema (português se o sistema estiver em PT, senão inglê
 
 ### Como adicionar um novo idioma
 1. Adicione o caso em `AppLanguage` (núcleo) com `nativeName`/`shortTag`/`resourceSuffix`.
-2. Crie os 5 JSON com o novo sufixo em `ICFlowCore/.../Resources/` (copie os `_en` e
-   traduza). Mantenha **ids, limiares e contagem de regras** idênticos aos demais.
+2. Crie os 6 JSON com o novo sufixo em `ICFlowCore/.../Resources/` (copie os `_en` e
+   traduza): `medications`, `clinical_rules`, `safety_alerts`, `references`,
+   `engine_messages` e `discharge_checklist`. Mantenha **ids, limiares e contagem de
+   regras** idênticos aos demais.
 3. Acrescente as colunas do idioma em `Localizer` (tabela de strings + helpers de enums)
    em `ICFlow/App/Localization.swift`.
 4. Rode os testes — `LocalizationContentTests` valida que os conjuntos de ids batem
@@ -223,11 +260,29 @@ Selecione o esquema **ICFlow** e um simulador → ⌘R para executar.
   hipotensão (encaminhamento), seco (sem diurético); red flags de hipercalemia e renal.
 - `DiureticCalculatorTests` — regra 2,5× (furosemida/bumetanida/torsemida),
   dose padrão se virgem de diurético, sinalização de dose elevada.
-- `ContentRepositoryTests` — carregamento dos JSON e integridade das referências cruzadas.
+- `ContentRepositoryTests` — carregamento dos JSON, integridade das referências cruzadas,
+  versionamento do conteúdo e checklist de alta.
 - `LocalizationContentTests` — carga do conteúdo em inglês, paridade estrutural PT/EN,
   saída do motor traduzida e formatação numérica por idioma (2,5 vs 2.5).
+- `HFpEFEvaluatorTests` — classificação por FEVE, escore H2FPEF (alto/incompleto),
+  encaminhamento e iSGLT2.
+- *(v0.2)* gating de dados ausentes (ICFEr/aguda), terapias adicionais (ivabradina/
+  angioedema) e resposta inadequada (bloqueio sequencial do néfron).
 
 ---
+
+## Limitações da versão 0.2
+
+- **Conteúdo clínico ainda em validação** (`isClinicalContentValidated = false`):
+  doses, limiares e textos são exemplos educacionais, pendentes de revisão por
+  cardiologista. Ver `CLINICAL_CONTENT_STATUS.md` e `VALIDATION_PLAN.md`.
+- O **escore H2FPEF** é uma implementação simplificada e só estima probabilidade
+  quando há dados objetivos (idade, PSAP, E/e'); caso contrário fica "incompleto".
+- O módulo **ICFEp/ICFEm** é educacional e enfatiza diagnóstico/comorbidades, não um
+  protocolo terapêutico completo.
+- **Fora do escopo desta versão:** login, backend, nuvem, banco de pacientes,
+  assinatura, notificações, exportação de PDF, integração com prontuário, Apple Health
+  e analytics.
 
 ## Fontes do conteúdo clínico
 
