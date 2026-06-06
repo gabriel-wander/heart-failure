@@ -48,21 +48,30 @@ struct DisclaimerView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 12) {
-                Image(systemName: "heart.text.square.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(.red)
-                VStack(alignment: .leading) {
-                    Text("IC Flow")
-                        .font(.largeTitle.bold())
-                    Text(app.t(.appSubtitle))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
+        VStack(spacing: 10) {
+            Image(systemName: "heart.text.square.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(.white)
+                .accessibilityHidden(true)
+            Text("IC Flow")
+                .font(.largeTitle.bold())
+                .foregroundStyle(.white)
+            Text(app.t(.appSubtitle))
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.9))
+                .multilineTextAlignment(.center)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 28)
+        .padding(.horizontal, 16)
+        .background(
+            LinearGradient(
+                colors: [Color(red: 1.0, green: 0.37, blue: 0.38),
+                         Color(red: 0.57, green: 0.07, blue: 0.18)],
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 22)
+        )
     }
 }
 
