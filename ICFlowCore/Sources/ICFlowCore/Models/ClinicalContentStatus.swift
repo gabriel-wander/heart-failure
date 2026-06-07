@@ -11,5 +11,7 @@ public enum ClinicalContent {
     public static let isClinicalContentValidated = false
 
     /// Human-readable content version, bumped when the JSON content changes.
-    public static let contentVersion = "0.2.0-dev"
+    /// Note: this versions the content for traceability; clinical validation is
+    /// tracked separately by `isClinicalContentValidated` (still `false`).
+    public static let contentVersion = "1.0.0"
 }

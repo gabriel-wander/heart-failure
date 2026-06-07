@@ -1,6 +1,6 @@
 # IC Flow
 
-**App educacional de apoio à decisão clínica em insuficiência cardíaca (iOS · Swift · SwiftUI). Versão clínica 0.2.**
+**App educacional de apoio à decisão clínica em insuficiência cardíaca (iOS · Swift · SwiftUI). Versão 1.0.**
 
 > ⚠️ **Aviso:** ferramenta **educacional**, destinada a médicos. **Conteúdo clínico
 > em validação** (ver `CLINICAL_CONTENT_STATUS.md` e `VALIDATION_PLAN.md`). As
