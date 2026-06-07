@@ -1,6 +1,6 @@
 {
-  "contentVersion": "0.2.0-dev",
-  "lastReviewed": "2026-06-05",
+  "contentVersion": "1.0.0",
+  "lastReviewed": "2026-06-06",
   "hfrefClassOrder": ["renin_angiotensin", "beta_blocker", "mra", "sglt2"],
   "classLabels": {
     "renin_angiotensin": "ARNI / ACEi / ARB",

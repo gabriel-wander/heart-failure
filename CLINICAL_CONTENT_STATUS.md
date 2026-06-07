@@ -1,6 +1,6 @@
 # Status do conteúdo clínico — IC Flow
 
-**Versão do conteúdo:** `0.2.0-dev` · **Última atualização:** 2026-06-05
+**Versão do conteúdo:** `1.0.0` · **Última atualização:** 2026-06-06
 **Estado de validação:** `isClinicalContentValidated = false` (em validação)
 
 > Este documento descreve o que existe, o que já foi conferido internamente e o que
